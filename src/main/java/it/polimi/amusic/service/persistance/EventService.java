@@ -15,6 +15,8 @@ public interface EventService {
 
     Optional<EventDocument> findById(String id);
 
+    Optional<Event> findEventById(String id);
+
     List<Event> findAll();
 
     List<EventDocument> findByEventName(String eventName);

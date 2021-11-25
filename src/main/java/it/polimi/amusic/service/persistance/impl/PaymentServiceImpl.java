@@ -6,7 +6,9 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.SetOptions;
 import it.polimi.amusic.exception.FirestoreException;
 import it.polimi.amusic.exception.PurchaseNotFoundException;
+import it.polimi.amusic.mapper.PaymentMapperDecorator;
 import it.polimi.amusic.model.document.PaymentDocument;
+import it.polimi.amusic.model.dto.Payment;
 import it.polimi.amusic.service.persistance.PaymentService;
 import it.polimi.amusic.utils.TimestampUtils;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final Firestore firestore;
 
+    private final PaymentMapperDecorator paymentMapper;
 
     @Override
     public PaymentDocument savePayment(PaymentDocument paymentDocument) throws FirestoreException {
@@ -92,13 +95,14 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<PaymentDocument> findByUser(DocumentReference userDocument) throws FirestoreException {
+    public List<Payment> findByUser(String idUserDocument) throws FirestoreException {
         try {
             return Optional.ofNullable(firestore.collection("payments")
-                            .whereEqualTo("userIdDocument", userDocument)
+                            .whereEqualTo("idUserDocument", idUserDocument)
                             .get().get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(PaymentDocument.class))
-                    .orElseThrow(() -> new PurchaseNotFoundException("Acquisti per user {} non trovati", userDocument.getId()));
+                    .map(paymentMapper::getDtosFromDocuments)
+                    .orElseThrow(() -> new PurchaseNotFoundException("Acquisti per user {} non trovati", idUserDocument));
         } catch (ExecutionException | InterruptedException e) {
             throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
         }

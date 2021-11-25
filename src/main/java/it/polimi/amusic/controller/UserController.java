@@ -28,7 +28,7 @@ public class UserController {
     @PostMapping("/private/user/addFirend")
     public AMusicResponse<List<Friend>> addFriend(@RequestBody String idUserFriendDocument) {
         log.info("New request to private/user/addFirend {}", idUserFriendDocument);
-        final List<Friend> friends = userBusinessService.getFriends(idDocument);
+        final List<Friend> friends = userBusinessService.addFriend(idUserFriendDocument);
         return AMusicResponse.<List<Friend>>builder().body(friends).build();
     }
 

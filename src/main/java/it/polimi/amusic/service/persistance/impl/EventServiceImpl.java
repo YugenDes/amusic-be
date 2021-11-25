@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class EventServiceImpl implements EventService {
 
     private final Firestore firestore;
-    private final EventMapperDecorator eventMapperDecorator;
+    private final EventMapperDecorator eventMapper;
 
     @Override
     public EventDocument save(EventDocument eventDocument) throws FirestoreException {
@@ -59,6 +59,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public Optional<Event> findEventById(String id) {
+        return findById(id)
+                .map(eventMapper::getDtoFromDocument);
+    }
+
+    @Override
     public List<Event> findAll() {
         try {
             return Optional.ofNullable(firestore
@@ -69,7 +75,7 @@ public class EventServiceImpl implements EventService {
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))
                     .orElseThrow()
                     .stream()
-                    .map(eventMapperDecorator::getDtoFromDocument)
+                    .map(eventMapper::getDtoFromDocument)
                     .collect(Collectors.toList());
         } catch (ExecutionException | InterruptedException e) {
             throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
@@ -110,7 +116,7 @@ public class EventServiceImpl implements EventService {
                     .parallelStream()
                     .filter(eventDocument ->
                             GeoUtils.distance(center, eventDocument.getGeoPoint()) <= distance)
-                    .map(eventMapperDecorator::getDtoFromDocument)
+                    .map(eventMapper::getDtoFromDocument)
                     .collect(Collectors.toList());
         } catch (InterruptedException | ExecutionException e) {
             throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
@@ -141,7 +147,7 @@ public class EventServiceImpl implements EventService {
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))
                     .orElseThrow()
                     .stream()
-                    .map(eventMapperDecorator::getDtoFromDocument)
+                    .map(eventMapper::getDtoFromDocument)
                     .collect(Collectors.toList());
         } catch (InterruptedException | ExecutionException e) {
             throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
@@ -159,7 +165,7 @@ public class EventServiceImpl implements EventService {
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))
                     .orElseThrow()
                     .stream()
-                    .map(eventMapperDecorator::getDtoFromDocument)
+                    .map(eventMapper::getDtoFromDocument)
                     .collect(Collectors.toList());
         } catch (InterruptedException | ExecutionException e) {
             throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());

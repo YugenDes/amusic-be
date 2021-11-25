@@ -23,7 +23,7 @@ public interface EventService {
 
     List<Event> findByGeoPointNearMe(GeoPoint geoPoint , double distance);
 
-    List<EventDocument> findByPartecipant(String userIdDocument) throws FirestoreException;
+    List<EventDocument> findByParticipant(String userIdDocument) throws FirestoreException;
 
     List<Event> findByEventDate(LocalDate localDate);
 

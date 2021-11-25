@@ -3,11 +3,11 @@ package it.polimi.amusic;
 import com.firebase.geofire.core.GeoHash;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.GeoPoint;
+import it.polimi.amusic.external.gcs.FileService;
 import it.polimi.amusic.model.document.EventDocument;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.service.business.UserBusinessService;
 import it.polimi.amusic.service.persistance.EventService;
-import it.polimi.amusic.external.gcs.FileService;
 import it.polimi.amusic.service.persistance.UserService;
 import it.polimi.amusic.utils.GeoUtils;
 import lombok.SneakyThrows;
@@ -18,7 +18,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 @Slf4j
@@ -74,7 +76,7 @@ class FirestoreServiceTest {
     @Test
     void findEventByPartecipantsEmail() {
         final List<EventDocument> eventDocuments = userService.findByEmail("andrea.messina@soft.it")
-                .map(userDocument -> eventService.findByPartecipant(userDocument.getId()))
+                .map(userDocument -> eventService.findByParticipant(userDocument.getId()))
                 .orElseThrow();
 
         eventDocuments.forEach(System.out::println);

@@ -142,7 +142,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     @Override
     public List<UserDocument> suggestedFriends(@NonNull String idUserDocument) {
         final List<EventDocument> participatedEvents = userService.findById(idUserDocument).map(userDocument ->
-                eventService.findByPartecipant(userDocument.getId())
+                eventService.findByParticipant(userDocument.getId())
                         .stream()
                         .sorted(Comparator.comparing(EventDocument::getEventDate))
                         .limit(10)

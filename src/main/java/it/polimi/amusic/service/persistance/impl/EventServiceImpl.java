@@ -130,7 +130,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventDocument> findByPartecipant(String userIdDocument) throws FirestoreException {
+    public List<EventDocument> findByParticipant(String userIdDocument) throws FirestoreException {
         try {
             return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
                             .whereArrayContains(PARTECIPANTS, userIdDocument)

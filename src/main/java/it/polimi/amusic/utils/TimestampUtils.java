@@ -9,6 +9,9 @@ import java.util.Objects;
 
 public class TimestampUtils {
 
+    private TimestampUtils() {
+    }
+
     public static com.google.cloud.Timestamp convertLocalDateTimeToTimestamp(LocalDateTime localDateTimeToConvert) {
         if (Objects.nonNull(localDateTimeToConvert)) {
             return Timestamp.of(java.sql.Timestamp.valueOf(localDateTimeToConvert));

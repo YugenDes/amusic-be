@@ -1,0 +1,23 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+
+
+if (userService.findById(idDocument)) then (true)
+    :Events = findByPartecipant(user);
+    :sort desc;
+    :limit(10);
+    :Partecipants = events.getPartecipants;
+    :Map<UserId,List<UserDocument>>;
+        repeat
+          :partecipant.getFriends;
+        repeat while (events.getPartecipants) is (yes) ->no;
+
+else (false)
+:thow new UserNotFoundException;
+endif
+
+stop
+
+@enduml

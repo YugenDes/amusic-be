@@ -1,0 +1,18 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+User -> FileController: POST /storage/upload file
+FileController -> FileServiceImpl: upload file
+FileServiceImpl -> FileServiceImpl: BlobId
+FileServiceImpl -> FileServiceImpl: BlobInfo
+FileServiceImpl -> Storage: credentials
+Storage -> FileServiceImpl: service
+FileServiceImpl-> Storage: upload
+Storage -> GCS: upload file
+GCS -> Storage: blob
+Storage -> FileServiceImpl: blob
+FileServiceImpl -> FileController : blob link
+FileController -> User: response
+@enduml

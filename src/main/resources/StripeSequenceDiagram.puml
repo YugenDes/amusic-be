@@ -1,0 +1,46 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+User -> FrontEnd: ticket purchase
+FrontEnd ->PaymentController:POST /pay PaymentRequest
+PaymentController -> PaymentManagerService: pay(paymentRequest)
+PaymentManagerService -> PaymentManagerServiceImpl
+PaymentManagerServiceImpl -> PaymentManagerServiceImpl: provider
+PaymentManagerServiceImpl -> PaymentService: createPayment(paymentRequest)
+PaymentService -> StripeServiceImpl: service of provider
+StripeServiceImpl -> UserService: find user
+UserService -> StripeServiceImpl : retrive user document
+StripeServiceImpl -> EventService: find event
+EventService -> StripeServiceImpl: retrive event document
+StripeServiceImpl -> StripeServiceImpl: event partecipants check
+StripeServiceImpl -> StripeServiceImpl: create payament intent
+StripeServiceImpl -> PaymentController: client secret
+PaymentController -> FrontEnd : response
+FrontEnd -> StripeSDK : client secret
+FrontEnd -> StripeSDK: card info
+StripeSDK -> StripeSDK: make payment
+ExternalStripeServer -> FrontEnd : payment status
+FrontEnd -> User : show message status
+ExternalStripeServer ->  StripeWebHookController: POST /public/stripe/webhook event
+StripeWebHookController -> StripeWebHookController: payload to event
+StripeWebHookController -> StripeWebhookServiceImpl: handle event
+StripeWebhookServiceImpl -> StripeWebhookServiceImpl: event to StipeObject
+StripeWebhookServiceImpl -> StripeWebhookServiceImpl: event type is charge.succeeded
+StripeWebhookServiceImpl -> UserService: find user
+UserService -> StripeWebhookServiceImpl: retrive user document
+StripeWebhookServiceImpl -> EventService: find event
+EventService -> StripeWebhookServiceImpl: retrive eventdocument
+StripeWebhookServiceImpl -> UserBusinessService: attend an event
+StripeWebhookServiceImpl -> PaymentService: save new payment
+StripeWebhookServiceImpl -> QRCodeGenerator: new qrcode
+StripeWebhookServiceImpl -> EmailService: send email with qrcode
+
+
+
+
+
+
+
+@enduml

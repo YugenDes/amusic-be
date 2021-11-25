@@ -1,0 +1,18 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+StripeWebhookServiceImpl -> EmailService: sendEmail(request)
+EmailService -> JavaMailSender: new MimeMessage
+JavaMailSender -> EmailService: MimeMessage
+EmailService -> EmailService: new MimeMessageHelper
+EmailService -> EmailService: build messsage
+alt successful case
+    EmailService -> JavaMailSender: send email
+else Excpetion
+    JavaMailSender -> EmailService : exception
+    EmailService -> StripeWebhookServiceImpl: exception
+end
+
+@enduml

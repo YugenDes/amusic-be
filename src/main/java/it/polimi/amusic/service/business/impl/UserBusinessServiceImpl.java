@@ -16,7 +16,6 @@ import it.polimi.amusic.model.document.RoleDocument;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.dto.Friend;
-import it.polimi.amusic.model.request.LoginRequest;
 import it.polimi.amusic.model.request.RegistrationRequest;
 import it.polimi.amusic.security.model.AuthProvider;
 import it.polimi.amusic.service.business.UserBusinessService;
@@ -121,18 +120,6 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
-    @Deprecated
-    public String login(LoginRequest loginRequest) {
-        try {
-            final UserRecord userByEmail = firebaseAuth.getUserByEmail(loginRequest.getEmail());
-            return firebaseAuth.createCustomToken(userByEmail.getUid());
-        } catch (FirebaseAuthException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
     public Event attendAnEvent(@NonNull String userIdDocument, @NonNull String eventIdDocument, @NonNull Boolean visible) throws FirestoreException {
         final UserDocument userDocument = userService.findById(userIdDocument)
                 .orElseThrow(() -> new UserNotFoundException("User {} non trovato", userIdDocument));
@@ -223,7 +210,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
      * Dato l'userIdDocument del profilo loggato
      * Ritorno la lista di amici di quel profilo
      *
-     * @param idUserDocument
+     * @param idUserDocument id document
      * @return List<Friend>
      */
     @Override
@@ -244,13 +231,13 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     @Override
     public List<Friend> addFriend(@NonNull String idUserFirendDocument) throws UserNotFoundException {
         final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userService.findById(principal.getId()).map(user ->
+        final UserDocument userDocument = userService.findById(principal.getId()).map(user ->
                 userService.findById(idUserFirendDocument).map(friend -> {
                     user.addFriendIfAbsent(friend.getId());
                     return userService.save(user);
                 }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFirendDocument))
         ).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", principal.getId()));
-        return getFriends(principal.getId());
+        return getFriends(userDocument.getId());
     }
 
 

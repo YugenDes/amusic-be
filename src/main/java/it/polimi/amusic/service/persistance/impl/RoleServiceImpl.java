@@ -17,10 +17,12 @@ public class RoleServiceImpl implements RoleService {
 
     private final Firestore firestore;
 
+    static final String COLLECTION_NAME = "roles";
+
     @Override
     public RoleDocument findByAuthority(RoleDocument.RoleEnum roleEnum) throws FirestoreException {
         try {
-            return firestore.collection("roles").document(roleEnum.name()).get().get().toObject(RoleDocument.class);
+            return firestore.collection(COLLECTION_NAME).document(roleEnum.name()).get().get().toObject(RoleDocument.class);
         } catch (InterruptedException | ExecutionException e) {
             throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
         }

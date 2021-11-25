@@ -1,6 +1,9 @@
 package it.polimi.amusic.service.persistance.impl;
 
-import com.google.cloud.firestore.*;
+import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.SetOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
@@ -26,6 +29,8 @@ public class UserServiceImpl implements UserService {
     private final Firestore firestore;
     private final FirebaseAuth firebaseAuth;
 
+    static final String COLLECTION_NAME = "users";
+
     @Override
     public UserDetails loadUserByUsername(String email) {
         try {
@@ -33,7 +38,7 @@ public class UserServiceImpl implements UserService {
             UserDocument userDocument = this.findByEmail(email).orElseThrow();
             if (userByEmail.isEmailVerified() && !userDocument.isEmailVerified()) {
                 userDocument.setEmailVerified(true);
-                userDocument =  this.save(userDocument);
+                userDocument = this.save(userDocument);
             }
             return userDocument;
         } catch (FirebaseAuthException e) {
@@ -45,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserDocument> findByEmail(String email) throws FirestoreException {
         try {
-            return Optional.ofNullable(firestore.collection("users").whereEqualTo("email", email).get().get())
+            return Optional.ofNullable(firestore.collection(COLLECTION_NAME).whereEqualTo("email", email).get().get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(UserDocument.class))
                     .map(userDocuments -> userDocuments.size() > 0 ? userDocuments.get(0) : null);
         } catch (ExecutionException | InterruptedException e) {
@@ -57,7 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserDocument> findReferenceByEmail(String email) throws FirestoreException {
         try {
-            return Optional.ofNullable(firestore.collection("users")
+            return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
                             .whereEqualTo("email", email).get().get())
                     .flatMap(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(UserDocument.class)
                             .stream()
@@ -70,7 +75,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserDocument> findByReference(DocumentReference documentReference) throws FirestoreException {
         try {
-            return Optional.ofNullable(firestore.collection("users")
+            return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
                             .document(documentReference.getId())
                             .get().get())
                     .map(documentSnapshot -> documentSnapshot.toObject(UserDocument.class));
@@ -82,7 +87,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<UserDocument> findById(String id) throws FirestoreException {
         try {
-            return Optional.ofNullable(firestore.collection("users")
+            return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
                             .document(id)
                             .get().get())
                     .map(documentSnapshot -> documentSnapshot.toObject(UserDocument.class));
@@ -94,7 +99,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDocument save(UserDocument userDocument) {
         try {
-            final CollectionReference users = firestore.collection("users");
+            final CollectionReference users = firestore.collection(COLLECTION_NAME);
             DocumentReference document;
             if (StringUtils.isNotBlank(userDocument.getId())) {
                 document = users.document(userDocument.getId());

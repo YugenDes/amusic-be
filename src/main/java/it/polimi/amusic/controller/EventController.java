@@ -1,7 +1,6 @@
 package it.polimi.amusic.controller;
 
 import com.google.cloud.firestore.GeoPoint;
-import it.polimi.amusic.model.document.EventDocument;
 import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.response.AMusicResponse;
 import it.polimi.amusic.service.persistance.EventService;
@@ -55,7 +54,7 @@ public class EventController {
                                                          @RequestParam("lon") Double lon,
                                                          @RequestParam(value = "dist", required = false) Double distance) {
         log.info("New GET to /events/near?lat={}&lon={}&distance={}", lat, lon, distance);
-        if (distance == null) {
+        if (Objects.isNull(distance)) {
             distance = 1d;
         }
         final List<Event> byGeoPointNearMe = eventService.findByGeoPointNearMe(new GeoPoint(lat, lon), distance);

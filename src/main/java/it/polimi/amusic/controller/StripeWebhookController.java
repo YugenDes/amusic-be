@@ -19,6 +19,7 @@ import java.util.Objects;
 @Slf4j
 public class StripeWebhookController {
 
+    private static final String STRIPE_HTTP_HEADER = "Stripe-Signature";
     private final StripeWebhookService stripeWebhookService;
 
     @Value("${stripe.webhook.secret}")
@@ -27,7 +28,7 @@ public class StripeWebhookController {
     @SneakyThrows
     @PostMapping("/public/stripe/webhook")
     public String handleStripeEvent(@RequestBody String payload,
-                                    @RequestHeader("Stripe-Signature") String signature) {
+                                    @RequestHeader(STRIPE_HTTP_HEADER) String signature) {
 
         if (Objects.isNull(signature)) {
             log.warn("Chiamata sospetta all'endpoint /stripe/webhook {}",payload);

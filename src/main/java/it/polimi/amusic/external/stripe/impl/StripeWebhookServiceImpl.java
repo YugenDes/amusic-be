@@ -20,8 +20,6 @@ import it.polimi.amusic.utils.QRCodeGenerator;
 import it.polimi.amusic.utils.TimestampUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -56,8 +54,8 @@ public class StripeWebhookServiceImpl implements StripeWebhookService {
                 userBusinessService.attendAnEvent(userDocumentId, eventDocumentId,visible);
 
                 paymentService.savePayment(new PaymentDocument()
-                        .setEventIdDocument(eventDocument.getId())
-                        .setUserIdDocument(userDocument.getId())
+                        .setIdEventDocument(eventDocument.getId())
+                        .setIdUserDocument(userDocument.getId())
                         .setAmount(Double.valueOf(charge.getAmount()))
                         .setIdPayment(charge.getId())
                         .setDatePayment(TimestampUtils.convertLocalDateTimeToTimestamp(LocalDateTime.now()))

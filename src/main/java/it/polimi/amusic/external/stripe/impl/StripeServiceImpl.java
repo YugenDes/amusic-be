@@ -16,11 +16,9 @@ import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.payment.model.PaymentRequest;
 import it.polimi.amusic.payment.model.PaymentResponse;
 import it.polimi.amusic.service.persistance.EventService;
-import it.polimi.amusic.service.persistance.PaymentService;
 import it.polimi.amusic.service.persistance.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -29,19 +27,19 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class StripeServiceImpl implements StripeService {
 
-    @Autowired
     private final EventService eventService;
-    @Autowired
     private final UserService userService;
 
     @Value("${stripe.apikey}")
-    private String stripeKey;
+    private static String stripeKey;
+
+    static{
+        Stripe.apiKey = stripeKey;
+    }
 
     public PaymentResponse createPayment(PaymentRequest payment){
 
         CreateStripePayment paymentStripe = (CreateStripePayment) payment;
-
-        Stripe.apiKey = stripeKey;
 
         final UserDocument userDocument = userService.findByEmail(paymentStripe.getUserEmail()).orElseThrow(() -> new UserNotFoundException("L'untente {} non é stato trovato",paymentStripe.getUserEmail()));
 

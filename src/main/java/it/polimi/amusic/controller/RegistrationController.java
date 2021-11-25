@@ -1,7 +1,6 @@
 package it.polimi.amusic.controller;
 
 import it.polimi.amusic.model.document.UserDocument;
-import it.polimi.amusic.model.request.LoginRequest;
 import it.polimi.amusic.model.request.RegistrationRequest;
 import it.polimi.amusic.service.business.UserBusinessService;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +23,6 @@ public class RegistrationController {
         return ResponseEntity.ok(userDocument);
     }
 
-    @PostMapping(value = "/public/login")
-    public ResponseEntity<String> registration(@RequestBody LoginRequest request) {
-        log.info("new POST request to /login body:{}", request);
-        final String token = userBusinessService.login(request);
-        return ResponseEntity.ok(token);
-    }
 
     @GetMapping(value = "/testCambioPwd")
     public ResponseEntity<Boolean> cambioPwd(@RequestParam String email) {

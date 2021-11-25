@@ -1,9 +1,8 @@
 package it.polimi.amusic.mapper;
 
-import com.firebase.geofire.core.GeoHash;
-import com.google.cloud.firestore.GeoPoint;
 import it.polimi.amusic.model.document.PaymentDocument;
 import it.polimi.amusic.model.dto.Payment;
+import it.polimi.amusic.payment.model.PaymentProvider;
 import it.polimi.amusic.utils.TimestampUtils;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
@@ -12,7 +11,8 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 
-@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, uses = TimestampUtils.class)
+@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        imports = {TimestampUtils.class, PaymentProvider.class})
 @DecoratedWith(PaymentMapperDecorator.class)
 public interface PaymentMapper {
 

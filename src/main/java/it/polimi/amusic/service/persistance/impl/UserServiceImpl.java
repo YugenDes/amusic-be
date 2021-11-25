@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         try {
             return Optional.ofNullable(firestore.collection(COLLECTION_NAME).whereEqualTo("email", email).get().get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(UserDocument.class))
-                    .map(userDocuments -> userDocuments.size() > 0 ? userDocuments.get(0) : null);
+                    .map(userDocuments -> !userDocuments.isEmpty() ? userDocuments.get(0) : null);
         } catch (ExecutionException | InterruptedException e) {
             throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
         }

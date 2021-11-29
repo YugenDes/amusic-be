@@ -4,14 +4,14 @@ import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.annotation.DocumentId;
 import it.polimi.amusic.security.model.AuthProvider;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.cloud.gcp.data.firestore.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @Accessors(chain = true)
@@ -26,8 +26,10 @@ public class UserDocument implements UserDetails {
     private List<RoleDocument> authorities;
     private String photoUrl;
     private String phoneNumber;
+    private String name;
+    private String surname;
     private String displayName;
-    private List<String> firendList = new ArrayList<>();
+    private List<FriendDocument> firendList = new ArrayList<>();
     private List<String> eventList = new ArrayList<>();
     private Timestamp lastLogin;
     private Timestamp createDate;
@@ -89,13 +91,13 @@ public class UserDocument implements UserDetails {
         }
     }
 
-    public boolean addFriendIfAbsent(String userIdDocument) {
-        if (!firendList.contains(userIdDocument) && !userIdDocument.equals(this.id)) {
-            return firendList.add(userIdDocument);
+    public boolean addFriendIfAbsent(FriendDocument friendDocument) {
+        if (!firendList.contains(friendDocument) && !friendDocument.getId().equals(this.id)) {
+            return firendList.add(friendDocument);
         } else {
             return false;
         }
     }
-
-
 }
+
+

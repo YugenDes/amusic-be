@@ -5,7 +5,6 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.GeoPoint;
 import it.polimi.amusic.external.gcs.FileService;
 import it.polimi.amusic.model.document.EventDocument;
-import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.service.business.UserBusinessService;
 import it.polimi.amusic.service.persistance.EventService;
 import it.polimi.amusic.service.persistance.UserService;
@@ -17,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @SpringBootTest
 @Slf4j
@@ -42,30 +38,30 @@ class FirestoreServiceTest {
     Firestore firestore;
 
 
-    @Test
-    void saveNewEvent() {
-        Map<String,Boolean> partecipanti = new HashMap<>();
-        partecipanti.put("0v9hk14jhvCaltWyfkW0",true);
-        eventService.save(new EventDocument()
-                .setEventName("Evento 1")
-                .setEventDate(LocalDateTime.now())
-                .setDescription("Non si sa mai")
-                .setGeoPoint(new GeoPoint(41.91045717842842,12.529327513568498))
-                .setPartecipants(partecipanti));
-    }
+//    @Test
+//    void saveNewEvent() {
+//        Map<String,Boolean> partecipanti = new HashMap<>();
+//        partecipanti.put("0v9hk14jhvCaltWyfkW0",true);
+//        eventService.save(new EventDocument()
+//                .setEventName("Evento 1")
+//                .setEventDate(LocalDateTime.now())
+//                .setDescription("Non si sa mai")
+//                .setGeoPoint(new GeoPoint(41.91045717842842,12.529327513568498))
+//                .setPartecipants(partecipanti));
+//    }
 
-    @Test
-    void saveNewEventWithPartecipants() {
-        userService.findReferenceByEmail("andrea.messina@soft.it")
-                .map(documentReference -> {
-                    return eventService.save(new EventDocument()
-                            .setEventName("Monti Lol")
-                            .setEventDate(LocalDateTime.now())
-                            .setPartecipants(new HashMap<>() {{
-                                put(documentReference.getId(), true);
-                            }}));
-                });
-    }
+//    @Test
+//    void saveNewEventWithPartecipants() {
+//        userService.findReferenceByEmail("andrea.messina@soft.it")
+//                .map(documentReference -> {
+//                    return eventService.save(new EventDocument()
+//                            .setEventName("Monti Lol")
+//                            .setEventDate(LocalDateTime.now())
+//                            .setPartecipants(new HashMap<>() {{
+//                                put(documentReference.getId(), true);
+//                            }}));
+//                });
+//    }
 
 //    @Test
 //    void findEvent() {
@@ -234,13 +230,13 @@ class FirestoreServiceTest {
 //        System.out.println(reduce1);
 //    }
 
-     @Test
-    void saveFirend(){
-         final UserDocument userDocument = userService.findById("0v9hk14jhvCaltWyfkW0").orElseThrow();
-         userDocument.addFriendIfAbsent("ArgzLAmRGiDPPe80DHEz");
-         userDocument.addFriendIfAbsent("FrQCT2YTcx8OX6QiZ7NG");
-         userService.save(userDocument);
-     }
+//     @Test
+//    void saveFirend(){
+//         final UserDocument userDocument = userService.findById("0v9hk14jhvCaltWyfkW0").orElseThrow();
+//         userDocument.addFriendIfAbsent("ArgzLAmRGiDPPe80DHEz");
+//         userDocument.addFriendIfAbsent("FrQCT2YTcx8OX6QiZ7NG");
+//         userService.save(userDocument);
+//     }
 
 
 }

@@ -75,7 +75,7 @@ public class EventServiceImpl implements EventService {
         try {
             return Optional.ofNullable(firestore
                             .collection(COLLECTION_NAME)
-                            .limit(50)
+                            .limit(20)
                             .get()
                             .get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))

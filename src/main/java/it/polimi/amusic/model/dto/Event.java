@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Accessors(chain = true)
@@ -19,6 +19,6 @@ public class Event {
     private String imageUrl;
     private GeoPoint geoPoint;
     private Integer maxPartecipants = 50;
-    private Map<String,String> partecipants = new HashMap<>();
+    private List<Partecipant> partecipants = new ArrayList<>();
     private Double ticketPrice;
 }

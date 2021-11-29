@@ -11,7 +11,8 @@ import it.polimi.amusic.external.email.EmailService;
 import it.polimi.amusic.external.gcs.FileService;
 import it.polimi.amusic.mapper.EventMapperDecorator;
 import it.polimi.amusic.mapper.UserMapperDecorator;
-import it.polimi.amusic.model.document.EventDocument;
+import it.polimi.amusic.model.document.FriendDocument;
+import it.polimi.amusic.model.document.PartecipantDocument;
 import it.polimi.amusic.model.document.RoleDocument;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.model.dto.Event;
@@ -22,7 +23,6 @@ import it.polimi.amusic.service.business.UserBusinessService;
 import it.polimi.amusic.service.persistance.EventService;
 import it.polimi.amusic.service.persistance.RoleService;
 import it.polimi.amusic.service.persistance.UserService;
-import it.polimi.amusic.utils.SuggestFriendsDFS;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +30,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -127,7 +128,12 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             return firestore.runTransaction(transaction ->
                     eventService.findById(eventIdDocument)
                             .map(eventDocument -> {
-                                eventDocument.addPartecipantIfAbsent(userDocument.getId(), visible);
+                                eventDocument.addPartecipantIfAbsent(new PartecipantDocument()
+                                        .setId(userDocument.getId())
+                                        .setName(userDocument.getName())
+                                        .setSurname(userDocument.getSurname())
+                                        .setVisible(visible)
+                                        .setPhotoUrl(userDocument.getPhotoUrl()));
                                 userDocument.addEventIfAbsent(eventDocument.getId());
                                 userService.save(userDocument);
                                 return eventService.save(eventDocument);
@@ -141,44 +147,45 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
     @Override
     public List<UserDocument> suggestedFriends(@NonNull String idUserDocument) {
-        final List<EventDocument> participatedEvents = userService.findById(idUserDocument).map(userDocument ->
-                eventService.findByParticipant(userDocument.getId())
-                        .stream()
-                        .sorted(Comparator.comparing(EventDocument::getEventDate))
-                        .limit(10)
-                        .collect(Collectors.toList())
-        ).orElseThrow(() -> new UserNotFoundException("Utente con idDocument {} non trovato", idUserDocument));
-        Map<String, List<String>> relationship = new ConcurrentHashMap<>();
-
-        participatedEvents
-                .parallelStream()
-                .forEach(eventDocument ->
-                        relationship.putAll(eventDocument.getPartecipants()
-                                .entrySet()
-                                .stream()
-                                .filter(userIdDocument -> !relationship.containsKey(userIdDocument))
-                                .map(stringBooleanEntry ->
-                                        userService.findById(stringBooleanEntry.getKey())
-                                                .orElseGet(() -> {
-                                                    log.warn("User {} non trovato", stringBooleanEntry.getKey());
-                                                    return null;
-                                                }))
-                                .filter(Objects::nonNull)
-                                .collect(Collectors.toMap(UserDocument::getId, UserDocument::getFirendList))));
-
-        SuggestFriendsDFS<String> core = new SuggestFriendsDFS<>();
-
-        relationship.forEach((user, friends) -> friends.forEach(friend -> core.addFriendship(user, friend)));
-
-        return core.getSuggestedFriends(idUserDocument, 2)
-                .stream()
-                .map(id -> userService.findById(id)
-                        .orElseGet(() -> {
-                            log.warn("User {} non trovato", id);
-                            return null;
-                        }))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+//        final List<EventDocument> participatedEvents = userService.findById(idUserDocument).map(userDocument ->
+//                eventService.findByParticipant(userDocument.getId())
+//                        .stream()
+//                        .sorted(Comparator.comparing(EventDocument::getEventDate))
+//                        .limit(10)
+//                        .collect(Collectors.toList())
+//        ).orElseThrow(() -> new UserNotFoundException("Utente con idDocument {} non trovato", idUserDocument));
+//        Map<String, List<String>> relationship = new ConcurrentHashMap<>();
+//
+//        participatedEvents
+//                .parallelStream()
+//                .forEach(eventDocument ->
+//                        relationship.putAll(eventDocument.getPartecipants()
+//                                .entrySet()
+//                                .stream()
+//                                .filter(userIdDocument -> !relationship.containsKey(userIdDocument))
+//                                .map(stringBooleanEntry ->
+//                                        userService.findById(stringBooleanEntry.getKey())
+//                                                .orElseGet(() -> {
+//                                                    log.warn("User {} non trovato", stringBooleanEntry.getKey());
+//                                                    return null;
+//                                                }))
+//                                .filter(Objects::nonNull)
+//                                .collect(Collectors.toMap(UserDocument::getId, UserDocument::getFirendList))));
+//
+//        SuggestFriendsDFS<String> core = new SuggestFriendsDFS<>();
+//
+//        relationship.forEach((user, friends) -> friends.forEach(friend -> core.addFriendship(user, friend)));
+//
+//        return core.getSuggestedFriends(idUserDocument, 2)
+//                .stream()
+//                .map(id -> userService.findById(id)
+//                        .orElseGet(() -> {
+//                            log.warn("User {} non trovato", id);
+//                            return null;
+//                        }))
+//                .filter(Objects::nonNull)
+//                .collect(Collectors.toList());
+        return null;
     }
 
     @Override
@@ -219,10 +226,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .map(userDocument -> userDocument
                         .getFirendList()
                         .stream()
-                        //Per ogni id amico lo cerco sul db
-                        .map(s -> userService.findById(s)
-                                .orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserDocument)))
-                        //e mappo il document riferito all amico appena trovato in dto
+                        //Per ogni amico mappo il document riferito all amico appena trovato in dto
                         .map(userMapper::mapUserFirendDocumentToFriend)
                         .collect(Collectors.toList()))
                 .orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserDocument));
@@ -233,7 +237,10 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         final UserDocument userDocument = userService.findById(principal.getId()).map(user ->
                 userService.findById(idUserFirendDocument).map(friend -> {
-                    user.addFriendIfAbsent(friend.getId());
+                    final FriendDocument friendDocument = new FriendDocument()
+                            .setFriendSince(Timestamp.now())
+                            .setId(friend.getId());
+                    user.addFriendIfAbsent(friendDocument);
                     return userService.save(user);
                 }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFirendDocument))
         ).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", principal.getId()));

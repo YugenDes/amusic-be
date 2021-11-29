@@ -5,13 +5,13 @@ import com.google.cloud.firestore.GeoPoint;
 import com.google.cloud.firestore.annotation.DocumentId;
 import it.polimi.amusic.utils.TimestampUtils;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.cloud.gcp.data.firestore.Document;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 @Accessors(chain = true)
@@ -28,7 +28,7 @@ public class EventDocument implements Serializable {
     private GeoPoint geoPoint;
     private String geoHash;
     private Integer maxPartecipants = 50;
-    private Map<String, Boolean> partecipants = new HashMap<>();
+    private Map<String, PartecipantDocument> partecipants = new HashMap<>();
     private Double ticketPrice;
 
 
@@ -52,9 +52,10 @@ public class EventDocument implements Serializable {
         return this;
     }
 
-    public boolean addPartecipantIfAbsent(String userIdDocument,Boolean visible) {
-        if (Objects.isNull(partecipants.get(userIdDocument)) && partecipants.size() < maxPartecipants) {
-            return partecipants.put(userIdDocument,visible);
+    public boolean addPartecipantIfAbsent(PartecipantDocument partecipantDocument) {
+        if (!partecipants.containsKey(partecipantDocument.getId()) && partecipants.size() < maxPartecipants) {
+            partecipants.put(partecipantDocument.getId(), partecipantDocument);
+            return true;
         } else {
             return false;
         }

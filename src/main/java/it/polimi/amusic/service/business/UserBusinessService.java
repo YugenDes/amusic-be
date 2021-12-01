@@ -6,7 +6,9 @@ import it.polimi.amusic.exception.FirestoreException;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.dto.Friend;
+import it.polimi.amusic.model.dto.User;
 import it.polimi.amusic.model.request.RegistrationRequest;
+import it.polimi.amusic.model.request.UpdateUserRequest;
 import lombok.NonNull;
 import org.springframework.core.io.Resource;
 
@@ -30,6 +32,6 @@ public interface UserBusinessService {
 
     List<Friend> addFriend(@NonNull String idUserFirendDocument);
 
-
+    User updateUser(UpdateUserRequest request);
 
 }

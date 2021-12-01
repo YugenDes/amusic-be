@@ -17,7 +17,9 @@ import it.polimi.amusic.model.document.RoleDocument;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.dto.Friend;
+import it.polimi.amusic.model.dto.User;
 import it.polimi.amusic.model.request.RegistrationRequest;
+import it.polimi.amusic.model.request.UpdateUserRequest;
 import it.polimi.amusic.security.model.AuthProvider;
 import it.polimi.amusic.service.business.UserBusinessService;
 import it.polimi.amusic.service.persistance.EventService;
@@ -32,6 +34,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -233,6 +236,22 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFirendDocument))
         ).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", principal.getId()));
         return getFriends(userDocument.getId());
+    }
+
+    @Override
+    public User updateUser(UpdateUserRequest request) {
+        final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        final UserDocument userDocument = userService.findById(principal.getId())
+                .orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", principal.getId()));
+        if (Objects.isNull(userDocument.getBirthDay())
+                && Objects.isNull(userDocument.getSex())
+                && Objects.isNull(userDocument.getName())
+                && Objects.isNull(userDocument.getSurname())) {
+            userMapper.updateUserDocumentFromUpdateRequest(userDocument, request);
+            return userMapper.getDtoFromDocument(userService.save(userDocument));
+        } else {
+            throw new OperationNotAllowedException("L'utente non puo aggiornare dati permanenti");
+        }
     }
 
 

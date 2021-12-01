@@ -1,6 +1,8 @@
 package it.polimi.amusic.controller;
 
 import it.polimi.amusic.model.dto.Friend;
+import it.polimi.amusic.model.dto.User;
+import it.polimi.amusic.model.request.UpdateUserRequest;
 import it.polimi.amusic.model.response.AMusicResponse;
 import it.polimi.amusic.service.business.UserBusinessService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,13 @@ public class UserController {
         log.info("New request to private/user/addFirend {}", idUserFriendDocument);
         final List<Friend> friends = userBusinessService.addFriend(idUserFriendDocument);
         return AMusicResponse.<List<Friend>>builder().body(friends).build();
+    }
+
+    @PutMapping("/private/user/update")
+    public AMusicResponse<User> updateUser(@RequestBody UpdateUserRequest request) {
+        log.info("New request to /private/user/update {}", request);
+        final User user = userBusinessService.updateUser(request);
+        return AMusicResponse.<User>builder().body(user).build();
     }
 
 }

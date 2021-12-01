@@ -29,6 +29,9 @@ public class UserDocument implements UserDetails {
     private String name;
     private String surname;
     private String displayName;
+    private Timestamp birthDay;
+    private String city;
+    private String sex;
     private List<FriendDocument> firendList = new ArrayList<>();
     private List<String> eventList = new ArrayList<>();
     private Timestamp lastLogin;

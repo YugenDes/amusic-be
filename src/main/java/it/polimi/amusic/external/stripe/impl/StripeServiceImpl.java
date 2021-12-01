@@ -31,14 +31,15 @@ public class StripeServiceImpl implements StripeService {
     private final UserService userService;
 
     @Value("${stripe.apikey}")
-    private static String stripeKey;
+    private String stripeKey;
 
-    static{
+    private void initializeStipeKey() {
         Stripe.apiKey = stripeKey;
     }
 
     public PaymentResponse createPayment(PaymentRequest payment){
 
+        initializeStipeKey();
         CreateStripePayment paymentStripe = (CreateStripePayment) payment;
 
         final UserDocument userDocument = userService.findByEmail(paymentStripe.getUserEmail()).orElseThrow(() -> new UserNotFoundException("L'untente {} non é stato trovato",paymentStripe.getUserEmail()));

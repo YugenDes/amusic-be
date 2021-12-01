@@ -22,13 +22,13 @@ public interface UserBusinessService {
 
     Event attendAnEvent(@NonNull String eventIdDocument, @NonNull Boolean visible) throws FirestoreException;
 
-    List<UserDocument> suggestedFriends(@NonNull String idUserDocument);
+    List<UserDocument> suggestedFriends();
 
-    UserDocument changeProPic(@NonNull String userIdDocument, @NonNull Resource resource);
+    User changeProPic(@NonNull Resource resource);
 
     boolean changePassword(@NonNull String email);
 
-    List<Friend> getFriends(@NonNull String idUserDocument);
+    List<Friend> getFriends();
 
     List<Friend> addFriend(@NonNull String idUserFirendDocument);
 

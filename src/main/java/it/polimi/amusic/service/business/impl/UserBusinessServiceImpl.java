@@ -141,7 +141,9 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
-    public List<UserDocument> suggestedFriends(@NonNull String idUserDocument) {
+    public List<UserDocument> suggestedFriends() {
+        //final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
 //        final List<EventDocument> participatedEvents = userService.findById(idUserDocument).map(userDocument ->
 //                eventService.findByParticipant(userDocument.getId())
 //                        .stream()
@@ -184,14 +186,17 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
-    public UserDocument changeProPic(@NonNull String userIdDocument, @NonNull Resource resource) {
-        final UserDocument userDocument = userService.findById(userIdDocument)
-                .orElseThrow(() -> new UserNotFoundException("L'utente {} non é stato trovato", userIdDocument));
-        if (fileService.deleteFile(userDocument.getPhotoUrl())) {
-            final String fileName = fileService.uploadFile(resource);
-            return userService.save(userDocument.setPhotoUrl(fileName));
-        }
-        return userDocument;
+    public User changeProPic(@NonNull Resource resource) {
+        final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        final UserDocument userDocument = userService.findById(principal.getId())
+                .orElseThrow(() -> new UserNotFoundException("L'utente {} non é stato trovato", principal.getId()));
+        String mediaLink = Optional.ofNullable(userDocument.getPhotoUrl())
+                .map(s -> {
+                    fileService.deleteFile(userDocument.getPhotoUrl());
+                    return fileService.uploadFile(resource);
+                }).orElseGet(() -> fileService.uploadFile(resource));
+        userService.save(userDocument.setPhotoUrl(mediaLink));
+        return userMapper.getDtoFromDocument(userDocument);
     }
 
     @Override
@@ -212,25 +217,25 @@ public class UserBusinessServiceImpl implements UserBusinessService {
      * Dato l'userIdDocument del profilo loggato
      * Ritorno la lista di amici di quel profilo
      *
-     * @param idUserDocument id document
      * @return List<Friend>
      */
     @Override
-    public List<Friend> getFriends(@NonNull String idUserDocument) throws UserNotFoundException {
-        return userService.findById(idUserDocument)
+    public List<Friend> getFriends() throws UserNotFoundException {
+        final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userService.findById(principal.getId())
                 .map(userDocument -> userDocument
                         .getFirendList()
                         .stream()
                         //Per ogni amico mappo il document riferito all amico appena trovato in dto
                         .map(userMapper::mapUserFirendDocumentToFriend)
                         .collect(Collectors.toList()))
-                .orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserDocument));
+                .orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", principal.getId()));
     }
 
     @Override
     public List<Friend> addFriend(@NonNull String idUserFirendDocument) throws UserNotFoundException {
         final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        final UserDocument userDocument = userService.findById(principal.getId()).map(user ->
+        userService.findById(principal.getId()).map(user ->
                 userService.findById(idUserFirendDocument).map(friend -> {
                     final FriendDocument friendDocument = new FriendDocument()
                             .setFriendSince(Timestamp.now())
@@ -239,7 +244,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                     return userService.save(user);
                 }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFirendDocument))
         ).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", principal.getId()));
-        return getFriends(userDocument.getId());
+        return getFriends();
     }
 
     @Override

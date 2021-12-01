@@ -51,7 +51,7 @@ public class StripeWebhookServiceImpl implements StripeWebhookService {
                 final UserDocument userDocument = userService.findById(userDocumentId).orElseThrow();
                 final EventDocument eventDocument = eventService.findById(eventDocumentId).orElseThrow();
 
-                userBusinessService.attendAnEvent(userDocumentId, eventDocumentId,visible);
+                userBusinessService.attendAnEvent(eventDocumentId, visible);
 
                 paymentService.savePayment(new PaymentDocument()
                         .setIdEventDocument(eventDocument.getId())

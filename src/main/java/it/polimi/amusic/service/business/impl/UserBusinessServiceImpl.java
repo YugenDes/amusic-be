@@ -62,20 +62,6 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         final RoleDocument userRole = roleService.findByAuthority(RoleDocument.RoleEnum.USER);
 
-//        final UserRecord.CreateRequest createRequest = new UserRecord.CreateRequest()
-//                .setEmail(request.getEmail())
-//                .setPassword(request.getPassword())
-//                .setDisplayName(request.getName() + " " + request.getSurname())
-//
-//        final UserRecord userFireBase;
-//
-//        try {
-//            userFireBase = firebaseAuth.createUser(createRequest);
-//        } catch (FirebaseAuthException e) {
-//            log.error("Errore durante la creazione dell userFireBase {}", e.getLocalizedMessage());
-//            throw new FirebaseException("Errore durante la creazione dell userFireBase {}", e.getLocalizedMessage());
-//        }
-
         final UserRecord userFireBase;
 
         try {
@@ -88,7 +74,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         UserDocument userDocument = new UserDocument()
                 .setDisplayName(userFireBase.getDisplayName())
                 .setEmail(request.getEmail())
-                .setFirebaseUID(request.getFirebaseUidToken())
+                .setFirebaseUID(userFireBase.getUid())
                 .setProvider(request.getProvider())
                 .setAuthorities(Collections.singletonList(userRole))
                 .setPhotoUrl(userFireBase.getPhotoUrl())
@@ -96,8 +82,8 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .setCreateDate(Timestamp.ofTimeMicroseconds(userFireBase.getUserMetadata().getCreationTimestamp()))
                 .setLastLogin(Timestamp.ofTimeMicroseconds(userFireBase.getUserMetadata().getLastRefreshTimestamp()))
                 .setEmailVerified(userFireBase.isEmailVerified())
-                .setEnabled(userFireBase.isDisabled())
-                .setAccountNonLocked(userFireBase.isDisabled());
+                .setEnabled(!userFireBase.isDisabled())
+                .setAccountNonLocked(!userFireBase.isDisabled());
 
         try {
             return firestore.runTransaction(transaction -> {
@@ -115,9 +101,9 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         return this.registerUser(new RegistrationRequest()
                 .setEmail(request.getEmail())
                 .setName(request.getName())
-                .setFirebaseUidToken(request.getUid())
                 .setSurname(request.getName())
-                .setProvider(AuthProvider.valueOf(request.getIssuer())));
+                .setFirebaseUidToken(request.getUid())
+                .setProvider(AuthProvider.parseValueOf((String) request.getClaims().get("aud"))));
     }
 
     @Override

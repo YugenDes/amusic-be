@@ -10,9 +10,10 @@ import lombok.experimental.Accessors;
 public class RegistrationRequest {
     @NonNull
     private String email;
-    @NonNull
+    //TODO rimuovere commenti
+    //@NonNull
     private String name;
-    @NonNull
+    //@NonNull
     private String surname;
     @NonNull
     private String firebaseUidToken;

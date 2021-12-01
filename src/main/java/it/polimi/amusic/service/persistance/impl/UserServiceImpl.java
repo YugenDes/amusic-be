@@ -17,6 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
@@ -60,31 +62,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<UserDocument> findReferenceByEmail(String email) throws FirestoreException {
-        try {
-            return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
-                            .whereEqualTo("email", email).get().get())
-                    .flatMap(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(UserDocument.class)
-                            .stream()
-                            .findFirst());
-        } catch (ExecutionException | InterruptedException e) {
-            throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
-        }
-    }
-
-    @Override
-    public Optional<UserDocument> findByReference(DocumentReference documentReference) throws FirestoreException {
-        try {
-            return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
-                            .document(documentReference.getId())
-                            .get().get())
-                    .map(documentSnapshot -> documentSnapshot.toObject(UserDocument.class));
-        } catch (ExecutionException | InterruptedException e) {
-            throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
-        }
-    }
-
-    @Override
     public Optional<UserDocument> findById(String id) throws FirestoreException {
         try {
             return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
@@ -92,6 +69,45 @@ public class UserServiceImpl implements UserService {
                             .get().get())
                     .map(documentSnapshot -> documentSnapshot.toObject(UserDocument.class));
         } catch (ExecutionException | InterruptedException e) {
+            throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    public List<UserDocument> findByEmailStartWith(String email) throws com.google.cloud.firestore.FirestoreException {
+        if (StringUtils.isBlank(email)) {
+            throw new FirestoreException("Impossibile effettuare la query poiché il campo é vuto");
+        }
+
+        try {
+            return new ArrayList<>(Optional.ofNullable(firestore.collection(COLLECTION_NAME)
+                            .whereGreaterThanOrEqualTo("email", email)
+                            .whereLessThanOrEqualTo("email", email)
+                            .get()
+                            .get())
+                    .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(UserDocument.class))
+                    .orElseThrow());
+        } catch (InterruptedException | ExecutionException e) {
+            throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
+        }
+    }
+
+
+    @Override
+    public List<UserDocument> findByDisplayNameStartWith(String displayName) throws com.google.cloud.firestore.FirestoreException {
+        if (StringUtils.isBlank(displayName)) {
+            throw new FirestoreException("Impossibile effettuare la query poiché il campo é vuto");
+        }
+
+        try {
+            return new ArrayList<>(Optional.ofNullable(firestore.collection(COLLECTION_NAME)
+                            .whereGreaterThanOrEqualTo("displayName", displayName)
+                            .whereLessThanOrEqualTo("displayName", displayName)
+                            .get()
+                            .get())
+                    .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(UserDocument.class))
+                    .orElseThrow());
+        } catch (InterruptedException | ExecutionException e) {
             throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
         }
     }

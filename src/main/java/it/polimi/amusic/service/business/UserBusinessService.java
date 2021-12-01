@@ -34,4 +34,6 @@ public interface UserBusinessService {
 
     User updateUser(UpdateUserRequest request);
 
+    List<User> searchUser(String param);
+
 }

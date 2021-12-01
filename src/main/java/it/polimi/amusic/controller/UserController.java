@@ -39,4 +39,11 @@ public class UserController {
         return AMusicResponse.<User>builder().body(user).build();
     }
 
+    @GetMapping("/private/user")
+    public AMusicResponse<List<User>> updateUser(@RequestParam("search") String param) {
+        log.info("New request to /private/user?search= {}", param);
+        final List<User> users = userBusinessService.searchUser(param);
+        return AMusicResponse.<List<User>>builder().body(users).build();
+    }
+
 }

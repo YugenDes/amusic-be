@@ -74,8 +74,12 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             throw new FirebaseException("Errore durante il recupero dell userFireBase  {}", e.getLocalizedMessage());
         }
 
+        String displayName = request.getName() + " " + request.getSurname();
+        log.info("firebase.displayName {}", userFireBase.getDisplayName());
+        log.info("request.displayName {}", displayName);
+
         UserDocument userDocument = new UserDocument()
-                .setDisplayName(userFireBase.getDisplayName())
+                .setDisplayName(displayName)
                 .setEmail(request.getEmail())
                 .setFirebaseUID(userFireBase.getUid())
                 .setProvider(request.getProvider())
@@ -104,7 +108,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         return this.registerUser(new RegistrationRequest()
                 .setEmail(request.getEmail())
                 .setName(request.getName())
-                .setSurname(request.getName())
+                .setSurname((String) request.getClaims().get("surname"))
                 .setFirebaseUidToken(request.getUid())
                 .setProvider(AuthProvider.parseValueOf((String) request.getClaims().get("aud"))));
     }
@@ -252,6 +256,23 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         } else {
             throw new OperationNotAllowedException("L'utente non puo aggiornare dati permanenti");
         }
+    }
+
+    @Override
+    //TODO aggiungere controllo set displayName nome + cognome
+    public List<User> searchUser(String param) {
+
+        List<UserDocument> users;
+
+        if (param.contains("@")) {
+            users = userService.findByEmailStartWith(param);
+        } else {
+            users = userService.findByDisplayNameStartWith(param);
+        }
+        return users
+                .stream()
+                .map(userMapper::getDtoFromDocument)
+                .collect(Collectors.toList());
     }
 
 

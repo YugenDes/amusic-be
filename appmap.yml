@@ -5,4 +5,4 @@ name: AMusic
 # Your project contains the directory src/main/java.
 # AppMap has auto-detected the following Java packages in this directory:
 packages:
-- path: it.polimi.AMusic
+  - path: it.polimi.amusic

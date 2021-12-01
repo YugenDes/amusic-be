@@ -121,9 +121,11 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
-    public Event attendAnEvent(@NonNull String userIdDocument, @NonNull String eventIdDocument, @NonNull Boolean visible) throws FirestoreException {
-        final UserDocument userDocument = userService.findById(userIdDocument)
-                .orElseThrow(() -> new UserNotFoundException("User {} non trovato", userIdDocument));
+    public Event attendAnEvent(@NonNull String eventIdDocument, @NonNull Boolean visible) throws FirestoreException {
+        final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        final UserDocument userDocument = userService.findById(principal.getId())
+                .orElseThrow(() -> new UserNotFoundException("User {} non trovato", principal.getId()));
         try {
             return firestore.runTransaction(transaction ->
                     eventService.findById(eventIdDocument)

@@ -23,6 +23,7 @@ import it.polimi.amusic.service.business.UserBusinessService;
 import it.polimi.amusic.service.persistance.EventService;
 import it.polimi.amusic.service.persistance.RoleService;
 import it.polimi.amusic.service.persistance.UserService;
+import it.polimi.amusic.utils.GcsRegexFilename;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,8 +71,18 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             throw new FirebaseException("Errore durante il recupero dell userFireBase  {}", e.getLocalizedMessage());
         }
 
-        String name = userFireBase.getDisplayName().split(" ")[0];
-        String surname = userFireBase.getDisplayName().split(" ")[1];
+        String name;
+        String surname;
+        if (Objects.nonNull(userFireBase.getDisplayName())) {
+            name = userFireBase.getDisplayName().split(" ")[0];
+            surname = userFireBase.getDisplayName().split(" ")[1];
+        } else {
+            //Nel caso di GITHUB non prevede un displayName
+            //Sara compito dell user aggiungere un nome e un cognome
+            name = "   ";
+            surname = "   ";
+        }
+
 
         UserDocument userDocument = new UserDocument()
                 .setName(name.toUpperCase())
@@ -179,7 +190,9 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         String mediaLink = Optional.ofNullable(userDocument.getPhotoUrl())
                 .map(s -> {
-                    fileService.deleteFile(userDocument.getPhotoUrl());
+                    if (GcsRegexFilename.isFromGCS(s)) {
+                        fileService.deleteFile(userDocument.getPhotoUrl());
+                    }
                     return fileService.uploadFile(resource);
                 }).orElseGet(() -> fileService.uploadFile(resource));
         userService.save(userDocument.setPhotoUrl(mediaLink));

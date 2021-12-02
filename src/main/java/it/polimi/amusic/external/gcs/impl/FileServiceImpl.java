@@ -2,9 +2,9 @@ package it.polimi.amusic.external.gcs.impl;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
-import it.polimi.amusic.exception.FilenameNotFoundInUrlException;
 import it.polimi.amusic.exception.GCPBucketException;
 import it.polimi.amusic.external.gcs.FileService;
+import it.polimi.amusic.utils.GcsRegexFilename;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +21,6 @@ public class FileServiceImpl implements FileService {
 
     private final GoogleCredentials credentials;
     private static final String BUCKET_NAME = "polimi-amusic.appspot.com";
-    private static final Pattern patternGCS = Pattern.compile("(polimi-amusic.appspot.com)(\\/)(.+)(\\/)(.+)(\\?)(.+\\=.+)");
-    private static final Pattern patternUUID = Pattern.compile("\\b[0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12}\\b");
 
     /**
      * Carica il file sul bucket di google cloud
@@ -69,7 +65,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public Resource downloadFile(String url) throws GCPBucketException {
         //Creo l'identificatore del blob associato al filename
-        final String filename = regexFilenameFromUrl(url);
+        final String filename = GcsRegexFilename.getFilenameFromGcsUrl(url);
         BlobId blobId = BlobId.of(BUCKET_NAME, filename);
         final Storage service = StorageOptions.newBuilder()
                 .setCredentials(credentials)
@@ -95,7 +91,7 @@ public class FileServiceImpl implements FileService {
      */
     @Override
     public boolean deleteFile(String url) throws GCPBucketException {
-        final String filename = regexFilenameFromUrl(url);
+        final String filename = GcsRegexFilename.getFilenameFromGcsUrl(url);
         try {
             //Creo l'identificatore del blob associato al filename
             BlobId blobId = BlobId.of(BUCKET_NAME, filename);
@@ -108,26 +104,5 @@ public class FileServiceImpl implements FileService {
         } catch (Exception e) {
             throw new GCPBucketException("Errore durante l'eliminazione del file {}", filename);
         }
-    }
-
-
-    private String regexFilenameFromUrl(String url) {
-        if (!url.contains(BUCKET_NAME)) {
-            throw new FilenameNotFoundInUrlException("Non é presente il bucket name all'interno dell url {}", url);
-        }
-        final String urlTrimmed = url.substring(url.indexOf(BUCKET_NAME));
-        log.debug("parsing GCS URL to filename. URL {}", url);
-        final Matcher matcherGCS = patternGCS.matcher(urlTrimmed);
-        if (!matcherGCS.find()) {
-            throw new FilenameNotFoundInUrlException("L'url non é nel formato corretto {}", url);
-        }
-        final String filename = matcherGCS.group(5);
-        log.debug("Filename GCS {}", filename);
-
-        final Matcher matcher = patternUUID.matcher(filename);
-        if (!matcher.find()) {
-            throw new FilenameNotFoundInUrlException("Il filename non é stato trovato all'interno dell url");
-        }
-        return filename;
     }
 }

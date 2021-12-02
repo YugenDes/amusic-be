@@ -42,14 +42,14 @@ public class SecurityFilter extends OncePerRequestFilter {
         FirebaseToken decodedToken = null;
         Credentials.CredentialType type = null;
         String token = securityService.getBearerToken(request);
-        log.info("token {}",token);
+        log.info("token {}", token);
         try {
-                if (token != null && !token.equalsIgnoreCase("undefined")) {
-                    //Controllo se il token di Firebase é valido
-                    //Nel caso in cui non fosse valido il metodo verifyIdToken lancerebbe un exception
-                    decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
-                    type = Credentials.CredentialType.ID_TOKEN;
-                }
+            if (token != null && !token.equalsIgnoreCase("undefined")) {
+                //Controllo se il token di Firebase é valido
+                //Nel caso in cui non fosse valido il metodo verifyIdToken lancerebbe un exception
+                decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
+                type = Credentials.CredentialType.ID_TOKEN;
+            }
         } catch (FirebaseAuthException e) {
             log.error("Firebase Exception {} ", e.getLocalizedMessage());
             throw new FirebaseException("Firebase exception");
@@ -78,7 +78,20 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (decodedToken != null) {
             user = userService.findByEmail(decodedToken.getEmail()).
                     map(userDocument -> userService.updateFromFirebase(userDocument, decodedToken))
-                    .orElseGet(() -> userBusinessService.registerUser(decodedToken));
+                    .orElseGet(() -> {
+                        try {
+                            return userBusinessService.registerUser(decodedToken);
+                        } catch (Exception e) {
+                            try {
+                                log.error(e.getLocalizedMessage());
+                                FirebaseAuth.getInstance().deleteUser(decodedToken.getUid());
+                                log.warn("FirebaseUser {} deleted", decodedToken.getUid());
+                            } catch (FirebaseAuthException ex) {
+                                throw new FirebaseException("Errore durante la cancellazione del profilo");
+                            }
+                        }
+                        return null;
+                    });
         }
         return user;
     }

@@ -20,7 +20,7 @@ public interface UserBusinessService {
 
     UserDocument registerUser(@NonNull FirebaseToken request) throws FirebaseException;
 
-    Event attendAnEvent(@NonNull String eventIdDocument, @NonNull Boolean visible) throws FirestoreException;
+    Event attendAnEvent(@NonNull String userIdDocument, @NonNull String eventIdDocument, @NonNull Boolean visible) throws FirestoreException;
 
     List<Friend> suggestedFriends();
 

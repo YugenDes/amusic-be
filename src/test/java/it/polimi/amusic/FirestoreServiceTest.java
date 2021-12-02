@@ -196,8 +196,8 @@ class FirestoreServiceTest {
     @Test
     void attendEvent() {
         contextLoads();
-        final Event event = userBusinessService.attendAnEvent("Px1rphu8AiVS3aGnoSGj", true);
-        final Event event1 = userBusinessService.attendAnEvent("DlDXMobm0uoGrsV4uqXg", false);
+        final Event event = userBusinessService.attendAnEvent("8Xq2gviMAwO1Pc3EjoAl", "Px1rphu8AiVS3aGnoSGj", true);
+        final Event event1 = userBusinessService.attendAnEvent("8Xq2gviMAwO1Pc3EjoAl", "DlDXMobm0uoGrsV4uqXg", false);
         System.out.println(event);
         System.out.println(event1);
     }

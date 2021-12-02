@@ -42,7 +42,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         FirebaseToken decodedToken = null;
         Credentials.CredentialType type = null;
         String token = securityService.getBearerToken(request);
-        log.info("token {}", token);
+        //log.info("token {}", token);
         try {
             if (token != null && !token.equalsIgnoreCase("undefined")) {
                 //Controllo se il token di Firebase é valido

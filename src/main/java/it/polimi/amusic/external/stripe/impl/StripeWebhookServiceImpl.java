@@ -51,7 +51,7 @@ public class StripeWebhookServiceImpl implements StripeWebhookService {
                 final UserDocument userDocument = userService.findById(userDocumentId).orElseThrow();
                 final EventDocument eventDocument = eventService.findById(eventDocumentId).orElseThrow();
 
-                userBusinessService.attendAnEvent(eventDocumentId, visible);
+                userBusinessService.attendAnEvent(userDocumentId, eventDocumentId, visible);
 
                 paymentService.savePayment(new PaymentDocument()
                         .setIdEventDocument(eventDocument.getId())
@@ -65,10 +65,11 @@ public class StripeWebhookServiceImpl implements StripeWebhookService {
                 emailService.sendEmail(new EmailService.EmailRequest()
                         .setEmailTo(userDocument.getEmail())
                         .setSubject("Pagamento avvenuto con successo")
-                        .setText(MessageBuilder.buildMessage("L acquisto per il ticket {} é avvenuto con successo per una somma di {}", eventDocument.getEventName(), charge.getAmount()))
+                        .setText(MessageBuilder.buildMessage("L acquisto per il ticket {} é avvenuto con successo per una somma di {}€", eventDocument.getEventName(), charge.getAmount() / 100D))
                         .setHtmlText(false)
                         .setAttachment(QRCodeGenerator.generateQRCodeImage(charge.getId())));
 
+                log.info("User {} attend event {}", userDocumentId, eventDocumentId);
                 break;
             default:
                 log.warn("Evento non gestito {}", event.getType());

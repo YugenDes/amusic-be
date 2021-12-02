@@ -20,6 +20,7 @@ import it.polimi.amusic.service.persistance.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service(value = "STRIPE")
@@ -37,16 +38,18 @@ public class StripeServiceImpl implements StripeService {
         Stripe.apiKey = stripeKey;
     }
 
-    public PaymentResponse createPayment(PaymentRequest payment){
+    public PaymentResponse createPayment(PaymentRequest payment) {
 
         initializeStipeKey();
         CreateStripePayment paymentStripe = (CreateStripePayment) payment;
 
-        final UserDocument userDocument = userService.findByEmail(paymentStripe.getUserEmail()).orElseThrow(() -> new UserNotFoundException("L'untente {} non é stato trovato",paymentStripe.getUserEmail()));
+        final String id = ((UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+
+        final UserDocument userDocument = userService.findById(id).orElseThrow(() -> new UserNotFoundException("L'untente {} non é stato trovato", id));
 
         final EventDocument eventDocument = eventService.findById(paymentStripe.getEventDocumentId()).orElseThrow(() -> new EventNotFoundException("L'evento {} non é stato trovato", paymentStripe.getEventDocumentId()));
 
-        if(eventDocument.getPartecipants().size()>=eventDocument.getMaxPartecipants()){
+        if (eventDocument.getPartecipants().size() >= eventDocument.getMaxPartecipants()) {
             throw new EventFullException("L'evento ha raggiunto il numero massimo di partecipanti, Impossibile continuare con il pagamento");
         }
 

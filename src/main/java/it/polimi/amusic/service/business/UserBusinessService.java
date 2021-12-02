@@ -36,4 +36,6 @@ public interface UserBusinessService {
 
     List<User> searchUser(String param);
 
+    User findById(String id);
+
 }

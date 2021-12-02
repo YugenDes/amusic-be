@@ -14,6 +14,9 @@ public class Event {
     private String id;
     private String eventName;
     private String description;
+    private String phoneNumber;
+    //Via CAP Comune
+    private String address;
     private LocalDateTime eventDatePublished;
     private LocalDateTime eventDate;
     private String imageUrl;

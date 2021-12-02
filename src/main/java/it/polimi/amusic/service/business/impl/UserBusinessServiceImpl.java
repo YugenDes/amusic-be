@@ -1,5 +1,6 @@
 package it.polimi.amusic.service.business.impl;
 
+import com.google.api.client.util.ArrayMap;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.Firestore;
 import com.google.firebase.auth.FirebaseAuth;
@@ -69,22 +70,21 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             throw new FirebaseException("Errore durante il recupero dell userFireBase  {}", e.getLocalizedMessage());
         }
 
-        String displayName = request.getName() + " " + request.getSurname();
-        log.info("firebase.displayName {}", userFireBase.getDisplayName());
-        log.info("request.displayName {}", displayName);
+        String name = userFireBase.getDisplayName().split(" ")[0];
+        String surname = userFireBase.getDisplayName().split(" ")[1];
 
         UserDocument userDocument = new UserDocument()
-                .setName(request.getName().toUpperCase())
-                .setSurname(request.getName().toUpperCase())
-                .setDisplayName(displayName.toUpperCase())
+                .setName(name.toUpperCase())
+                .setSurname(surname.toUpperCase())
+                .setDisplayName(userFireBase.getDisplayName())
                 .setEmail(request.getEmail().toLowerCase())
                 .setFirebaseUID(userFireBase.getUid())
                 .setProvider(request.getProvider())
                 .setAuthorities(Collections.singletonList(userRole))
                 .setPhotoUrl(userFireBase.getPhotoUrl())
                 .setPhoneNumber(userFireBase.getPhoneNumber())
-                .setCreateDate(Timestamp.ofTimeMicroseconds(userFireBase.getUserMetadata().getCreationTimestamp()))
-                .setLastLogin(Timestamp.ofTimeMicroseconds(userFireBase.getUserMetadata().getLastRefreshTimestamp()))
+                .setCreateDate(Timestamp.ofTimeSecondsAndNanos(userFireBase.getUserMetadata().getCreationTimestamp() / 1000L, 0))
+                .setLastLogin(Timestamp.ofTimeSecondsAndNanos(userFireBase.getUserMetadata().getLastRefreshTimestamp() / 1000L, 0))
                 .setEmailVerified(userFireBase.isEmailVerified())
                 .setEnabled(!userFireBase.isDisabled())
                 .setAccountNonLocked(!userFireBase.isDisabled());
@@ -101,13 +101,11 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
-    public UserDocument registerUser(@NonNull FirebaseToken request) throws FirebaseException {
+    public UserDocument registerUser(@NonNull FirebaseToken firebaseToken) throws FirebaseException {
         return this.registerUser(new RegistrationRequest()
-                .setEmail(request.getEmail())
-                .setName(request.getName())
-                .setSurname((String) request.getClaims().get("surname"))
-                .setFirebaseUidToken(request.getUid())
-                .setProvider(AuthProvider.parseValueOf((String) request.getClaims().get("aud"))));
+                .setEmail(firebaseToken.getEmail())
+                .setFirebaseUidToken(firebaseToken.getUid())
+                .setProvider(AuthProvider.parseValueOf((String) ((ArrayMap) firebaseToken.getClaims().get("firebase")).get("sign_in_provider"))));
     }
 
     @Override
@@ -252,7 +250,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         List<UserDocument> users = new ArrayList<>();
 
         if (param.contains(" ")) {
-            users.addAll(userService.findByNameStartWith(param));
+            users.addAll(userService.findByDisplayNameStartWith(param));
         } else {
             users.addAll(userService.findByNameStartWith(param));
             users.addAll(userService.findBySurnameStartWith(param));
@@ -263,6 +261,11 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public User findById(String id) {
+        return userService.findById(id).map(userMapper::getDtoFromDocument).orElseThrow();
+    }
+
 
     private void sendEmailVerificationLink(@NonNull String email) throws AmusicEmailException {
         try {
@@ -270,6 +273,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             emailService.sendEmail(new EmailService.EmailRequest()
                     .setEmailTo(email)
                     .setSubject("Verifica Email")
+                    .setHtmlText(false)
                     .setText("Ecco il link per verificare l'email: " + emailVerificationLink));
         } catch (FirebaseAuthException e) {
             log.error("Firebase Auth exception ", e);

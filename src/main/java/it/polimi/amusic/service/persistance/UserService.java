@@ -1,6 +1,7 @@
 package it.polimi.amusic.service.persistance;
 
 import com.google.cloud.firestore.FirestoreException;
+import com.google.firebase.auth.FirebaseToken;
 import it.polimi.amusic.model.document.UserDocument;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -20,5 +21,7 @@ public interface UserService extends UserDetailsService {
     List<UserDocument> findBySurnameStartWith(String param) throws FirestoreException;
 
     UserDocument save(UserDocument userDocument);
+
+    UserDocument updateFromFirebase(UserDocument userDocument, FirebaseToken firebaseToken);
 
 }

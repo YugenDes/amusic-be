@@ -22,9 +22,12 @@ public class EventDocument implements Serializable {
     private String id;
     private String eventName;
     private String description;
+    //Via CAP Comune
+    private String address;
     private Timestamp eventDatePublished;
     private Timestamp eventDate;
     private String imageUrl;
+    private String phoneNumber;
     private GeoPoint geoPoint;
     private String geoHash;
     private Integer maxPartecipants = 50;

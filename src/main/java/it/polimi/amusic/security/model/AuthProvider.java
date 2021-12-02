@@ -5,13 +5,17 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Arrays;
 
 public enum AuthProvider {
-    FACEBOOK, GOOGLE, AMUSIC;
+    GITHUB("github.com"), FACEBOOK("facebook.com"), GOOGLE("google.com"), AMUSIC("password");
+
+    private final String firebaseClaim;
+
+    AuthProvider(String firebaseClaim) {
+        this.firebaseClaim = firebaseClaim;
+    }
 
     public static AuthProvider parseValueOf(String value) {
         return Arrays.stream(AuthProvider.values())
-                .map(Enum::name)
-                .filter(authProviderName -> StringUtils.containsIgnoreCase(authProviderName, value))
-                .map(AuthProvider::valueOf)
+                .filter(authProvider -> StringUtils.containsIgnoreCase(authProvider.firebaseClaim, value))
                 .findFirst()
                 .orElse(AuthProvider.AMUSIC);
     }

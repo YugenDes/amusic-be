@@ -1,11 +1,13 @@
 package it.polimi.amusic.service.persistance.impl;
 
+import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.SetOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.auth.UserRecord;
 import it.polimi.amusic.exception.FirebaseException;
 import it.polimi.amusic.exception.FirestoreException;
@@ -145,6 +147,24 @@ public class UserServiceImpl implements UserService {
         } catch (InterruptedException | ExecutionException e) {
             throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
         }
+    }
+
+    @Override
+    public UserDocument updateFromFirebase(UserDocument userDocument, FirebaseToken firebaseToken) {
+
+        final UserRecord userFireBase;
+        try {
+            userFireBase = firebaseAuth.getUser(firebaseToken.getUid());
+        } catch (FirebaseAuthException e) {
+            log.error("Errore durante il recupero dell userFireBase {}", e.getLocalizedMessage());
+            throw new FirebaseException("Errore durante il recupero dell userFireBase  {}", e.getLocalizedMessage());
+        }
+
+        userDocument.setEmailVerified(userFireBase.isEmailVerified());
+        userDocument.setLastLogin(Timestamp.ofTimeSecondsAndNanos(userFireBase.getUserMetadata().getLastRefreshTimestamp() / 1000L, 0));
+        userDocument.setEnabled(!userFireBase.isDisabled());
+
+        return save(userDocument);
     }
 
 }

@@ -26,6 +26,13 @@ public class UserController {
     @Value("${file.size.limit.byte}")
     private Long fileSizeLimitInByte;
 
+    @GetMapping("/profile")
+    public AMusicResponse<User> getUser() {
+        log.info("New request to /profile {}", getUserIdDocumentFromSecurityContext());
+        final User byId = userBusinessService.findById(getUserIdDocumentFromSecurityContext());
+        return AMusicResponse.<User>builder().body(byId).build();
+    }
+
     @GetMapping("/private/user/friends")
     public AMusicResponse<List<Friend>> getUserFirends() {
         log.info("New request to /user/friends {}", getUserIdDocumentFromSecurityContext());

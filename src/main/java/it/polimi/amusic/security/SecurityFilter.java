@@ -3,6 +3,7 @@ package it.polimi.amusic.security;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import it.polimi.amusic.exception.FirebaseException;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.security.model.Credentials;
 import it.polimi.amusic.service.business.UserBusinessService;
@@ -51,6 +52,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                 }
         } catch (FirebaseAuthException e) {
             log.error("Firebase Exception {} ", e.getLocalizedMessage());
+            throw new FirebaseException("Firebase exception");
         }
 
         UserDocument user = firebaseTokenToUserDto(decodedToken);
@@ -74,8 +76,9 @@ public class SecurityFilter extends OncePerRequestFilter {
     private UserDocument firebaseTokenToUserDto(FirebaseToken decodedToken) {
         UserDocument user = null;
         if (decodedToken != null) {
-            user=userService.findByEmail(decodedToken.getEmail()).
-                    orElseGet(() -> userBusinessService.registerUser(decodedToken));
+            user = userService.findByEmail(decodedToken.getEmail()).
+                    map(userDocument -> userService.updateFromFirebase(userDocument, decodedToken))
+                    .orElseGet(() -> userBusinessService.registerUser(decodedToken));
         }
         return user;
     }

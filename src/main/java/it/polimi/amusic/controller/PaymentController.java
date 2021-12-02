@@ -27,16 +27,19 @@ public class PaymentController {
 
     @PostMapping(value = "/private/pay")
     public AMusicResponse<PaymentResponse> createPayment(@RequestBody PaymentRequest payment){
-        log.info("new POST request to /pay body:{}", payment);
+        log.info("new POST request to /pay body:{} userId {}", payment, getUserIdDocumentFromSecurityContext());
         final PaymentResponse payamentResponse = paymentManagerService.pay(payment);
         return AMusicResponse.<PaymentResponse>builder().body(payamentResponse).build();
     }
 
     @GetMapping(value = "/private/payment/history")
-    public AMusicResponse<List<Payment>> getPaymentHistory(){
-        final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        log.info("new GET request to /payment/history {}" ,principal.getId());
-        final List<Payment> history = paymentService.findByUser(principal.getId());
+    public AMusicResponse<List<Payment>> getPaymentHistory() {
+        log.info("new GET request to /payment/history {}", getUserIdDocumentFromSecurityContext());
+        final List<Payment> history = paymentService.findByUser(getUserIdDocumentFromSecurityContext());
         return AMusicResponse.<List<Payment>>builder().body(history).build();
+    }
+
+    private String getUserIdDocumentFromSecurityContext() {
+        return ((UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
     }
 }

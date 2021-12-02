@@ -55,7 +55,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         UserDocument user = firebaseTokenToUserDto(decodedToken);
 
-        if (user != null) {
+        if (user != null && user.isEnabled()) {
             //Creo un AuthenticationToken , come principal é l user e come Credentials sara il token di firebase
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user,
                     new Credentials(type, decodedToken, token), user.getAuthorities());

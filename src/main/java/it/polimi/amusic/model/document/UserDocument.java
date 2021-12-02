@@ -4,6 +4,7 @@ import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.annotation.DocumentId;
 import it.polimi.amusic.security.model.AuthProvider;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.springframework.cloud.gcp.data.firestore.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +17,7 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 @Document(collectionName = "users")
+@EqualsAndHashCode
 public class UserDocument implements UserDetails {
 
     @DocumentId

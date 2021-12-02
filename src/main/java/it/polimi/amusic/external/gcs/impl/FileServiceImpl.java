@@ -33,6 +33,7 @@ public class FileServiceImpl implements FileService {
      * @return String fileUrl
      * @throws GCPBucketException exception
      */
+    //TODO aggiungre compressione immagine
     @Override
     public String uploadFile(Resource file) throws GCPBucketException {
         //Creo l'identificatore del blob

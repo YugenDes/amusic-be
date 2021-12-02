@@ -74,15 +74,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDocument> findByEmailStartWith(String email) throws com.google.cloud.firestore.FirestoreException {
-        if (StringUtils.isBlank(email)) {
+    public List<UserDocument> findByDisplayNameStartWith(String displayName) throws com.google.cloud.firestore.FirestoreException {
+        if (StringUtils.isBlank(displayName)) {
             throw new FirestoreException("Impossibile effettuare la query poiché il campo é vuto");
         }
 
         try {
             return new ArrayList<>(Optional.ofNullable(firestore.collection(COLLECTION_NAME)
-                            .whereGreaterThanOrEqualTo("email", email)
-                            .whereLessThanOrEqualTo("email", email)
+                            .whereGreaterThanOrEqualTo("displayName", displayName.toUpperCase())
+                            .whereLessThanOrEqualTo("displayName", displayName.toUpperCase() + "\uf8ff")
                             .get()
                             .get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(UserDocument.class))
@@ -92,17 +92,34 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
     @Override
-    public List<UserDocument> findByDisplayNameStartWith(String displayName) throws com.google.cloud.firestore.FirestoreException {
-        if (StringUtils.isBlank(displayName)) {
+    public List<UserDocument> findByNameStartWith(String name) throws com.google.cloud.firestore.FirestoreException {
+        if (StringUtils.isBlank(name)) {
             throw new FirestoreException("Impossibile effettuare la query poiché il campo é vuto");
         }
 
         try {
             return new ArrayList<>(Optional.ofNullable(firestore.collection(COLLECTION_NAME)
-                            .whereGreaterThanOrEqualTo("displayName", displayName)
-                            .whereLessThanOrEqualTo("displayName", displayName)
+                            .whereGreaterThanOrEqualTo("name", name.toUpperCase())
+                            .whereLessThanOrEqualTo("name", name.toUpperCase() + "\uf8ff")
+                            .get()
+                            .get())
+                    .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(UserDocument.class))
+                    .orElseThrow());
+        } catch (InterruptedException | ExecutionException e) {
+            throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
+        }
+    }
+
+    public List<UserDocument> findBySurnameStartWith(String surname) throws com.google.cloud.firestore.FirestoreException {
+        if (StringUtils.isBlank(surname)) {
+            throw new FirestoreException("Impossibile effettuare la query poiché il campo é vuto");
+        }
+
+        try {
+            return new ArrayList<>(Optional.ofNullable(firestore.collection(COLLECTION_NAME)
+                            .whereGreaterThanOrEqualTo("surname", surname.toUpperCase())
+                            .whereLessThanOrEqualTo("surname", surname.toUpperCase() + "\uf8ff")
                             .get()
                             .get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(UserDocument.class))

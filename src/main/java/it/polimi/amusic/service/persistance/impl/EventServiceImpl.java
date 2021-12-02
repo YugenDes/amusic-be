@@ -31,7 +31,7 @@ public class EventServiceImpl implements EventService {
 
     static final String EVENT_DATE = "eventDate";
     static final String EVENT_NAME = "eventName";
-    static final String PARTECIPANTS = "partecipants";
+    static final String PARTECIPANTS = "partecipantsIds";
     static final String COLLECTION_NAME = "events";
 
     @Override
@@ -134,6 +134,8 @@ public class EventServiceImpl implements EventService {
         try {
             return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
                             .whereArrayContains(PARTECIPANTS, userIdDocument)
+                            .orderBy("eventDate", Query.Direction.DESCENDING)
+                            .limit(10)
                             .get().get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))
                     .orElseThrow();

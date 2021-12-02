@@ -13,9 +13,11 @@ public interface UserService extends UserDetailsService {
 
     Optional<UserDocument> findById(String id) throws FirestoreException;
 
-    List<UserDocument> findByEmailStartWith(String param) throws FirestoreException;
-
     List<UserDocument> findByDisplayNameStartWith(String param) throws FirestoreException;
+
+    List<UserDocument> findByNameStartWith(String param) throws FirestoreException;
+
+    List<UserDocument> findBySurnameStartWith(String param) throws FirestoreException;
 
     UserDocument save(UserDocument userDocument);
 

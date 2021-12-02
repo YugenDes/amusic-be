@@ -40,7 +40,6 @@ public abstract class EventMapperDecorator implements EventMapper {
     public Event getDtoFromDocument(EventDocument document) {
         final Event dtoFromDocument = eventMapper.getDtoFromDocument(document);
         final List<Partecipant> visibleUsers = document.getPartecipants()
-                .values()
                 .stream()
                 //Filtro per quegli utenti che hanno il visible a true
                 .filter(PartecipantDocument::getVisible)

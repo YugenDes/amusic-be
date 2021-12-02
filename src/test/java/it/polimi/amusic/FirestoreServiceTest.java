@@ -123,9 +123,8 @@ class FirestoreServiceTest {
         eventService.findById("Xymi8cgmxAzydGMdYyXE")
                 .orElseThrow()
                 .getPartecipants()
-                .entrySet()
                 .stream()
-                .map(documentReference -> userService.findById(documentReference.getKey()).orElseThrow())
+                .map(documentReference -> userService.findById(documentReference.getId()).orElseThrow())
                 .forEach(System.out::println);
     }
 
@@ -196,10 +195,18 @@ class FirestoreServiceTest {
 
     @Test
     void attendEvent() {
+        contextLoads();
         final Event event = userBusinessService.attendAnEvent("Px1rphu8AiVS3aGnoSGj", true);
         final Event event1 = userBusinessService.attendAnEvent("DlDXMobm0uoGrsV4uqXg", false);
         System.out.println(event);
         System.out.println(event1);
+    }
+
+
+    @Test
+    void findEventByPartecipant() {
+        final List<EventDocument> events = eventService.findByParticipant("8Xq2gviMAwO1Pc3EjoAl");
+        events.forEach(System.out::println);
     }
 
 

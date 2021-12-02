@@ -10,8 +10,8 @@ import org.springframework.cloud.gcp.data.firestore.Document;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Accessors(chain = true)
@@ -28,7 +28,8 @@ public class EventDocument implements Serializable {
     private GeoPoint geoPoint;
     private String geoHash;
     private Integer maxPartecipants = 50;
-    private Map<String, PartecipantDocument> partecipants = new HashMap<>();
+    private List<PartecipantDocument> partecipants = new ArrayList<>();
+    private List<String> partecipantsIds = new ArrayList<>();
     private Double ticketPrice;
 
 
@@ -53,8 +54,9 @@ public class EventDocument implements Serializable {
     }
 
     public boolean addPartecipantIfAbsent(PartecipantDocument partecipantDocument) {
-        if (!partecipants.containsKey(partecipantDocument.getId()) && partecipants.size() < maxPartecipants) {
-            partecipants.put(partecipantDocument.getId(), partecipantDocument);
+        if (!partecipantsIds.contains(partecipantDocument.getId()) && partecipants.size() < maxPartecipants) {
+            partecipants.add(partecipantDocument);
+            partecipantsIds.add(partecipantDocument.getId());
             return true;
         } else {
             return false;

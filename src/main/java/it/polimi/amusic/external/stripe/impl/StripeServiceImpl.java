@@ -50,7 +50,7 @@ public class StripeServiceImpl implements StripeService {
             throw new EventFullException("L'evento ha raggiunto il numero massimo di partecipanti, Impossibile continuare con il pagamento");
         }
 
-        if(eventDocument.getPartecipants().containsKey(userDocument.getId())){
+        if (eventDocument.getPartecipantsIds().contains(userDocument.getId())) {
             throw new EventAlreadyAttenedException("L'evento che stai provando ad acquistare, l hai giá acquistato");
         }
 

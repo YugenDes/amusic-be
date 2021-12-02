@@ -13,10 +13,14 @@ import org.mapstruct.*;
 @DecoratedWith(UserMapperDecorator.class)
 public interface UserMapper {
 
+    @Mapping(target = "name", expression = "java(userDocument.getName().substring(1).toLowerCase())")
+    @Mapping(target = "surname", expression = "java(userDocument.getSurname().substring(1).toLowerCase())")
+    @Mapping(target = "displayName", expression = "java(userDocument.getName().substring(1).toLowerCase()+' '+userDocument.getSurname().substring(1).toLowerCase())")
     User getDtoFromDocument(UserDocument userDocument);
 
     Friend mapUserFirendDocumentToFriend(FriendDocument friendDocument);
 
+    @Mapping(target = "displayName", expression = "java(userDocument.getName().substring(1).toLowerCase()+' '+userDocument.getSurname().substring(1).toLowerCase())")
     Friend mapUserDocumentToFriend(UserDocument userDocument);
 
     @Mapping(target = "birthDay", expression = "java(TimestampUtils.convertLocalDateToTimestamp(request.getBirthDay()))")

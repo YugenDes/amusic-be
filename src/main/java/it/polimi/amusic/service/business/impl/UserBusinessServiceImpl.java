@@ -11,10 +11,7 @@ import it.polimi.amusic.external.email.EmailService;
 import it.polimi.amusic.external.gcs.FileService;
 import it.polimi.amusic.mapper.EventMapperDecorator;
 import it.polimi.amusic.mapper.UserMapperDecorator;
-import it.polimi.amusic.model.document.FriendDocument;
-import it.polimi.amusic.model.document.PartecipantDocument;
-import it.polimi.amusic.model.document.RoleDocument;
-import it.polimi.amusic.model.document.UserDocument;
+import it.polimi.amusic.model.document.*;
 import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.dto.Friend;
 import it.polimi.amusic.model.dto.User;
@@ -29,13 +26,11 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -79,8 +74,10 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         log.info("request.displayName {}", displayName);
 
         UserDocument userDocument = new UserDocument()
-                .setDisplayName(displayName)
-                .setEmail(request.getEmail())
+                .setName(request.getName().toUpperCase())
+                .setSurname(request.getName().toUpperCase())
+                .setDisplayName(displayName.toUpperCase())
+                .setEmail(request.getEmail().toLowerCase())
                 .setFirebaseUID(userFireBase.getUid())
                 .setProvider(request.getProvider())
                 .setAuthorities(Collections.singletonList(userRole))
@@ -115,10 +112,8 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
     @Override
     public Event attendAnEvent(@NonNull String eventIdDocument, @NonNull Boolean visible) throws FirestoreException {
-        final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDocument userDocument = getUserFromSecurityContext();
 
-        final UserDocument userDocument = userService.findById(principal.getId())
-                .orElseThrow(() -> new UserNotFoundException("User {} non trovato", principal.getId()));
         try {
             return firestore.runTransaction(transaction ->
                     eventService.findById(eventIdDocument)
@@ -141,16 +136,11 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
-    public List<UserDocument> suggestedFriends() {
-        //final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public List<Friend> suggestedFriends() {
+        final UserDocument userDocument = getUserFromSecurityContext();
 
-//        final List<EventDocument> participatedEvents = userService.findById(idUserDocument).map(userDocument ->
-//                eventService.findByParticipant(userDocument.getId())
-//                        .stream()
-//                        .sorted(Comparator.comparing(EventDocument::getEventDate))
-//                        .limit(10)
-//                        .collect(Collectors.toList())
-//        ).orElseThrow(() -> new UserNotFoundException("Utente con idDocument {} non trovato", idUserDocument));
+        final List<EventDocument> participatedEvents = eventService.findByParticipant(userDocument.getId());
+
 //        Map<String, List<String>> relationship = new ConcurrentHashMap<>();
 //
 //        participatedEvents
@@ -187,9 +177,8 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
     @Override
     public User changeProPic(@NonNull Resource resource) {
-        final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        final UserDocument userDocument = userService.findById(principal.getId())
-                .orElseThrow(() -> new UserNotFoundException("L'utente {} non é stato trovato", principal.getId()));
+        UserDocument userDocument = getUserFromSecurityContext();
+
         String mediaLink = Optional.ofNullable(userDocument.getPhotoUrl())
                 .map(s -> {
                     fileService.deleteFile(userDocument.getPhotoUrl());
@@ -200,16 +189,17 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
-    public boolean changePassword(@NonNull String email) {
+    public boolean changePassword() {
+        UserDocument userDocument = getUserFromSecurityContext();
         try {
-            final String generatePasswordResetLink = firebaseAuth.generatePasswordResetLink(email);
+            final String generatePasswordResetLink = firebaseAuth.generatePasswordResetLink(userDocument.getEmail());
             emailService.sendEmail(new EmailService.EmailRequest()
-                    .setEmailTo(email)
+                    .setEmailTo(userDocument.getEmail())
                     .setSubject("Cambio password")
                     .setText("Ecco il link per cambiare password: " + generatePasswordResetLink));
             return true;
         } catch (FirebaseAuthException e) {
-            throw new FirebaseException("Errore durante la generazione del link per il reset password dell user {} : {}", email, e.getLocalizedMessage());
+            throw new FirebaseException("Errore durante la generazione del link per il reset password dell user {} : {}", userDocument.getEmail(), e.getLocalizedMessage());
         }
     }
 
@@ -221,37 +211,30 @@ public class UserBusinessServiceImpl implements UserBusinessService {
      */
     @Override
     public List<Friend> getFriends() throws UserNotFoundException {
-        final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userService.findById(principal.getId())
-                .map(userDocument -> userDocument
-                        .getFirendList()
-                        .stream()
-                        //Per ogni amico mappo il document riferito all amico appena trovato in dto
-                        .map(userMapper::mapUserFirendDocumentToFriend)
-                        .collect(Collectors.toList()))
-                .orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", principal.getId()));
+        return getUserFromSecurityContext()
+                .getFirendList()
+                .stream()
+                //Per ogni amico mappo il document riferito all amico appena trovato in dto
+                .map(userMapper::mapUserFirendDocumentToFriend)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<Friend> addFriend(@NonNull String idUserFirendDocument) throws UserNotFoundException {
-        final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userService.findById(principal.getId()).map(user ->
-                userService.findById(idUserFirendDocument).map(friend -> {
-                    final FriendDocument friendDocument = new FriendDocument()
-                            .setFriendSince(Timestamp.now())
-                            .setId(friend.getId());
-                    user.addFriendIfAbsent(friendDocument);
-                    return userService.save(user);
-                }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFirendDocument))
-        ).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", principal.getId()));
+        final UserDocument userDocument = getUserFromSecurityContext();
+        userService.findById(idUserFirendDocument).map(friend -> {
+            final FriendDocument friendDocument = new FriendDocument()
+                    .setFriendSince(Timestamp.now())
+                    .setId(friend.getId());
+            userDocument.addFriendIfAbsent(friendDocument);
+            return userService.save(userDocument);
+        }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFirendDocument));
         return getFriends();
     }
 
     @Override
     public User updateUser(UpdateUserRequest request) {
-        final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        final UserDocument userDocument = userService.findById(principal.getId())
-                .orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", principal.getId()));
+        UserDocument userDocument = getUserFromSecurityContext();
         if (Objects.isNull(userDocument.getBirthDay())
                 && Objects.isNull(userDocument.getSex())
                 && Objects.isNull(userDocument.getName())
@@ -264,18 +247,18 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
-    //TODO aggiungere controllo set displayName nome + cognome
     public List<User> searchUser(String param) {
 
-        List<UserDocument> users;
+        List<UserDocument> users = new ArrayList<>();
 
-        if (param.contains("@")) {
-            users = userService.findByEmailStartWith(param);
+        if (param.contains(" ")) {
+            users.addAll(userService.findByNameStartWith(param));
         } else {
-            users = userService.findByDisplayNameStartWith(param);
+            users.addAll(userService.findByNameStartWith(param));
+            users.addAll(userService.findBySurnameStartWith(param));
         }
-        return users
-                .stream()
+
+        return users.stream()
                 .map(userMapper::getDtoFromDocument)
                 .collect(Collectors.toList());
     }
@@ -292,5 +275,14 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             log.error("Firebase Auth exception ", e);
             throw new AmusicEmailException("Errore durante l invio dell email {}", e.getLocalizedMessage());
         }
+    }
+
+    private UserDocument getUserFromSecurityContext() {
+        final UserDocument principal = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .map(Authentication::getPrincipal)
+                .map(o -> (UserDocument) o)
+                .orElseThrow(() -> new MissingAuthenticationException("Non é presente l'oggetto Authentication nel SecurityContext"));
+        return userService.findById(principal.getId())
+                .orElseThrow(() -> new UserNotFoundException("L'utente {} non é stato trovato", principal.getId()));
     }
 }

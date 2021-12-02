@@ -54,7 +54,7 @@ public class StripeServiceImpl implements StripeService {
         }
 
         if (eventDocument.getPartecipantsIds().contains(userDocument.getId())) {
-            throw new EventAlreadyAttenedException("L'evento che stai provando ad acquistare, l hai giá acquistato");
+            throw new EventAlreadyAttenedException("L'evento che stai provando ad acquistare, l'hai giá acquistato");
         }
 
         PaymentIntentCreateParams params =
@@ -70,7 +70,7 @@ public class StripeServiceImpl implements StripeService {
 
         try {
             PaymentIntent paymentIntent  = PaymentIntent.create(params);
-            log.info("Nuovo payament intent");
+            log.info("Nuovo payament intent per l'evento {} da user {}", eventDocument.getId(), userDocument.getId());
             return new CreateStripePaymentResponse(paymentIntent.getClientSecret());
         } catch (StripeException e) {
             log.error("Errore durante la creazione del pagamento {}",e.getLocalizedMessage());

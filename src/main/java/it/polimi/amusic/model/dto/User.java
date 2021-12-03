@@ -3,6 +3,7 @@ package it.polimi.amusic.model.dto;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,6 +17,9 @@ public class User {
     private String displayName;
     private String name;
     private String surname;
+    private LocalDate birthDay;
+    private String city;
+    private String sex;
     private LocalDateTime lastLogin;
     private LocalDateTime createDate;
     private boolean isEmailVerified;

@@ -32,6 +32,7 @@ public class FileServiceImpl implements FileService {
     //TODO aggiungre compressione immagine
     @Override
     public String uploadFile(Resource file) throws GCPBucketException {
+        log.info("Uploading photo to GCS");
         //Creo l'identificatore del blob
         //Utilizzo come name strategy la creazione di un UUID random
         BlobId blobId = BlobId.of(BUCKET_NAME, UUID.randomUUID().toString());
@@ -93,6 +94,7 @@ public class FileServiceImpl implements FileService {
     public boolean deleteFile(String url) throws GCPBucketException {
         final String filename = GcsRegexFilename.getFilenameFromGcsUrl(url);
         try {
+            log.info("Deleting photo from GCS {}", filename);
             //Creo l'identificatore del blob associato al filename
             BlobId blobId = BlobId.of(BUCKET_NAME, filename);
             final Storage service = StorageOptions.newBuilder()

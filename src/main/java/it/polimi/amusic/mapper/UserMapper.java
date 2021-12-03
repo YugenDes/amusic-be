@@ -15,6 +15,7 @@ public interface UserMapper {
 
     @Mapping(target = "name", expression = "java(userDocument.getName().charAt(0 ) + userDocument.getName().substring(1).toLowerCase())")
     @Mapping(target = "surname", expression = "java(userDocument.getSurname().charAt(0 ) + userDocument.getSurname().substring(1).toLowerCase())")
+    @Mapping(target = "birthDay", expression = "java(TimestampUtils.convertTimestampToLocalDate(userDocument.getBirthDay()))")
     User getDtoFromDocument(UserDocument userDocument);
 
     Friend mapUserFirendDocumentToFriend(FriendDocument friendDocument);

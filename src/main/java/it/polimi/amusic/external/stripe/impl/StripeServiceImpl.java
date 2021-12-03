@@ -54,7 +54,7 @@ public class StripeServiceImpl implements StripeService {
         }
 
         if (eventDocument.getPartecipantsIds().contains(userDocument.getId())) {
-            throw new EventAlreadyAttenedException("L'evento che stai provando ad acquistare, l'hai giá acquistato");
+            throw new EventAlreadyAttenedException("Hai già acquistato questo evento");
         }
 
         PaymentIntentCreateParams params =

@@ -31,6 +31,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -208,6 +209,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             emailService.sendEmail(new EmailService.EmailRequest()
                     .setEmailTo(userDocument.getEmail())
                     .setSubject("Cambio password")
+                    .setHtmlText(false)
                     .setText("Ecco il link per cambiare password: " + generatePasswordResetLink));
             return true;
         } catch (FirebaseAuthException e) {
@@ -247,15 +249,18 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     @Override
     public User updateUser(UpdateUserRequest request) {
         UserDocument userDocument = getUserFromSecurityContext();
-        if (Objects.isNull(userDocument.getBirthDay())
-                && Objects.isNull(userDocument.getSex())
-                && Objects.isNull(userDocument.getName())
+        if (Objects.isNull(userDocument.getName())
                 && Objects.isNull(userDocument.getSurname())) {
+            Assert.isTrue(!request.getName().isBlank(), "Il campo nome non puo essere vuoto");
+            Assert.isTrue(!request.getSurname().isBlank(), "Il campo nome non puo essere vuoto");
             userMapper.updateUserDocumentFromUpdateRequest(userDocument, request);
-            return userMapper.getDtoFromDocument(userService.save(userDocument));
         } else {
-            throw new OperationNotAllowedException("L'utente non puo aggiornare dati permanenti");
+            //Per ignorare l'update sui campi name e surname
+            request.setName(null);
+            request.setSurname(null);
+            userMapper.updateUserDocumentFromUpdateRequest(userDocument, request);
         }
+        return userMapper.getDtoFromDocument(userService.save(userDocument));
     }
 
     @Override

@@ -247,6 +247,18 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     }
 
     @Override
+    public List<Friend> removeFriend(@NonNull String idUserFirendDocument) {
+        final UserDocument userDocument = getUserFromSecurityContext();
+        userService.findById(idUserFirendDocument).map(friend -> {
+            if (!userDocument.removeFriendIfPresent(friend.getId())) {
+                throw new FriendNotFoundExcpetion("L'amico {} non é stato trovato tra gli amici dell'utente {}", friend.getId(), userDocument.getId());
+            }
+            return userService.save(userDocument);
+        }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFirendDocument));
+        return getFriends();
+    }
+
+    @Override
     public User updateUser(UpdateUserRequest request) {
         UserDocument userDocument = getUserFromSecurityContext();
         if (Objects.isNull(userDocument.getName())

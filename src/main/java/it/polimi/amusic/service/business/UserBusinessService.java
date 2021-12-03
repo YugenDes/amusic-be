@@ -32,6 +32,8 @@ public interface UserBusinessService {
 
     List<Friend> addFriend(@NonNull String idUserFirendDocument);
 
+    List<Friend> removeFriend(@NonNull String idUserFirendDocument);
+
     User updateUser(UpdateUserRequest request);
 
     List<User> searchUser(String param);

@@ -103,6 +103,18 @@ public class UserDocument implements UserDetails {
             return false;
         }
     }
+
+    public boolean removeFriendIfPresent(String idFriendDocument) {
+        if (firendList.stream().anyMatch(friendDocument -> friendDocument.getId().equals(idFriendDocument)) && !idFriendDocument.equals(this.id)) {
+            return firendList.remove(firendList
+                    .stream()
+                    .filter(friendDocument -> friendDocument.getId().equals(idFriendDocument))
+                    .findFirst()
+                    .orElse(null));
+        } else {
+            return false;
+        }
+    }
 }
 
 

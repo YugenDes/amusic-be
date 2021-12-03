@@ -5,6 +5,7 @@ import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.model.dto.Friend;
 import it.polimi.amusic.model.dto.User;
 import it.polimi.amusic.model.request.AddFriendRequest;
+import it.polimi.amusic.model.request.RemoveFriendRequest;
 import it.polimi.amusic.model.request.UpdateUserRequest;
 import it.polimi.amusic.model.response.AMusicResponse;
 import it.polimi.amusic.service.business.UserBusinessService;
@@ -52,6 +53,13 @@ public class UserController {
     public AMusicResponse<List<Friend>> addFriend(@RequestBody AddFriendRequest request) {
         log.info("New request to private/user/addFirend {} , {}", request.getIdUserFriendDocument(), getUserIdDocumentFromSecurityContext());
         final List<Friend> friends = userBusinessService.addFriend(request.getIdUserFriendDocument());
+        return AMusicResponse.<List<Friend>>builder().body(friends).build();
+    }
+
+    @PostMapping("/private/user/removeFriend")
+    public AMusicResponse<List<Friend>> removeFriend(@RequestBody RemoveFriendRequest request) {
+        log.info("New request to private/user/addFirend {} , {}", request.getIdUserFriendDocument(), getUserIdDocumentFromSecurityContext());
+        final List<Friend> friends = userBusinessService.removeFriend(request.getIdUserFriendDocument());
         return AMusicResponse.<List<Friend>>builder().body(friends).build();
     }
 

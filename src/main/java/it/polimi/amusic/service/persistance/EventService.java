@@ -17,11 +17,13 @@ public interface EventService {
 
     Optional<Event> findEventById(String id);
 
+    Optional<Event> findEventByIdAfterLocalDateNow(String id);
+
     List<Event> findAll();
 
     List<EventDocument> findByEventName(String eventName);
 
-    List<Event> findByGeoPointNearMe(GeoPoint geoPoint , double distance);
+    List<Event> findByGeoPointNearMe(GeoPoint geoPoint, double distance);
 
     List<EventDocument> findByParticipant(String userIdDocument) throws FirestoreException;
 

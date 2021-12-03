@@ -53,7 +53,7 @@ class FirestoreServiceTest {
 
 
     void contextLoads() {
-        final UserDocument userDocument = userService.findById("8Xq2gviMAwO1Pc3EjoAl").orElseThrow();
+        final UserDocument userDocument = userService.findById("puLxmw6ozrb7X7IuVWkr").orElseThrow();
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDocument, null);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
@@ -213,6 +213,12 @@ class FirestoreServiceTest {
     void findEventByPartecipant() {
         final List<EventDocument> events = eventService.findByParticipant("8Xq2gviMAwO1Pc3EjoAl");
         events.forEach(System.out::println);
+    }
+
+    @Test
+    void getFriends() {
+        contextLoads();
+        userBusinessService.getFriends().forEach(System.out::println);
     }
 
 

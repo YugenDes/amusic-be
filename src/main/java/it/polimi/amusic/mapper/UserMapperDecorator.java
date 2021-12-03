@@ -9,7 +9,6 @@ import it.polimi.amusic.service.persistance.UserService;
 import it.polimi.amusic.utils.TimestampUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -39,8 +38,8 @@ public abstract class UserMapperDecorator implements UserMapper {
 
     @Override
     public Friend mapUserFirendDocumentToFriend(FriendDocument friendDocument) {
-        final UserDocument userDocument = userService.findById(friendDocument.getId()).orElseThrow();
-        final Friend friend = userMapper.mapUserDocumentToFriend(userDocument);
+        final UserDocument firendUserDocument = userService.findById(friendDocument.getId()).orElseThrow();
+        final Friend friend = this.mapUserDocumentToFriend(firendUserDocument);
         friend.setFriendSince(TimestampUtils.convertTimestampToLocalDate(friendDocument.getFriendSince()));
         return friend;
     }
@@ -61,9 +60,8 @@ public abstract class UserMapperDecorator implements UserMapper {
                 .getEventList()
                 .stream()
                 .map(eventId ->
-                        eventService.findEventById(eventId)
-                                //Ed é nei prossimi giorni
-                                .filter(eventDocument -> eventDocument.getEventDate().isAfter(LocalDate.now().atStartOfDay()))
+                        //Ed é nei prossimi giorni
+                        eventService.findEventByIdAfterLocalDateNow(eventId)
                                 .orElse(null))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());

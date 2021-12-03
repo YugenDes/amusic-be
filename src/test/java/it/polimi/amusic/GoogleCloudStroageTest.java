@@ -9,7 +9,7 @@ import org.springframework.util.Assert;
 
 @SpringBootTest
 @Slf4j
-public class GoogleCloudStroageTest {
+class GoogleCloudStroageTest {
 
     @Autowired
     FileService fileService;

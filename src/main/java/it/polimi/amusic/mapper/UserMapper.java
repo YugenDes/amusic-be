@@ -20,17 +20,25 @@ public interface UserMapper {
 
     Friend mapUserFirendDocumentToFriend(FriendDocument friendDocument);
 
-    @Mapping(target = "displayName", expression = "java(userDocument.getName().toLowerCase()+' '+userDocument.getSurname().substring(1).toLowerCase())")
+    @Mapping(target = "displayName", expression = "java(userDocument.getName().charAt(0 ) + userDocument.getName().substring(1).toLowerCase()+' '+userDocument.getSurname().charAt(0 ) + userDocument.getSurname().substring(1).toLowerCase())")
     Friend mapUserDocumentToFriend(UserDocument userDocument);
 
     @Mapping(target = "birthDay", expression = "java(TimestampUtils.convertLocalDateToTimestamp(request.getBirthDay()))")
     UserDocument updateUserDocumentFromUpdateRequest(@MappingTarget UserDocument document, UpdateUserRequest request);
 
-
+    @Mapping(target = "name", expression = "java(userDocument.getName().charAt(0 ) + userDocument.getName().substring(1).toLowerCase())")
+    @Mapping(target = "surname", expression = "java(userDocument.getSurname().charAt(0 ) + userDocument.getSurname().substring(1).toLowerCase())")
     Partecipant mapUserDocumentToPartecipant(UserDocument userDocument);
 
     @AfterMapping
-    default User afterMappingRca(UserDocument userDocument, @MappingTarget User user) {
+    default User afterMappingUser(UserDocument userDocument, @MappingTarget User user) {
         return user.setDisplayName(user.getName() + " " + user.getSurname());
+    }
+
+    @AfterMapping
+    default Friend afetMappingFriend(UserDocument userDocument, @MappingTarget Friend friend) {
+        String displayName = userDocument.getName().charAt(0) + userDocument.getName().substring(1).toLowerCase()
+                + " " + userDocument.getSurname().charAt(0) + userDocument.getSurname().substring(1).toLowerCase();
+        return friend.setDisplayName(displayName);
     }
 }

@@ -71,6 +71,25 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public Optional<Event> findEventByIdAfterLocalDateNow(String id) {
+        try {
+            return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
+                            .whereEqualTo("id", id)
+                            .whereGreaterThanOrEqualTo(EVENT_DATE, Objects.requireNonNull(TimestampUtils.convertLocalDateToTimestamp(LocalDate.now())))
+                            .get().get())
+                    .map(documentSnapshot -> documentSnapshot.toObjects(EventDocument.class))
+                    .map(eventDocuments -> eventDocuments
+                            .stream()
+                            .filter(eventDocument -> eventDocument.getId().equals(id))
+                            .findFirst()
+                            .map(eventMapper::getDtoFromDocument)
+                            .orElse(null));
+        } catch (ExecutionException | InterruptedException e) {
+            throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
+        }
+    }
+
+    @Override
     public List<Event> findAll() {
         try {
             return Optional.ofNullable(firestore

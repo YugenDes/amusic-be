@@ -12,7 +12,10 @@ import it.polimi.amusic.external.email.EmailService;
 import it.polimi.amusic.external.gcs.FileService;
 import it.polimi.amusic.mapper.EventMapperDecorator;
 import it.polimi.amusic.mapper.UserMapperDecorator;
-import it.polimi.amusic.model.document.*;
+import it.polimi.amusic.model.document.FriendDocument;
+import it.polimi.amusic.model.document.PartecipantDocument;
+import it.polimi.amusic.model.document.RoleDocument;
+import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.dto.Friend;
 import it.polimi.amusic.model.dto.User;
@@ -148,9 +151,8 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
     @Override
     public List<Friend> suggestedFriends() {
-        final UserDocument userDocument = getUserFromSecurityContext();
+        return getFriends();
 
-        final List<EventDocument> participatedEvents = eventService.findByParticipant(userDocument.getId());
 
 //        Map<String, List<String>> relationship = new ConcurrentHashMap<>();
 //
@@ -183,7 +185,6 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 //                        }))
 //                .filter(Objects::nonNull)
 //                .collect(Collectors.toList());
-        return null;
     }
 
     @Override
@@ -293,6 +294,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         return users.stream()
                 .filter(usersDocuments -> !usersDocuments.getId().equals(userDocument.getId()))
+                .filter(usersDocuments -> userDocument.getFirendList().stream().noneMatch(friendDocument -> friendDocument.getId().equals(usersDocuments.getId())))
                 .map(userMapper::getDtoFromDocument)
                 .collect(Collectors.toList());
     }

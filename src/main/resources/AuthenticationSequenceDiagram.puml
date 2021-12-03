@@ -1,0 +1,19 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+FE -> FirebaseAuthentication: Login/SingIn request
+FirebaseAuthentication -> FE: Firebase token (Bearer)
+
+FE -> BE: Request /w header Authentication
+BE -> FilterChain: doFilter
+FilterChain -> SecurityFilter : verifyToken
+SecurityFilter -> FirebaseAuthentication: verifyIdToken
+FirebaseAuthentication -> SecurityFilter: userRecord
+SecurityFilter -> SecurityFilter: register userRecord/update userDocument
+SecurityFilter -> SecurityFilter: set SecurityContext
+SecurityFilter -> FilterChain: request
+FilterChain -> BE: Request Authenticated
+BE -> FE: Response
+@enduml

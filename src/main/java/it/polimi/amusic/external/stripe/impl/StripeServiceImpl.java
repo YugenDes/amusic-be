@@ -59,10 +59,10 @@ public class StripeServiceImpl implements StripeService {
 
         PaymentIntentCreateParams params =
                 PaymentIntentCreateParams.builder()
-                        .setAmount((long)(eventDocument.getTicketPrice()*100))
-                        .putMetadata("userDocumentId",userDocument.getId())
-                        .putMetadata("eventDocumentId",eventDocument.getId())
-                        .putMetadata("visibile",paymentStripe.getVisible().toString())
+                        .setAmount((long) (eventDocument.getTicketPrice() * 100))
+                        .putMetadata("userDocumentId", userDocument.getId())
+                        .putMetadata("eventDocumentId", eventDocument.getId())
+                        .putMetadata("visible", paymentStripe.getVisible().toString())
                         .setCurrency("eur")
                         .addPaymentMethodType("card")
                         .setReceiptEmail(userDocument.getEmail())

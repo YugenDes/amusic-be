@@ -76,13 +76,19 @@ public class SecurityFilter extends OncePerRequestFilter {
     private UserDocument firebaseTokenToUserDto(FirebaseToken decodedToken) {
         UserDocument user = null;
         if (decodedToken != null) {
+            //Controllo se l'utente é presente nel db
             user = userService.findByEmail(decodedToken.getEmail()).
+                    //Se é presente allora aggiorno le informazioni base come lastLogin ecc...
                     map(userDocument -> userService.updateFromFirebase(userDocument, decodedToken))
                     .orElseGet(() -> {
+                        //Se non é presente allora registro l'utente nel db
                         try {
                             return userBusinessService.registerUser(decodedToken);
                         } catch (Exception e) {
                             try {
+                                //Nel caso in cui andasse in errore la registrazione
+                                //Dobbiamo eliminare l' utente anche da firebase auth per evitare
+                                //Incoerenze tra le due piattaforme
                                 log.error(e.getLocalizedMessage());
                                 FirebaseAuth.getInstance().deleteUser(decodedToken.getUid());
                                 log.warn("FirebaseUser {} deleted", decodedToken.getUid());

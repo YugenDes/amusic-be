@@ -194,6 +194,12 @@ class FirestoreServiceTest {
     }
 
     @Test
+    void removeFirendTest() {
+        final List<Friend> friends = userBusinessService.removeFriend("JMapVlHllNOFuE6CrqmG");
+        friends.forEach(System.out::println);
+    }
+
+    @Test
     void attendEvent() {
         contextLoads();
         final Event event = userBusinessService.attendAnEvent("8Xq2gviMAwO1Pc3EjoAl", "Px1rphu8AiVS3aGnoSGj", true);

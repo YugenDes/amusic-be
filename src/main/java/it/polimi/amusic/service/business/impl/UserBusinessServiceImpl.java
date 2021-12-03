@@ -240,7 +240,9 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             final FriendDocument friendDocument = new FriendDocument()
                     .setFriendSince(Timestamp.now())
                     .setId(friend.getId());
-            userDocument.addFriendIfAbsent(friendDocument);
+            if (!userDocument.addFriendIfAbsent(friendDocument)) {
+                throw new UserOperationException("E' giá tuo amico");
+            }
             return userService.save(userDocument);
         }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFirendDocument));
         return getFriends();
@@ -278,6 +280,8 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     @Override
     public List<User> searchUser(String param) {
 
+        UserDocument userDocument = getUserFromSecurityContext();
+
         List<UserDocument> users = new ArrayList<>();
 
         if (param.contains(" ")) {
@@ -288,6 +292,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         }
 
         return users.stream()
+                .filter(usersDocuments -> !usersDocuments.getId().equals(userDocument.getId()))
                 .map(userMapper::getDtoFromDocument)
                 .collect(Collectors.toList());
     }

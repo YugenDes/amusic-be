@@ -97,7 +97,7 @@ public class UserDocument implements UserDetails {
     }
 
     public boolean addFriendIfAbsent(FriendDocument friendDocument) {
-        if (!firendList.contains(friendDocument) && !friendDocument.getId().equals(this.id)) {
+        if (firendList.stream().noneMatch(document -> document.getId().equals(friendDocument.getId())) && !friendDocument.getId().equals(this.id)) {
             return firendList.add(friendDocument);
         } else {
             return false;

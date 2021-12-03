@@ -25,7 +25,7 @@ public class EventController {
 
     @GetMapping(value = "/private/events/all")
     public AMusicResponse<List<Event>> getAllEvents() {
-        log.info("New GET to /events/all");
+        log.info("New request to /events/all");
         final List<Event> events = eventService.findAll();
         return AMusicResponse.<List<Event>>builder().body(events).build();
     }
@@ -36,7 +36,7 @@ public class EventController {
                                                               @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate date,
                                                               @RequestParam(required = false)
                                                               @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate dateEnd) {
-        log.info("New GET to /events?date={}", date);
+        log.info("New request to /events?date={}", date);
         List<Event> events = new ArrayList<>();
         if (Objects.isNull(date) && Objects.isNull(dateEnd)) {
             events = eventService.findByEventDate(LocalDate.now());
@@ -53,7 +53,7 @@ public class EventController {
     public AMusicResponse<List<Event>> getEvents(@RequestParam("lat") Double lat,
                                                          @RequestParam("lon") Double lon,
                                                          @RequestParam(value = "dist", required = false) Double distance) {
-        log.info("New GET to /events/near?lat={}&lon={}&distance={}", lat, lon, distance);
+        log.info("New request to /events/near?lat={}&lon={}&distance={}", lat, lon, distance);
         if (Objects.isNull(distance)) {
             distance = 1d;
         }

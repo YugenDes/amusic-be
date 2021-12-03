@@ -4,6 +4,7 @@ import it.polimi.amusic.exception.FileSizeLimitExceedException;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.model.dto.Friend;
 import it.polimi.amusic.model.dto.User;
+import it.polimi.amusic.model.request.AddFriendRequest;
 import it.polimi.amusic.model.request.UpdateUserRequest;
 import it.polimi.amusic.model.response.AMusicResponse;
 import it.polimi.amusic.service.business.UserBusinessService;
@@ -47,10 +48,10 @@ public class UserController {
         return AMusicResponse.<List<Friend>>builder().body(friends).build();
     }
 
-    @PostMapping("/private/user/addFirend")
-    public AMusicResponse<List<Friend>> addFriend(@RequestBody String idUserFriendDocument) {
-        log.info("New request to private/user/addFirend {} , {}", idUserFriendDocument, getUserIdDocumentFromSecurityContext());
-        final List<Friend> friends = userBusinessService.addFriend(idUserFriendDocument);
+    @PostMapping("/private/user/addFriend")
+    public AMusicResponse<List<Friend>> addFriend(@RequestBody AddFriendRequest request) {
+        log.info("New request to private/user/addFirend {} , {}", request.getIdUserFriendDocument(), getUserIdDocumentFromSecurityContext());
+        final List<Friend> friends = userBusinessService.addFriend(request.getIdUserFriendDocument());
         return AMusicResponse.<List<Friend>>builder().body(friends).build();
     }
 
@@ -63,7 +64,7 @@ public class UserController {
 
     @GetMapping("/private/user")
     public AMusicResponse<List<User>> searchUser(@RequestParam("search") String param) {
-        log.info("New request to /private/user?search= {} , {}", param, getUserIdDocumentFromSecurityContext());
+        log.info("New request to /private/user?search={} , {}", param, getUserIdDocumentFromSecurityContext());
         final List<User> users = userBusinessService.searchUser(param);
         return AMusicResponse.<List<User>>builder().body(users).build();
     }

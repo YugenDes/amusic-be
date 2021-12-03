@@ -104,9 +104,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Event> findByGeoPointNearMe(GeoPoint center, double distance) {
 
+        //Creo il boundingBox
         final GeoPoint min = GeoUtils.boundingGeoPoints(center, distance).get(0);
         final GeoPoint max = GeoUtils.boundingGeoPoints(center, distance).get(1);
 
+        //Hasho i geoPoint
         String minGeoHashString = new GeoHash(min.getLatitude(), min.getLongitude()).getGeoHashString();
         String maxGeoHashString = new GeoHash(max.getLatitude(), max.getLongitude()).getGeoHashString();
 
@@ -120,6 +122,8 @@ public class EventServiceImpl implements EventService {
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))
                     .orElseThrow()
                     .parallelStream()
+                    //Tramite la funzione distanza filtro gli eventi effettivamente a distanza cercata
+                    //Per evitare i falsi positivi
                     .filter(eventDocument ->
                             GeoUtils.distance(center, eventDocument.getGeoPoint()) <= distance)
                     .map(eventMapper::getDtoFromDocument)

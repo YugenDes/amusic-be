@@ -3,19 +3,30 @@ package it.polimi.amusic.service.business.impl;
 import com.google.cloud.firestore.Firestore;
 import it.polimi.amusic.exception.EventNotFoundException;
 import it.polimi.amusic.exception.FirestoreException;
+import it.polimi.amusic.exception.MissingAuthenticationException;
+import it.polimi.amusic.exception.UserNotFoundException;
 import it.polimi.amusic.external.gcs.FileService;
 import it.polimi.amusic.mapper.EventMapperDecorator;
 import it.polimi.amusic.model.document.EventDocument;
+import it.polimi.amusic.model.document.UserDocument;
+import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.request.NewEventRequest;
 import it.polimi.amusic.model.request.UpdateEventRequest;
 import it.polimi.amusic.service.business.EventBusinessService;
 import it.polimi.amusic.service.persistance.EventService;
+import it.polimi.amusic.service.persistance.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -23,6 +34,7 @@ import java.util.concurrent.ExecutionException;
 public class EventBusinessServiceImpl implements EventBusinessService {
 
     private final EventService eventService;
+    private final UserService userService;
     private final FileService fileService;
     private final EventMapperDecorator eventMapper;
     private final Firestore firestore;
@@ -55,5 +67,25 @@ public class EventBusinessServiceImpl implements EventBusinessService {
                     fileService.deleteFile(eventDocument.getImageUrl());
                     return eventService.save(eventDocument.setImageUrl(linkFile));
                 }).orElseThrow(() -> new EventNotFoundException("Evento {} non trovato", eventIdDocument));
+    }
+
+    @Override
+    public List<Event> getUserEventHistory() {
+        return getUserFromSecurityContext()
+                .getEventList()
+                .stream()
+                .map(eventService::findEventById)
+                .map(event -> event.orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
+    private UserDocument getUserFromSecurityContext() {
+        final UserDocument principal = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .map(Authentication::getPrincipal)
+                .map(o -> (UserDocument) o)
+                .orElseThrow(() -> new MissingAuthenticationException("Non é presente l'oggetto Authentication nel SecurityContext"));
+        return userService.findById(principal.getId())
+                .orElseThrow(() -> new UserNotFoundException("L'utente {} non é stato trovato", principal.getId()));
     }
 }

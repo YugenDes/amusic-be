@@ -152,6 +152,7 @@ public class EventServiceImpl implements EventService {
         }
     }
 
+
     @Override
     public List<EventDocument> findByParticipant(String userIdDocument) throws FirestoreException {
         try {

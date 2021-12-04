@@ -56,9 +56,9 @@ public class UserController {
         return AMusicResponse.<List<Friend>>builder().body(friends).build();
     }
 
-    @PostMapping("/private/user/removeFriend")
+    @DeleteMapping("/private/user/removeFriend")
     public AMusicResponse<List<Friend>> removeFriend(@RequestBody RemoveFriendRequest request) {
-        log.info("New request to private/user/addFirend {} , {}", request.getIdUserFriendDocument(), getUserIdDocumentFromSecurityContext());
+        log.info("New request to private/user/removeFriend {} , {}", request.getIdUserFriendDocument(), getUserIdDocumentFromSecurityContext());
         final List<Friend> friends = userBusinessService.removeFriend(request.getIdUserFriendDocument());
         return AMusicResponse.<List<Friend>>builder().body(friends).build();
     }

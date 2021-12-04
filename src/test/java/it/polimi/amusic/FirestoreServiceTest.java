@@ -11,6 +11,7 @@ import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.dto.Friend;
 import it.polimi.amusic.security.model.AuthProvider;
+import it.polimi.amusic.service.business.EventBusinessService;
 import it.polimi.amusic.service.business.UserBusinessService;
 import it.polimi.amusic.service.persistance.EventService;
 import it.polimi.amusic.service.persistance.RoleService;
@@ -35,6 +36,9 @@ class FirestoreServiceTest {
 
     @Autowired
     EventService eventService;
+
+    @Autowired
+    EventBusinessService eventBusinessService;
 
     @Autowired
     UserService userService;
@@ -219,6 +223,12 @@ class FirestoreServiceTest {
     void getFriends() {
         contextLoads();
         userBusinessService.getFriends().forEach(System.out::println);
+    }
+
+    @Test
+    void getUserEventHistory() {
+        contextLoads();
+        eventBusinessService.getUserEventHistory().forEach(System.out::println);
     }
 
 

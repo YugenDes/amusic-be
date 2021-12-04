@@ -3,6 +3,7 @@ package it.polimi.amusic.controller;
 import com.google.cloud.firestore.GeoPoint;
 import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.response.AMusicResponse;
+import it.polimi.amusic.service.business.EventBusinessService;
 import it.polimi.amusic.service.persistance.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import java.util.Objects;
 public class EventController {
 
     private final EventService eventService;
+    private final EventBusinessService eventBusinessService;
 
     @GetMapping(value = "/private/events/all")
     public AMusicResponse<List<Event>> getAllEvents() {
@@ -51,8 +53,8 @@ public class EventController {
 
     @GetMapping(value = "/private/events/near")
     public AMusicResponse<List<Event>> getEvents(@RequestParam("lat") Double lat,
-                                                         @RequestParam("lon") Double lon,
-                                                         @RequestParam(value = "dist", required = false) Double distance) {
+                                                 @RequestParam("lon") Double lon,
+                                                 @RequestParam(value = "dist", required = false) Double distance) {
         log.info("New request to /events/near?lat={}&lon={}&distance={}", lat, lon, distance);
         if (Objects.isNull(distance)) {
             distance = 1d;
@@ -61,7 +63,12 @@ public class EventController {
         return AMusicResponse.<List<Event>>builder().body(byGeoPointNearMe).build();
     }
 
-
+    @GetMapping(value = "/private/events/history")
+    public AMusicResponse<List<Event>> getEvents() {
+        log.info("New request to /events/history");
+        final List<Event> userEventHistory = eventBusinessService.getUserEventHistory();
+        return AMusicResponse.<List<Event>>builder().body(userEventHistory).build();
+    }
 
 
 }

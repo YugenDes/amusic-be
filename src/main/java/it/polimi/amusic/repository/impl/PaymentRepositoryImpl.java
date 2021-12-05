@@ -8,7 +8,6 @@ import it.polimi.amusic.exception.FirestoreException;
 import it.polimi.amusic.exception.PurchaseNotFoundException;
 import it.polimi.amusic.mapper.PaymentMapperDecorator;
 import it.polimi.amusic.model.document.PaymentDocument;
-import it.polimi.amusic.model.dto.Payment;
 import it.polimi.amusic.repository.PaymentRepository;
 import it.polimi.amusic.utils.TimestampUtils;
 import lombok.RequiredArgsConstructor;
@@ -103,13 +102,12 @@ public class PaymentRepositoryImpl implements PaymentRepository {
     }
 
     @Override
-    public List<Payment> findByUser(String idUserDocument) throws FirestoreException {
+    public List<PaymentDocument> findByUser(String idUserDocument) throws FirestoreException {
         try {
             return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
                             .whereEqualTo(ID_USER_DOCUMENT, idUserDocument)
                             .get().get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(PaymentDocument.class))
-                    .map(paymentMapper::getDtosFromDocuments)
                     .orElseThrow(() -> new PurchaseNotFoundException("Acquisti per user {} non trovati", idUserDocument));
         } catch (ExecutionException | InterruptedException e) {
             throw new FirestoreException(EXCEPTION_MESSAGE, e.getLocalizedMessage());
@@ -117,7 +115,7 @@ public class PaymentRepositoryImpl implements PaymentRepository {
     }
 
     @Override
-    public Payment findByUserAndEvent(String idUserDocument, String idEventDocument) throws FirestoreException {
+    public PaymentDocument findByUserAndEvent(String idUserDocument, String idEventDocument) throws FirestoreException {
         try {
             return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
                             .whereEqualTo(ID_USER_DOCUMENT, idUserDocument)
@@ -127,7 +125,6 @@ public class PaymentRepositoryImpl implements PaymentRepository {
                     .map(documentSnapshot -> documentSnapshot.toObjects(PaymentDocument.class))
                     .map(paymentDocuments -> paymentDocuments.stream()
                             .findFirst()
-                            .map(paymentMapper::getDtoFromDocument)
                             .orElseThrow(() -> new PurchaseNotFoundException("Acquisto dell'evento {} per l'utente {} non é stato trovato", idEventDocument, idUserDocument)))
                     .orElseThrow(() -> new PurchaseNotFoundException("Acquisto dell'evento {} per l'utente {} non é stato trovato", idEventDocument, idUserDocument));
         } catch (InterruptedException | ExecutionException e) {

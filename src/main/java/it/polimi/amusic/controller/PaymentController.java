@@ -6,7 +6,7 @@ import it.polimi.amusic.model.response.AMusicResponse;
 import it.polimi.amusic.payment.PaymentManagerService;
 import it.polimi.amusic.payment.model.PaymentRequest;
 import it.polimi.amusic.payment.model.PaymentResponse;
-import it.polimi.amusic.repository.PaymentRepository;
+import it.polimi.amusic.service.PaymentBusinessService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +20,7 @@ import java.util.List;
 public class PaymentController {
 
     private final PaymentManagerService paymentManagerService;
-    private final PaymentRepository paymentRepository;
+    private final PaymentBusinessService paymentBusinessService;
 
     @PostMapping(value = "/private/pay")
     public AMusicResponse<PaymentResponse> createPayment(@RequestBody PaymentRequest payment){
@@ -32,14 +32,14 @@ public class PaymentController {
     @GetMapping(value = "/private/payment/history")
     public AMusicResponse<List<Payment>> getPaymentHistory() {
         log.info("new request request to /payment/history {}", getUserIdDocumentFromSecurityContext());
-        final List<Payment> history = paymentRepository.findByUser(getUserIdDocumentFromSecurityContext());
+        final List<Payment> history = paymentBusinessService.findByUser(getUserIdDocumentFromSecurityContext());
         return AMusicResponse.<List<Payment>>builder().body(history).build();
     }
 
     @GetMapping(value = "/private/payment/{eventIdDocument}")
     public AMusicResponse<Payment> getPaymentHistory(@PathVariable("eventIdDocument") String eventIdDocument) {
         log.info("new request request to /payment/history {}", getUserIdDocumentFromSecurityContext());
-        final Payment payment = paymentRepository.findByUserAndEvent(getUserIdDocumentFromSecurityContext(), eventIdDocument);
+        final Payment payment = paymentBusinessService.findByUserAndEvent(getUserIdDocumentFromSecurityContext(), eventIdDocument);
         return AMusicResponse.<Payment>builder().body(payment).build();
     }
 

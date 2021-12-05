@@ -11,7 +11,7 @@ import it.polimi.amusic.utils.TimestampUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 @Slf4j
 @RequiredArgsConstructor
 public class EventRepositoryImpl implements EventRepository {

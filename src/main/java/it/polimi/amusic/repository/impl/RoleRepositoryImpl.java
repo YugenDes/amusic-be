@@ -6,11 +6,11 @@ import it.polimi.amusic.model.document.RoleDocument;
 import it.polimi.amusic.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ExecutionException;
 
-@Service
+@Component
 @RequiredArgsConstructor
 @Slf4j
 public class RoleRepositoryImpl implements RoleRepository {

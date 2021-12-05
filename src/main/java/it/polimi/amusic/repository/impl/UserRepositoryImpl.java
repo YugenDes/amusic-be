@@ -17,14 +17,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-@Service(value = UserRepositoryImpl.NAME)
+@Component(value = UserRepositoryImpl.NAME)
 @RequiredArgsConstructor
 @Slf4j
 public class UserRepositoryImpl implements UserRepository {

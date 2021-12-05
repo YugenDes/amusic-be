@@ -1,4 +1,4 @@
-package it.polimi.amusic.service.business;
+package it.polimi.amusic.service;
 
 import com.google.firebase.auth.FirebaseToken;
 import it.polimi.amusic.exception.FirebaseException;

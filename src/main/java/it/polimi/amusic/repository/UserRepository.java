@@ -1,4 +1,4 @@
-package it.polimi.amusic.service.persistance;
+package it.polimi.amusic.repository;
 
 import com.google.cloud.firestore.FirestoreException;
 import com.google.firebase.auth.FirebaseToken;
@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserService extends UserDetailsService {
+public interface UserRepository extends UserDetailsService {
 
     Optional<UserDocument> findByEmail(String email) throws FirestoreException;
 

@@ -5,9 +5,9 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import it.polimi.amusic.exception.FirebaseException;
 import it.polimi.amusic.model.document.UserDocument;
+import it.polimi.amusic.repository.UserRepository;
 import it.polimi.amusic.security.model.Credentials;
-import it.polimi.amusic.service.business.UserBusinessService;
-import it.polimi.amusic.service.persistance.UserService;
+import it.polimi.amusic.service.UserBusinessService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +28,7 @@ import java.io.IOException;
 public class SecurityFilter extends OncePerRequestFilter {
 
     private final SecurityService securityService;
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final UserBusinessService userBusinessService;
 
     @Override
@@ -77,9 +77,9 @@ public class SecurityFilter extends OncePerRequestFilter {
         UserDocument user = null;
         if (decodedToken != null) {
             //Controllo se l'utente é presente nel db
-            user = userService.findByEmail(decodedToken.getEmail()).
+            user = userRepository.findByEmail(decodedToken.getEmail()).
                     //Se é presente allora aggiorno le informazioni base come lastLogin ecc...
-                    map(userDocument -> userService.updateFromFirebase(userDocument, decodedToken))
+                            map(userDocument -> userRepository.updateFromFirebase(userDocument, decodedToken))
                     .orElseGet(() -> {
                         //Se non é presente allora registro l'utente nel db
                         try {

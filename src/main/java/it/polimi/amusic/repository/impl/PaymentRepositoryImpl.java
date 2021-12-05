@@ -1,4 +1,4 @@
-package it.polimi.amusic.service.persistance.impl;
+package it.polimi.amusic.repository.impl;
 
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
@@ -9,7 +9,7 @@ import it.polimi.amusic.exception.PurchaseNotFoundException;
 import it.polimi.amusic.mapper.PaymentMapperDecorator;
 import it.polimi.amusic.model.document.PaymentDocument;
 import it.polimi.amusic.model.dto.Payment;
-import it.polimi.amusic.service.persistance.PaymentService;
+import it.polimi.amusic.repository.PaymentRepository;
 import it.polimi.amusic.utils.TimestampUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutionException;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class PaymentServiceImpl implements PaymentService {
+public class PaymentRepositoryImpl implements PaymentRepository {
 
     private final Firestore firestore;
 
@@ -35,6 +35,7 @@ public class PaymentServiceImpl implements PaymentService {
     static final String ID_PAYMENT = "idPayment";
     static final String DATE_PAYMENT = "datePayment";
     static final String ID_USER_DOCUMENT = "idUserDocument";
+    static final String ID_EVENT_DOCUMENT = "idEventDocument";
     static final String EXCEPTION_MESSAGE = "Impossibile effettuare la query {}";
 
     @Override
@@ -56,7 +57,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentDocument findById(String id)  throws FirestoreException {
+    public PaymentDocument findById(String id) throws FirestoreException {
         try {
             return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
                             .document(id)
@@ -111,6 +112,25 @@ public class PaymentServiceImpl implements PaymentService {
                     .map(paymentMapper::getDtosFromDocuments)
                     .orElseThrow(() -> new PurchaseNotFoundException("Acquisti per user {} non trovati", idUserDocument));
         } catch (ExecutionException | InterruptedException e) {
+            throw new FirestoreException(EXCEPTION_MESSAGE, e.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    public Payment findByUserAndEvent(String idUserDocument, String idEventDocument) throws FirestoreException {
+        try {
+            return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
+                            .whereEqualTo(ID_USER_DOCUMENT, idUserDocument)
+                            .whereEqualTo(ID_EVENT_DOCUMENT, idEventDocument)
+                            .get()
+                            .get())
+                    .map(documentSnapshot -> documentSnapshot.toObjects(PaymentDocument.class))
+                    .map(paymentDocuments -> paymentDocuments.stream()
+                            .findFirst()
+                            .map(paymentMapper::getDtoFromDocument)
+                            .orElseThrow(() -> new PurchaseNotFoundException("Acquisto dell'evento {} per l'utente {} non é stato trovato", idEventDocument, idUserDocument)))
+                    .orElseThrow(() -> new PurchaseNotFoundException("Acquisto dell'evento {} per l'utente {} non é stato trovato", idEventDocument, idUserDocument));
+        } catch (InterruptedException | ExecutionException e) {
             throw new FirestoreException(EXCEPTION_MESSAGE, e.getLocalizedMessage());
         }
     }

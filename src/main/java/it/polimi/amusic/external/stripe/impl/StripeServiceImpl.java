@@ -15,8 +15,8 @@ import it.polimi.amusic.model.document.EventDocument;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.payment.model.PaymentRequest;
 import it.polimi.amusic.payment.model.PaymentResponse;
-import it.polimi.amusic.service.persistance.EventService;
-import it.polimi.amusic.service.persistance.UserService;
+import it.polimi.amusic.repository.EventRepository;
+import it.polimi.amusic.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,8 +28,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class StripeServiceImpl implements StripeService {
 
-    private final EventService eventService;
-    private final UserService userService;
+    private final EventRepository eventRepository;
+    private final UserRepository userRepository;
 
     @Value("${stripe.apikey}")
     private String stripeKey;
@@ -45,9 +45,9 @@ public class StripeServiceImpl implements StripeService {
 
         final String id = ((UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
 
-        final UserDocument userDocument = userService.findById(id).orElseThrow(() -> new UserNotFoundException("L'untente {} non é stato trovato", id));
+        final UserDocument userDocument = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("L'untente {} non é stato trovato", id));
 
-        final EventDocument eventDocument = eventService.findById(paymentStripe.getEventDocumentId()).orElseThrow(() -> new EventNotFoundException("L'evento {} non é stato trovato", paymentStripe.getEventDocumentId()));
+        final EventDocument eventDocument = eventRepository.findById(paymentStripe.getEventDocumentId()).orElseThrow(() -> new EventNotFoundException("L'evento {} non é stato trovato", paymentStripe.getEventDocumentId()));
 
         if (eventDocument.getPartecipants().size() >= eventDocument.getMaxPartecipants()) {
             throw new EventFullException("L'evento ha raggiunto il numero massimo di partecipanti, Impossibile continuare con il pagamento");

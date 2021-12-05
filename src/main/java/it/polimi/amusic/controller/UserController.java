@@ -8,7 +8,7 @@ import it.polimi.amusic.model.request.AddFriendRequest;
 import it.polimi.amusic.model.request.RemoveFriendRequest;
 import it.polimi.amusic.model.request.UpdateUserRequest;
 import it.polimi.amusic.model.response.AMusicResponse;
-import it.polimi.amusic.service.business.UserBusinessService;
+import it.polimi.amusic.service.UserBusinessService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

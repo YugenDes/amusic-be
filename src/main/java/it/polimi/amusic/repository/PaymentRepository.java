@@ -1,4 +1,4 @@
-package it.polimi.amusic.service.persistance;
+package it.polimi.amusic.repository;
 
 import it.polimi.amusic.exception.FirestoreException;
 import it.polimi.amusic.model.document.PaymentDocument;
@@ -7,7 +7,7 @@ import it.polimi.amusic.model.dto.Payment;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface PaymentService {
+public interface PaymentRepository {
 
     PaymentDocument savePayment(PaymentDocument paymentDocument) throws FirestoreException;
 
@@ -18,4 +18,6 @@ public interface PaymentService {
     List<PaymentDocument> findByDate(LocalDate localDate) throws FirestoreException;
 
     List<Payment> findByUser(String idUserDocument) throws FirestoreException;
+
+    Payment findByUserAndEvent(String idUserDocument, String idEventDocument) throws FirestoreException;
 }

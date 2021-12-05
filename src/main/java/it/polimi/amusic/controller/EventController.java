@@ -3,8 +3,7 @@ package it.polimi.amusic.controller;
 import com.google.cloud.firestore.GeoPoint;
 import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.response.AMusicResponse;
-import it.polimi.amusic.service.business.EventBusinessService;
-import it.polimi.amusic.service.persistance.EventService;
+import it.polimi.amusic.service.EventBusinessService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,13 +21,12 @@ import java.util.Objects;
 @Slf4j
 public class EventController {
 
-    private final EventService eventService;
     private final EventBusinessService eventBusinessService;
 
     @GetMapping(value = "/private/events/all")
     public AMusicResponse<List<Event>> getAllEvents() {
         log.info("New request to /events/all");
-        final List<Event> events = eventService.findAll();
+        final List<Event> events = eventBusinessService.findAll();
         return AMusicResponse.<List<Event>>builder().body(events).build();
     }
 
@@ -41,11 +39,11 @@ public class EventController {
         log.info("New request to /events?date={}", date);
         List<Event> events = new ArrayList<>();
         if (Objects.isNull(date) && Objects.isNull(dateEnd)) {
-            events = eventService.findByEventDate(LocalDate.now());
+            events = eventBusinessService.findByEventDate(LocalDate.now());
         } else if ((Objects.nonNull(date) && Objects.isNull(dateEnd))){
-            events = eventService.findByEventDate(date);
+            events = eventBusinessService.findByEventDate(date);
         }else if(Objects.nonNull(date)){
-            events = eventService.findByEventDateBetween(date,dateEnd);
+            events = eventBusinessService.findByEventDateBetween(date, dateEnd);
         }
         return AMusicResponse.<List<Event>>builder().body(events).build();
     }
@@ -59,7 +57,7 @@ public class EventController {
         if (Objects.isNull(distance)) {
             distance = 1d;
         }
-        final List<Event> byGeoPointNearMe = eventService.findByGeoPointNearMe(new GeoPoint(lat, lon), distance);
+        final List<Event> byGeoPointNearMe = eventBusinessService.findByGeoPointNearMe(new GeoPoint(lat, lon), distance);
         return AMusicResponse.<List<Event>>builder().body(byGeoPointNearMe).build();
     }
 

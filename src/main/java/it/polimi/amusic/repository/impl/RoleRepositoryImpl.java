@@ -1,9 +1,9 @@
-package it.polimi.amusic.service.persistance.impl;
+package it.polimi.amusic.repository.impl;
 
 import com.google.cloud.firestore.Firestore;
 import it.polimi.amusic.exception.FirestoreException;
 import it.polimi.amusic.model.document.RoleDocument;
-import it.polimi.amusic.service.persistance.RoleService;
+import it.polimi.amusic.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutionException;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class RoleServiceImpl implements RoleService {
+public class RoleRepositoryImpl implements RoleRepository {
 
     private final Firestore firestore;
 

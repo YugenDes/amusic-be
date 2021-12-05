@@ -11,10 +11,10 @@ import it.polimi.amusic.model.document.EventDocument;
 import it.polimi.amusic.model.document.PaymentDocument;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.payment.model.PaymentProvider;
-import it.polimi.amusic.service.business.UserBusinessService;
-import it.polimi.amusic.service.persistance.EventService;
-import it.polimi.amusic.service.persistance.PaymentService;
-import it.polimi.amusic.service.persistance.UserService;
+import it.polimi.amusic.repository.EventRepository;
+import it.polimi.amusic.repository.PaymentRepository;
+import it.polimi.amusic.repository.UserRepository;
+import it.polimi.amusic.service.UserBusinessService;
 import it.polimi.amusic.utils.MessageBuilder;
 import it.polimi.amusic.utils.QRCodeGenerator;
 import it.polimi.amusic.utils.TimestampUtils;
@@ -30,9 +30,9 @@ import java.time.LocalDateTime;
 public class StripeWebhookServiceImpl implements StripeWebhookService {
 
     private final UserBusinessService userBusinessService;
-    private final UserService userService;
-    private final EventService eventService;
-    private final PaymentService paymentService;
+    private final UserRepository userRepository;
+    private final EventRepository eventRepository;
+    private final PaymentRepository paymentRepository;
     private final EmailService emailService;
 
     public void handleEvent(Event event) {
@@ -48,12 +48,12 @@ public class StripeWebhookServiceImpl implements StripeWebhookService {
                 final String userDocumentId = charge.getMetadata().get("userDocumentId");
                 final String eventDocumentId = charge.getMetadata().get("eventDocumentId");
                 final Boolean visible = Boolean.valueOf(charge.getMetadata().get("visible"));
-                final UserDocument userDocument = userService.findById(userDocumentId).orElseThrow();
-                final EventDocument eventDocument = eventService.findById(eventDocumentId).orElseThrow();
+                final UserDocument userDocument = userRepository.findById(userDocumentId).orElseThrow();
+                final EventDocument eventDocument = eventRepository.findById(eventDocumentId).orElseThrow();
 
                 userBusinessService.attendAnEvent(userDocumentId, eventDocumentId, visible);
 
-                paymentService.savePayment(new PaymentDocument()
+                paymentRepository.savePayment(new PaymentDocument()
                         .setIdEventDocument(eventDocument.getId())
                         .setIdUserDocument(userDocument.getId())
                         .setAmount(Double.valueOf(charge.getAmount()))

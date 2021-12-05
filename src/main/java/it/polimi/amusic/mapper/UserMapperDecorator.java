@@ -4,8 +4,8 @@ import it.polimi.amusic.model.document.FriendDocument;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.dto.Friend;
-import it.polimi.amusic.service.persistance.EventService;
-import it.polimi.amusic.service.persistance.UserService;
+import it.polimi.amusic.repository.UserRepository;
+import it.polimi.amusic.service.EventBusinessService;
 import it.polimi.amusic.utils.TimestampUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 public abstract class UserMapperDecorator implements UserMapper {
 
     @Autowired
-    private EventService eventService;
+    private EventBusinessService eventBusinessService;
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
     @Autowired
     private UserMapper userMapper;
 
@@ -30,15 +30,15 @@ public abstract class UserMapperDecorator implements UserMapper {
         this.userMapper = userMapper;
     }
 
-    public UserMapperDecorator(EventService eventService, UserMapper userMapper) {
-        this.eventService = eventService;
+    public UserMapperDecorator(EventBusinessService eventRepository, UserMapper userMapper) {
+        this.eventBusinessService = eventBusinessService;
         this.userMapper = userMapper;
     }
 
 
     @Override
     public Friend mapUserFirendDocumentToFriend(FriendDocument friendDocument) {
-        final UserDocument firendUserDocument = userService.findById(friendDocument.getId()).orElseThrow();
+        final UserDocument firendUserDocument = userRepository.findById(friendDocument.getId()).orElseThrow();
         final Friend friend = this.mapUserDocumentToFriend(firendUserDocument);
         friend.setFriendSince(TimestampUtils.convertTimestampToLocalDate(friendDocument.getFriendSince()));
         return friend;
@@ -61,7 +61,7 @@ public abstract class UserMapperDecorator implements UserMapper {
                 .stream()
                 .map(eventId ->
                         //Ed é nei prossimi giorni
-                        eventService.findEventByIdAfterLocalDateNow(eventId)
+                        eventBusinessService.findEventByIdAfterLocalDateNow(eventId)
                                 .orElse(null))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());

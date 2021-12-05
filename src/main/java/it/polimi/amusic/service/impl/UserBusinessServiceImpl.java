@@ -1,4 +1,4 @@
-package it.polimi.amusic.service.business.impl;
+package it.polimi.amusic.service.impl;
 
 import com.google.api.client.util.ArrayMap;
 import com.google.cloud.Timestamp;
@@ -21,11 +21,11 @@ import it.polimi.amusic.model.dto.Friend;
 import it.polimi.amusic.model.dto.User;
 import it.polimi.amusic.model.request.RegistrationRequest;
 import it.polimi.amusic.model.request.UpdateUserRequest;
+import it.polimi.amusic.repository.EventRepository;
+import it.polimi.amusic.repository.RoleRepository;
+import it.polimi.amusic.repository.UserRepository;
 import it.polimi.amusic.security.model.AuthProvider;
-import it.polimi.amusic.service.business.UserBusinessService;
-import it.polimi.amusic.service.persistance.EventService;
-import it.polimi.amusic.service.persistance.RoleService;
-import it.polimi.amusic.service.persistance.UserService;
+import it.polimi.amusic.service.UserBusinessService;
 import it.polimi.amusic.utils.GcsRegexFilename;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -46,11 +46,11 @@ import java.util.stream.Collectors;
 public class UserBusinessServiceImpl implements UserBusinessService {
 
     private final Firestore firestore;
-    private final RoleService roleService;
+    private final RoleRepository roleRepository;
     private final FirebaseAuth firebaseAuth;
     private final EmailService emailService;
-    private final UserService userService;
-    private final EventService eventService;
+    private final UserRepository userRepository;
+    private final EventRepository eventRepository;
     private final FileService fileService;
     private final UserMapperDecorator userMapper;
     private final EventMapperDecorator eventMapper;
@@ -58,13 +58,13 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     @Override
     public UserDocument registerUser(@NonNull RegistrationRequest request) throws FirebaseException {
 
-        final Optional<UserDocument> byEmail = userService.findByEmail(request.getEmail());
+        final Optional<UserDocument> byEmail = userRepository.findByEmail(request.getEmail());
 
         if (byEmail.isPresent()) {
             throw new UserAlreadyRegisteredException("Utente giá registrato {}", request.getEmail());
         }
 
-        final RoleDocument userRole = roleService.findByAuthority(RoleDocument.RoleEnum.USER);
+        final RoleDocument userRole = roleRepository.findByAuthority(RoleDocument.RoleEnum.USER);
 
         final UserRecord userFireBase;
 
@@ -107,7 +107,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         try {
             return firestore.runTransaction(transaction -> {
                 sendEmailVerificationLink(request.getEmail());
-                return userService.save(userDocument);
+                return userRepository.save(userDocument);
             }).get();
 
         } catch (AmusicEmailException | ExecutionException | InterruptedException e) {
@@ -125,12 +125,12 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
     @Override
     public Event attendAnEvent(@NonNull String userIdDocument, @NonNull String eventIdDocument, @NonNull Boolean visible) throws FirestoreException {
-        final UserDocument userDocument = userService.findById(userIdDocument)
+        final UserDocument userDocument = userRepository.findById(userIdDocument)
                 .orElseThrow(() -> new UserNotFoundException("L'utente {} non é stato trovato", userIdDocument));
 
         try {
             return firestore.runTransaction(transaction ->
-                    eventService.findById(eventIdDocument)
+                    eventRepository.findById(eventIdDocument)
                             .map(eventDocument -> {
                                 eventDocument.addPartecipantIfAbsent(new PartecipantDocument()
                                         .setId(userDocument.getId())
@@ -139,8 +139,8 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                                         .setVisible(visible)
                                         .setPhotoUrl(userDocument.getPhotoUrl()));
                                 userDocument.addEventIfAbsent(eventDocument.getId());
-                                userService.save(userDocument);
-                                return eventService.save(eventDocument);
+                                userRepository.save(userDocument);
+                                return eventRepository.save(eventDocument);
                             })
                             .map(eventMapper::getDtoFromDocument)
                             .orElseThrow(() -> new EventNotFoundException("Evento {} non trovato", eventIdDocument))).get();
@@ -198,7 +198,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                     }
                     return fileService.uploadFile(resource);
                 }).orElseGet(() -> fileService.uploadFile(resource));
-        userService.save(userDocument.setPhotoUrl(mediaLink));
+        userRepository.save(userDocument.setPhotoUrl(mediaLink));
         return userMapper.getDtoFromDocument(userDocument);
     }
 
@@ -237,14 +237,14 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     @Override
     public List<Friend> addFriend(@NonNull String idUserFirendDocument) throws UserNotFoundException {
         final UserDocument userDocument = getUserFromSecurityContext();
-        userService.findById(idUserFirendDocument).map(friend -> {
+        userRepository.findById(idUserFirendDocument).map(friend -> {
             final FriendDocument friendDocument = new FriendDocument()
                     .setFriendSince(Timestamp.now())
                     .setId(friend.getId());
             if (!userDocument.addFriendIfAbsent(friendDocument)) {
                 throw new UserOperationException("E' giá tuo amico");
             }
-            return userService.save(userDocument);
+            return userRepository.save(userDocument);
         }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFirendDocument));
         return getFriends();
     }
@@ -252,11 +252,11 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     @Override
     public List<Friend> removeFriend(@NonNull String idUserFirendDocument) {
         final UserDocument userDocument = getUserFromSecurityContext();
-        userService.findById(idUserFirendDocument).map(friend -> {
+        userRepository.findById(idUserFirendDocument).map(friend -> {
             if (!userDocument.removeFriendIfPresent(friend.getId())) {
                 throw new FriendNotFoundExcpetion("L'amico {} non é stato trovato tra gli amici dell'utente {}", friend.getId(), userDocument.getId());
             }
-            return userService.save(userDocument);
+            return userRepository.save(userDocument);
         }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFirendDocument));
         return getFriends();
     }
@@ -275,7 +275,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             request.setSurname(null);
             userMapper.updateUserDocumentFromUpdateRequest(userDocument, request);
         }
-        return userMapper.getDtoFromDocument(userService.save(userDocument));
+        return userMapper.getDtoFromDocument(userRepository.save(userDocument));
     }
 
     @Override
@@ -286,10 +286,10 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         List<UserDocument> users = new ArrayList<>();
 
         if (param.contains(" ")) {
-            users.addAll(userService.findByDisplayNameStartWith(param));
+            users.addAll(userRepository.findByDisplayNameStartWith(param));
         } else {
-            users.addAll(userService.findByNameStartWith(param));
-            users.addAll(userService.findBySurnameStartWith(param));
+            users.addAll(userRepository.findByNameStartWith(param));
+            users.addAll(userRepository.findBySurnameStartWith(param));
         }
 
         return users.stream()
@@ -301,7 +301,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
     @Override
     public User findById(String id) {
-        return userService.findById(id).map(userMapper::getDtoFromDocument).orElseThrow();
+        return userRepository.findById(id).map(userMapper::getDtoFromDocument).orElseThrow();
     }
 
 
@@ -324,7 +324,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .map(Authentication::getPrincipal)
                 .map(o -> (UserDocument) o)
                 .orElseThrow(() -> new MissingAuthenticationException("Non é presente l'oggetto Authentication nel SecurityContext"));
-        return userService.findById(principal.getId())
+        return userRepository.findById(principal.getId())
                 .orElseThrow(() -> new UserNotFoundException("L'utente {} non é stato trovato", principal.getId()));
     }
 }

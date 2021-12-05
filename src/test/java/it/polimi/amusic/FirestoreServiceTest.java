@@ -10,12 +10,12 @@ import it.polimi.amusic.model.document.RoleDocument;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.dto.Friend;
+import it.polimi.amusic.repository.EventRepository;
+import it.polimi.amusic.repository.RoleRepository;
+import it.polimi.amusic.repository.UserRepository;
 import it.polimi.amusic.security.model.AuthProvider;
-import it.polimi.amusic.service.business.EventBusinessService;
-import it.polimi.amusic.service.business.UserBusinessService;
-import it.polimi.amusic.service.persistance.EventService;
-import it.polimi.amusic.service.persistance.RoleService;
-import it.polimi.amusic.service.persistance.UserService;
+import it.polimi.amusic.service.EventBusinessService;
+import it.polimi.amusic.service.UserBusinessService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -35,13 +35,13 @@ import java.util.List;
 class FirestoreServiceTest {
 
     @Autowired
-    EventService eventService;
+    EventRepository eventRepository;
 
     @Autowired
     EventBusinessService eventBusinessService;
 
     @Autowired
-    UserService userService;
+    UserRepository userRepository;
 
     @Autowired
     UserBusinessService userBusinessService;
@@ -53,11 +53,11 @@ class FirestoreServiceTest {
     Firestore firestore;
 
     @Autowired
-    RoleService roleService;
+    RoleRepository roleRepository;
 
 
     void contextLoads() {
-        final UserDocument userDocument = userService.findById("puLxmw6ozrb7X7IuVWkr").orElseThrow();
+        final UserDocument userDocument = userRepository.findById("puLxmw6ozrb7X7IuVWkr").orElseThrow();
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDocument, null);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
@@ -65,7 +65,7 @@ class FirestoreServiceTest {
 
     @Test
     void saveNewEvent() {
-        eventService.save(new EventDocument()
+        eventRepository.save(new EventDocument()
                 .setEventName("Qube")
                 .setEventDate(LocalDateTime.of(2021, 12, 13, 23, 00))
                 .setEventDatePublished(LocalDateTime.now())
@@ -75,7 +75,7 @@ class FirestoreServiceTest {
                 .setMaxPartecipants(100)
                 .setTicketPrice(12.5D));
 
-        eventService.save(new EventDocument()
+        eventRepository.save(new EventDocument()
                 .setEventName("Piper Club")
                 .setEventDate(LocalDateTime.of(2021, 12, 14, 23, 00))
                 .setEventDatePublished(LocalDateTime.now())
@@ -85,7 +85,7 @@ class FirestoreServiceTest {
                 .setMaxPartecipants(200)
                 .setTicketPrice(20D));
 
-        eventService.save(new EventDocument()
+        eventRepository.save(new EventDocument()
                 .setEventName("Meeting Place Bar")
                 .setEventDate(LocalDateTime.of(2021, 12, 13, 19, 00))
                 .setEventDatePublished(LocalDateTime.now())
@@ -95,7 +95,7 @@ class FirestoreServiceTest {
                 .setMaxPartecipants(2)
                 .setTicketPrice(9D));
 
-        eventService.save(new EventDocument()
+        eventRepository.save(new EventDocument()
                 .setEventName("T Bar Ostiense")
                 .setEventDate(LocalDateTime.of(2021, 12, 15, 22, 30))
                 .setEventDatePublished(LocalDateTime.now())
@@ -109,14 +109,14 @@ class FirestoreServiceTest {
 
     @Test
     void findEvent() {
-        final List<Event> byEventDate = eventService.findByEventDate(LocalDate.of(2021, 12, 15));
+        final List<Event> byEventDate = eventBusinessService.findByEventDate(LocalDate.of(2021, 12, 15));
         Assert.isTrue(!byEventDate.isEmpty(), "Deve esserci un evento");
     }
 
     @Test
     void findEventByPartecipantsEmail() {
-        final List<EventDocument> eventDocuments = userService.findByEmail("andrea.messina@soft.it")
-                .map(userDocument -> eventService.findByParticipant(userDocument.getId()))
+        final List<EventDocument> eventDocuments = userRepository.findByEmail("andrea.messina@soft.it")
+                .map(userDocument -> eventRepository.findByParticipant(userDocument.getId()))
                 .orElseThrow();
 
         eventDocuments.forEach(System.out::println);
@@ -124,11 +124,11 @@ class FirestoreServiceTest {
 
     @Test
     void findPartecipantUser() {
-        eventService.findById("Xymi8cgmxAzydGMdYyXE")
+        eventRepository.findById("Xymi8cgmxAzydGMdYyXE")
                 .orElseThrow()
                 .getPartecipants()
                 .stream()
-                .map(documentReference -> userService.findById(documentReference.getId()).orElseThrow())
+                .map(documentReference -> userRepository.findById(documentReference.getId()).orElseThrow())
                 .forEach(System.out::println);
     }
 
@@ -136,7 +136,7 @@ class FirestoreServiceTest {
     @Test
     void findGeoPoint() {
         final GeoPoint casa = new GeoPoint(41.908761427826434, 12.545459410032102);
-        final List<Event> byGeoPointNearMe = eventService.findByGeoPointNearMe(casa, 3);
+        final List<Event> byGeoPointNearMe = eventBusinessService.findByGeoPointNearMe(casa, 3);
         byGeoPointNearMe.forEach(System.out::println);
     }
 
@@ -153,7 +153,7 @@ class FirestoreServiceTest {
                 .setEnabled(true)
                 .setDisplayName("YugenDesu")
                 .setLastLogin(Timestamp.now())
-                .setAuthorities(Collections.singletonList(roleService.findByAuthority(RoleDocument.RoleEnum.USER)))
+                .setAuthorities(Collections.singletonList(roleRepository.findByAuthority(RoleDocument.RoleEnum.USER)))
                 .setEmailVerified(false);
 
 
@@ -166,7 +166,7 @@ class FirestoreServiceTest {
                 .setEnabled(true)
                 .setDisplayName("AlbiManu")
                 .setLastLogin(Timestamp.now())
-                .setAuthorities(Collections.singletonList(roleService.findByAuthority(RoleDocument.RoleEnum.USER)))
+                .setAuthorities(Collections.singletonList(roleRepository.findByAuthority(RoleDocument.RoleEnum.USER)))
                 .setEmailVerified(false);
 
         UserDocument admin = new UserDocument()
@@ -178,13 +178,13 @@ class FirestoreServiceTest {
                 .setEnabled(true)
                 .setDisplayName("ADMIN")
                 .setLastLogin(Timestamp.now())
-                .setAuthorities(Collections.singletonList(roleService.findByAuthority(RoleDocument.RoleEnum.ADMIN)))
+                .setAuthorities(Collections.singletonList(roleRepository.findByAuthority(RoleDocument.RoleEnum.ADMIN)))
                 .setEmailVerified(false);
 
 
-        final UserDocument save = userService.save(userDocument);
-        final UserDocument save1 = userService.save(userDocument1);
-        final UserDocument save3 = userService.save(admin);
+        final UserDocument save = userRepository.save(userDocument);
+        final UserDocument save1 = userRepository.save(userDocument1);
+        final UserDocument save3 = userRepository.save(admin);
 
         System.out.println(save);
         System.out.println(save1);
@@ -215,7 +215,7 @@ class FirestoreServiceTest {
 
     @Test
     void findEventByPartecipant() {
-        final List<EventDocument> events = eventService.findByParticipant("8Xq2gviMAwO1Pc3EjoAl");
+        final List<EventDocument> events = eventRepository.findByParticipant("8Xq2gviMAwO1Pc3EjoAl");
         events.forEach(System.out::println);
     }
 

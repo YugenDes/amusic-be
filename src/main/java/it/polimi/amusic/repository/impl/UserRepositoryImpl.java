@@ -1,4 +1,4 @@
-package it.polimi.amusic.service.persistance.impl;
+package it.polimi.amusic.repository.impl;
 
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.CollectionReference;
@@ -12,7 +12,7 @@ import com.google.firebase.auth.UserRecord;
 import it.polimi.amusic.exception.FirebaseException;
 import it.polimi.amusic.exception.FirestoreException;
 import it.polimi.amusic.model.document.UserDocument;
-import it.polimi.amusic.service.persistance.UserService;
+import it.polimi.amusic.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -24,10 +24,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
-@Service(value = UserServiceImpl.NAME)
+@Service(value = UserRepositoryImpl.NAME)
 @RequiredArgsConstructor
 @Slf4j
-public class UserServiceImpl implements UserService {
+public class UserRepositoryImpl implements UserRepository {
 
     public static final String NAME = "UserService";
     private final Firestore firestore;

@@ -2,7 +2,7 @@ package it.polimi.amusic.mapper;
 
 import it.polimi.amusic.model.document.PaymentDocument;
 import it.polimi.amusic.model.dto.Payment;
-import it.polimi.amusic.service.persistance.EventService;
+import it.polimi.amusic.service.EventBusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public abstract class PaymentMapperDecorator implements PaymentMapper {
 
     @Autowired
-    EventService eventService;
+    EventBusinessService eventBusinessService;
 
     @Autowired
     PaymentMapper paymentMapper;
@@ -18,7 +18,7 @@ public abstract class PaymentMapperDecorator implements PaymentMapper {
     @Override
     public Payment getDtoFromDocument(PaymentDocument paymentDocument) {
         final Payment dtoFromDocument = paymentMapper.getDtoFromDocument(paymentDocument);
-        eventService.findEventById(paymentDocument.getIdEventDocument())
+        eventBusinessService.findEventById(paymentDocument.getIdEventDocument())
                 .ifPresent(dtoFromDocument::setEvent);
         return dtoFromDocument;
     }

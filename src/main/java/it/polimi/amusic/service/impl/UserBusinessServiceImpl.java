@@ -30,6 +30,7 @@ import it.polimi.amusic.utils.GcsRegexFilename;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -87,6 +88,12 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             surname = "   ";
         }
 
+        String photoUrl = userFireBase.getPhotoUrl();
+
+        if (StringUtils.isBlank(photoUrl)) {
+            photoUrl = "https://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/b65dc4ab-a928-43d6-be57-3ec7084e851a?generation=1638815917920229&alt=media";
+        }
+
 
         UserDocument userDocument = new UserDocument()
                 .setName(name.toUpperCase())
@@ -96,7 +103,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .setFirebaseUID(userFireBase.getUid())
                 .setProvider(request.getProvider())
                 .setAuthorities(Collections.singletonList(userRole))
-                .setPhotoUrl(userFireBase.getPhotoUrl())
+                .setPhotoUrl(photoUrl)
                 .setPhoneNumber(userFireBase.getPhoneNumber())
                 .setCreateDate(Timestamp.ofTimeSecondsAndNanos(userFireBase.getUserMetadata().getCreationTimestamp() / 1000L, 0))
                 .setLastLogin(Timestamp.ofTimeSecondsAndNanos(userFireBase.getUserMetadata().getLastRefreshTimestamp() / 1000L, 0))

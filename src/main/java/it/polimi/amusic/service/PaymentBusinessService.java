@@ -9,5 +9,5 @@ public interface PaymentBusinessService {
 
     List<Payment> findByUser(String idUserDocument) throws FirestoreException;
 
-    Payment findByUserAndEvent(String idUserDocument, String idEventDocument) throws FirestoreException;
+    Payment getInfoPaymentFromEvent(String idUserDocument, String idEventDocument) throws FirestoreException;
 }

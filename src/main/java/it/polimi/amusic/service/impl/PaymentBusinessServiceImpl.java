@@ -30,7 +30,7 @@ public class PaymentBusinessServiceImpl implements PaymentBusinessService {
     }
 
     @Override
-    public Payment findByUserAndEvent(String idUserDocument, String idEventDocument) throws FirestoreException {
-        return paymentMapper.getDtoFromDocument(paymentRepository.findByUserAndEvent(idUserDocument, idEventDocument));
+    public Payment getInfoPaymentFromEvent(String idUserDocument, String idEventDocument) throws FirestoreException {
+        return paymentMapper.getDtoNoEventFromDocument(paymentRepository.findByUserAndEvent(idUserDocument, idEventDocument));
     }
 }

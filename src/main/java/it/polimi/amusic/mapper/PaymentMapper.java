@@ -16,9 +16,13 @@ import java.util.List;
 @DecoratedWith(PaymentMapperDecorator.class)
 public interface PaymentMapper {
 
-    @Mapping(target = "datePayment" ,expression = "java(TimestampUtils.convertTimestampToLocalDateTime(paymentDocument.getDatePayment()))")
-    @Mapping(target = "vendor" ,expression = "java(PaymentProvider.valueOf(paymentDocument.getVendor()))")
+    @Mapping(target = "datePayment", expression = "java(TimestampUtils.convertTimestampToLocalDateTime(paymentDocument.getDatePayment()))")
+    @Mapping(target = "vendor", expression = "java(PaymentProvider.valueOf(paymentDocument.getVendor()))")
     Payment getDtoFromDocument(PaymentDocument paymentDocument);
+
+    @Mapping(target = "datePayment", expression = "java(TimestampUtils.convertTimestampToLocalDateTime(paymentDocument.getDatePayment()))")
+    @Mapping(target = "vendor", expression = "java(PaymentProvider.valueOf(paymentDocument.getVendor()))")
+    Payment getDtoNoEventFromDocument(PaymentDocument paymentDocument);
 
     List<Payment> getDtosFromDocuments(List<PaymentDocument> paymentDocumentList);
 

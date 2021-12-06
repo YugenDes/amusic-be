@@ -22,4 +22,9 @@ public abstract class PaymentMapperDecorator implements PaymentMapper {
                 .ifPresent(dtoFromDocument::setEvent);
         return dtoFromDocument;
     }
+
+    @Override
+    public Payment getDtoNoEventFromDocument(PaymentDocument paymentDocument) {
+        return paymentMapper.getDtoNoEventFromDocument(paymentDocument);
+    }
 }

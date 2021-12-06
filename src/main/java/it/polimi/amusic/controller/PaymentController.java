@@ -39,7 +39,7 @@ public class PaymentController {
     @GetMapping(value = "/private/payment/{eventIdDocument}")
     public AMusicResponse<Payment> getPaymentHistory(@PathVariable("eventIdDocument") String eventIdDocument) {
         log.info("new request request to /payment/history {}", getUserIdDocumentFromSecurityContext());
-        final Payment payment = paymentBusinessService.findByUserAndEvent(getUserIdDocumentFromSecurityContext(), eventIdDocument);
+        final Payment payment = paymentBusinessService.getInfoPaymentFromEvent(getUserIdDocumentFromSecurityContext(), eventIdDocument);
         return AMusicResponse.<Payment>builder().body(payment).build();
     }
 

@@ -237,42 +237,11 @@ class FirestoreServiceTest {
         Assertions.assertTrue(isPresent, "Non é possibile non trovare nella coronologia un evento appena aggiunto");
     }
 
-
-//    @Test
-//    void eventUpdateTest() {
-//        try (FileInputStream fileInputStream = new FileInputStream("C:\\Users\\andrea.messina\\Desktop\\logo.jpg")) {
-//            final byte[] file = fileInputStream.readAllBytes();
-//            final ByteArrayResource byteArrayReource = new ByteArrayResource(file, "logo.jpg");
-//
-//            final String mediaLink = fileService.uploadFile(byteArrayReource);
-//            eventService.findByEventDate(LocalDate.of(2021, 10, 23))
-//                    .stream()
-//                    .forEach(eventDocument -> eventService
-//                            .save(eventDocument.setEventDatePublished(LocalDateTime.now().minusDays(3)).setImageUrl(mediaLink)));
-//
-//        } catch (StorageException | NullPointerException | FileNotFoundException e) {
-//            throw new GCPBucketException("Errore durante il caricamento del file {}", e.getLocalizedMessage());
-//        } catch (IOException e) {
-//            throw new GCPBucketException("Errore durante il caricamento del file {}", e.getLocalizedMessage());
-//        }
-//    }
-
-
-//    @Test
-//    void suggestedFriend() {
-//        final UserDocument userDocument = userService.findById("aGe054mKQkH3psotr6vv").orElseThrow();
-//        final String reduce = userDocument.getFirendList()
-//                .stream()
-//                .map(s -> userService.findById(s))
-//                .map(userDocument1 -> userDocument1.get().getDisplayName())
-//                .reduce("", (s, s1) -> s + " " + s1);
-//        final String reduce1 = userBusinessService.suggestedFriends("aGe054mKQkH3psotr6vv")
-//                .stream()
-//                .map(userDocument1 -> userDocument1.getDisplayName())
-//                .reduce("", (s, s2) -> s + " " + s2);
-//        System.out.println(userDocument.getDisplayName());
-//        System.out.println(reduce);
-//        System.out.println(reduce1);
-//    }
+    @Test
+    void suggestedFriend() {
+        contextLoads();
+        final List<Friend> friends = userBusinessService.suggestedFriends();
+        Assertions.assertTrue(friends.size() <= 5, "La funzione deve tornare almeno 5 amici");
+    }
 
 }

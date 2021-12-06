@@ -41,6 +41,7 @@ public class StripeServiceImpl implements StripeService {
     public PaymentResponse createPayment(PaymentRequest payment) {
 
         initializeStipeKey();
+
         CreateStripePayment paymentStripe = (CreateStripePayment) payment;
 
         final String id = ((UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();

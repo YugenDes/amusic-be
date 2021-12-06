@@ -1,0 +1,958 @@
+{
+  "events": [
+    {
+      "defined_class": "it.polimi.amusic.security.SecurityService",
+      "event": "call",
+      "id": 36,
+      "lineno": 27,
+      "method_id": "getBearerToken",
+      "parameters": [
+        {
+          "class": "org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest",
+          "kind": "req",
+          "name": "request",
+          "object_id": 800118050,
+          "value": "org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest@2fb0d522"
+        }
+      ],
+      "path": "it/polimi/amusic/security/SecurityService.java",
+      "receiver": {
+        "class": "it.polimi.amusic.security.SecurityService",
+        "object_id": 1912515967,
+        "value": "it.polimi.amusic.security.SecurityService@71fead7f"
+      },
+      "static": false,
+      "thread_id": 39
+    },
+    {
+      "event": "return",
+      "id": 37,
+      "parent_id": 36,
+      "thread_id": 39
+    },
+    {
+      "event": "call",
+      "http_server_request": {
+        "normalized_path_info": "/**",
+        "path_info": "/events/near",
+        "protocol": "HTTP/1.1",
+        "request_method": "GET"
+      },
+      "id": 39,
+      "message": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "lat",
+          "object_id": 180667790,
+          "value": "41.908761"
+        },
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "lon",
+          "object_id": 2073200566,
+          "value": "12.545459"
+        }
+      ],
+      "thread_id": 39
+    },
+    {
+      "event": "return",
+      "http_server_response": {
+        "status": 404
+      },
+      "id": 44,
+      "parent_id": 39,
+      "thread_id": 39
+    },
+    {
+      "event": "call",
+      "http_server_request": {
+        "normalized_path_info": "/error",
+        "path_info": "/error",
+        "protocol": "HTTP/1.1",
+        "request_method": "GET"
+      },
+      "id": 46,
+      "message": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "lat",
+          "object_id": 180667790,
+          "value": "41.908761"
+        },
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "lon",
+          "object_id": 2073200566,
+          "value": "12.545459"
+        }
+      ],
+      "thread_id": 39
+    },
+    {
+      "defined_class": "it.polimi.amusic.security.SecurityService",
+      "event": "call",
+      "id": 53,
+      "lineno": 27,
+      "method_id": "getBearerToken",
+      "parameters": [
+        {
+          "class": "org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest",
+          "kind": "req",
+          "name": "request",
+          "object_id": 1621926421,
+          "value": "org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest@60aca215"
+        }
+      ],
+      "path": "it/polimi/amusic/security/SecurityService.java",
+      "receiver": {
+        "class": "it.polimi.amusic.security.SecurityService",
+        "object_id": 1912515967,
+        "value": "it.polimi.amusic.security.SecurityService@71fead7f"
+      },
+      "static": false,
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 54,
+      "parent_id": 53,
+      "thread_id": 43
+    },
+    {
+      "event": "call",
+      "http_server_request": {
+        "normalized_path_info": "/private/events/near",
+        "path_info": "/private/events/near",
+        "protocol": "HTTP/1.1",
+        "request_method": "GET"
+      },
+      "id": 56,
+      "message": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "lat",
+          "object_id": 284847874,
+          "value": "41.908761"
+        },
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "lon",
+          "object_id": 1841451567,
+          "value": "12.545459"
+        }
+      ],
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.controller.EventController",
+      "event": "call",
+      "id": 61,
+      "lineno": 56,
+      "method_id": "getEvents",
+      "parameters": [
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "lat",
+          "object_id": 7175965,
+          "value": "41.908761"
+        },
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "lon",
+          "object_id": 48516068,
+          "value": "12.545459"
+        },
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "distance",
+          "object_id": 0
+        }
+      ],
+      "path": "it/polimi/amusic/controller/EventController.java",
+      "receiver": {
+        "class": "it.polimi.amusic.controller.EventController",
+        "object_id": 1396898858,
+        "value": "it.polimi.amusic.controller.EventController@5342fc2a"
+      },
+      "static": false,
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.service.persistance.impl.EventServiceImpl",
+      "event": "call",
+      "id": 62,
+      "lineno": 107,
+      "method_id": "findByGeoPointNearMe",
+      "parameters": [
+        {
+          "class": "com.google.cloud.firestore.GeoPoint",
+          "kind": "req",
+          "name": "center",
+          "object_id": 84611487,
+          "value": "GeoPoint { latitude\u003d41.908761, longitude\u003d12.545459 }"
+        },
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "distance",
+          "object_id": 1028928408,
+          "value": "1.0"
+        }
+      ],
+      "path": "it/polimi/amusic/service/persistance/impl/EventServiceImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.service.persistance.impl.EventServiceImpl",
+        "object_id": 2033642479,
+        "value": "it.polimi.amusic.service.persistance.impl.EventServiceImpl@7936ebef"
+      },
+      "static": false,
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.GeoUtils",
+      "event": "call",
+      "id": 63,
+      "lineno": 101,
+      "method_id": "boundingGeoPoints",
+      "parameters": [
+        {
+          "class": "com.google.cloud.firestore.GeoPoint",
+          "kind": "req",
+          "name": "location",
+          "object_id": 84611487,
+          "value": "GeoPoint { latitude\u003d41.908761, longitude\u003d12.545459 }"
+        },
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "distance",
+          "object_id": 787805733,
+          "value": "1.0"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/GeoUtils.java",
+      "static": true,
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.GeoUtils",
+      "event": "call",
+      "id": 64,
+      "lineno": 61,
+      "method_id": "getGeoPointFromRadians",
+      "parameters": [
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "latitudeRadians",
+          "object_id": 533025567,
+          "value": "0.7312889036508152"
+        },
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "longitudeRadians",
+          "object_id": 1696505707,
+          "value": "0.21874865569407081"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/GeoUtils.java",
+      "static": true,
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.GeoUtils",
+      "event": "call",
+      "id": 65,
+      "lineno": 49,
+      "method_id": "checkBounds",
+      "parameters": [
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "latitudeRadians",
+          "object_id": 377298441,
+          "value": "0.7312889036508152"
+        },
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "longitudeRadians",
+          "object_id": 1946775213,
+          "value": "0.21874865569407081"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/GeoUtils.java",
+      "static": true,
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 66,
+      "parent_id": 65,
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 67,
+      "parent_id": 64,
+      "return_value": {
+        "class": "com.google.cloud.firestore.GeoPoint",
+        "object_id": 1700611190,
+        "value": "GeoPoint { latitude\u003d41.89976778394081, longitude\u003d12.533374745430642 }"
+      },
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.GeoUtils",
+      "event": "call",
+      "id": 68,
+      "lineno": 61,
+      "method_id": "getGeoPointFromRadians",
+      "parameters": [
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "latitudeRadians",
+          "object_id": 288886050,
+          "value": "0.7316028261119674"
+        },
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "longitudeRadians",
+          "object_id": 626064098,
+          "value": "0.21917047575383974"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/GeoUtils.java",
+      "static": true,
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.GeoUtils",
+      "event": "call",
+      "id": 69,
+      "lineno": 49,
+      "method_id": "checkBounds",
+      "parameters": [
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "latitudeRadians",
+          "object_id": 1051648147,
+          "value": "0.7316028261119674"
+        },
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "longitudeRadians",
+          "object_id": 470518350,
+          "value": "0.21917047575383974"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/GeoUtils.java",
+      "static": true,
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 70,
+      "parent_id": 69,
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 71,
+      "parent_id": 68,
+      "return_value": {
+        "class": "com.google.cloud.firestore.GeoPoint",
+        "object_id": 767891867,
+        "value": "GeoPoint { latitude\u003d41.91775421605919, longitude\u003d12.557543254569357 }"
+      },
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 72,
+      "parent_id": 63,
+      "return_value": {
+        "class": "java.util.Arrays$ArrayList",
+        "object_id": 1059413175,
+        "value": "[GeoPoint { latitude\u003d41.89976778394081, longitude\u003d12.533374745430642 }, GeoPoint { latitude\u003d41.91775421605919, longitude\u003d12.557543254569357 }]"
+      },
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.GeoUtils",
+      "event": "call",
+      "id": 73,
+      "lineno": 101,
+      "method_id": "boundingGeoPoints",
+      "parameters": [
+        {
+          "class": "com.google.cloud.firestore.GeoPoint",
+          "kind": "req",
+          "name": "location",
+          "object_id": 84611487,
+          "value": "GeoPoint { latitude\u003d41.908761, longitude\u003d12.545459 }"
+        },
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "distance",
+          "object_id": 188006088,
+          "value": "1.0"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/GeoUtils.java",
+      "static": true,
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.GeoUtils",
+      "event": "call",
+      "id": 74,
+      "lineno": 61,
+      "method_id": "getGeoPointFromRadians",
+      "parameters": [
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "latitudeRadians",
+          "object_id": 2101960141,
+          "value": "0.7312889036508152"
+        },
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "longitudeRadians",
+          "object_id": 1403354706,
+          "value": "0.21874865569407081"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/GeoUtils.java",
+      "static": true,
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.GeoUtils",
+      "event": "call",
+      "id": 75,
+      "lineno": 49,
+      "method_id": "checkBounds",
+      "parameters": [
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "latitudeRadians",
+          "object_id": 947165385,
+          "value": "0.7312889036508152"
+        },
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "longitudeRadians",
+          "object_id": 817373830,
+          "value": "0.21874865569407081"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/GeoUtils.java",
+      "static": true,
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 76,
+      "parent_id": 75,
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 77,
+      "parent_id": 74,
+      "return_value": {
+        "class": "com.google.cloud.firestore.GeoPoint",
+        "object_id": 200007474,
+        "value": "GeoPoint { latitude\u003d41.89976778394081, longitude\u003d12.533374745430642 }"
+      },
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.GeoUtils",
+      "event": "call",
+      "id": 78,
+      "lineno": 61,
+      "method_id": "getGeoPointFromRadians",
+      "parameters": [
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "latitudeRadians",
+          "object_id": 140962742,
+          "value": "0.7316028261119674"
+        },
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "longitudeRadians",
+          "object_id": 998206840,
+          "value": "0.21917047575383974"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/GeoUtils.java",
+      "static": true,
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.GeoUtils",
+      "event": "call",
+      "id": 79,
+      "lineno": 49,
+      "method_id": "checkBounds",
+      "parameters": [
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "latitudeRadians",
+          "object_id": 766482340,
+          "value": "0.7316028261119674"
+        },
+        {
+          "class": "java.lang.Double",
+          "kind": "req",
+          "name": "longitudeRadians",
+          "object_id": 1836788676,
+          "value": "0.21917047575383974"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/GeoUtils.java",
+      "static": true,
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 80,
+      "parent_id": 79,
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 81,
+      "parent_id": 78,
+      "return_value": {
+        "class": "com.google.cloud.firestore.GeoPoint",
+        "object_id": 1583333103,
+        "value": "GeoPoint { latitude\u003d41.91775421605919, longitude\u003d12.557543254569357 }"
+      },
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 82,
+      "parent_id": 73,
+      "return_value": {
+        "class": "java.util.Arrays$ArrayList",
+        "object_id": 1134829043,
+        "value": "[GeoPoint { latitude\u003d41.89976778394081, longitude\u003d12.533374745430642 }, GeoPoint { latitude\u003d41.91775421605919, longitude\u003d12.557543254569357 }]"
+      },
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.GeoUtils",
+      "event": "call",
+      "id": 83,
+      "lineno": 31,
+      "method_id": "distance",
+      "parameters": [
+        {
+          "class": "com.google.cloud.firestore.GeoPoint",
+          "kind": "req",
+          "name": "geoPointStart",
+          "object_id": 84611487,
+          "value": "GeoPoint { latitude\u003d41.908761, longitude\u003d12.545459 }"
+        },
+        {
+          "class": "com.google.cloud.firestore.GeoPoint",
+          "kind": "req",
+          "name": "geoPointEnd",
+          "object_id": 127184415,
+          "value": "GeoPoint { latitude\u003d41.897845844351465, longitude\u003d12.540060246022259 }"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/GeoUtils.java",
+      "static": true,
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 84,
+      "parent_id": 83,
+      "return_value": {
+        "class": "java.lang.Double",
+        "object_id": 240615630,
+        "value": "1.2933367157792839"
+      },
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 85,
+      "parent_id": 62,
+      "return_value": {
+        "class": "java.util.ArrayList",
+        "object_id": 261156073,
+        "value": "[]"
+      },
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.response.AMusicResponse",
+      "event": "call",
+      "id": 86,
+      "lineno": 9,
+      "method_id": "builder",
+      "path": "it/polimi/amusic/model/response/AMusicResponse.java",
+      "static": true,
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 87,
+      "parent_id": 86,
+      "return_value": {
+        "class": "it.polimi.amusic.model.response.AMusicResponse$AMusicResponseBuilder",
+        "object_id": 711318131,
+        "value": "AMusicResponse.AMusicResponseBuilder(body\u003dnull, messages\u003dnull)"
+      },
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.response.AMusicResponse$AMusicResponseBuilder",
+      "event": "call",
+      "id": 88,
+      "lineno": 9,
+      "method_id": "body",
+      "parameters": [
+        {
+          "class": "java.util.ArrayList",
+          "kind": "req",
+          "name": "body",
+          "object_id": 261156073,
+          "value": "[]"
+        }
+      ],
+      "path": "it/polimi/amusic/model/response/AMusicResponse.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.response.AMusicResponse$AMusicResponseBuilder",
+        "object_id": 711318131,
+        "value": "AMusicResponse.AMusicResponseBuilder(body\u003d[], messages\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 89,
+      "parent_id": 88,
+      "return_value": {
+        "class": "it.polimi.amusic.model.response.AMusicResponse$AMusicResponseBuilder",
+        "object_id": 711318131,
+        "value": "AMusicResponse.AMusicResponseBuilder(body\u003d[], messages\u003dnull)"
+      },
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.response.AMusicResponse$AMusicResponseBuilder",
+      "event": "call",
+      "id": 90,
+      "lineno": 9,
+      "method_id": "build",
+      "path": "it/polimi/amusic/model/response/AMusicResponse.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.response.AMusicResponse$AMusicResponseBuilder",
+        "object_id": 711318131,
+        "value": "AMusicResponse.AMusicResponseBuilder(body\u003d[], messages\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 91,
+      "parent_id": 90,
+      "return_value": {
+        "class": "it.polimi.amusic.model.response.AMusicResponse",
+        "object_id": 1489267158,
+        "value": "AMusicResponse(body\u003d[], messages\u003d[])"
+      },
+      "thread_id": 43
+    },
+    {
+      "event": "return",
+      "id": 92,
+      "parent_id": 61,
+      "return_value": {
+        "class": "it.polimi.amusic.model.response.AMusicResponse",
+        "object_id": 1489267158,
+        "value": "AMusicResponse(body\u003d[], messages\u003d[])"
+      },
+      "thread_id": 43
+    },
+    {
+      "defined_class": "it.polimi.amusic.security.SecurityService",
+      "event": "call",
+      "id": 95,
+      "lineno": 27,
+      "method_id": "getBearerToken",
+      "parameters": [
+        {
+          "class": "org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest",
+          "kind": "req",
+          "name": "request",
+          "object_id": 918349725,
+          "value": "org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest@36bce79d"
+        }
+      ],
+      "path": "it/polimi/amusic/security/SecurityService.java",
+      "receiver": {
+        "class": "it.polimi.amusic.security.SecurityService",
+        "object_id": 1912515967,
+        "value": "it.polimi.amusic.security.SecurityService@71fead7f"
+      },
+      "static": false,
+      "thread_id": 53
+    },
+    {
+      "event": "return",
+      "id": 96,
+      "parent_id": 95,
+      "thread_id": 53
+    },
+    {
+      "event": "return",
+      "http_server_response": {
+        "mime_type": "application/json",
+        "status": 404
+      },
+      "id": 51,
+      "parent_id": 46,
+      "thread_id": 39
+    },
+    {
+      "event": "return",
+      "http_server_response": {
+        "mime_type": "application/json",
+        "status": 200
+      },
+      "id": 93,
+      "parent_id": 56,
+      "thread_id": 43
+    }
+  ],
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "location": "it/polimi/amusic/utils/GeoUtils.java:101",
+                          "name": "boundingGeoPoints",
+                          "static": true,
+                          "type": "function"
+                        },
+                        {
+                          "location": "it/polimi/amusic/utils/GeoUtils.java:61",
+                          "name": "getGeoPointFromRadians",
+                          "static": true,
+                          "type": "function"
+                        },
+                        {
+                          "location": "it/polimi/amusic/utils/GeoUtils.java:49",
+                          "name": "checkBounds",
+                          "static": true,
+                          "type": "function"
+                        },
+                        {
+                          "location": "it/polimi/amusic/utils/GeoUtils.java:31",
+                          "name": "distance",
+                          "static": true,
+                          "type": "function"
+                        }
+                      ],
+                      "location": "it/polimi/amusic/utils/GeoUtils.java",
+                      "name": "GeoUtils",
+                      "static": false,
+                      "type": "class"
+                    }
+                  ],
+                  "name": "utils",
+                  "type": "package"
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "location": "it/polimi/amusic/model/response/AMusicResponse.java:9",
+                              "name": "build",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/response/AMusicResponse.java:9",
+                              "name": "body",
+                              "static": false,
+                              "type": "function"
+                            }
+                          ],
+                          "location": "it/polimi/amusic/model/response/AMusicResponse.java",
+                          "name": "AMusicResponse$AMusicResponseBuilder",
+                          "static": true,
+                          "type": "class"
+                        },
+                        {
+                          "children": [
+                            {
+                              "location": "it/polimi/amusic/model/response/AMusicResponse.java:9",
+                              "name": "builder",
+                              "static": true,
+                              "type": "function"
+                            }
+                          ],
+                          "location": "it/polimi/amusic/model/response/AMusicResponse.java",
+                          "name": "AMusicResponse",
+                          "static": false,
+                          "type": "class"
+                        }
+                      ],
+                      "name": "response",
+                      "type": "package"
+                    }
+                  ],
+                  "name": "model",
+                  "type": "package"
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "location": "it/polimi/amusic/controller/EventController.java:56",
+                          "name": "getEvents",
+                          "static": false,
+                          "type": "function"
+                        }
+                      ],
+                      "location": "it/polimi/amusic/controller/EventController.java",
+                      "name": "EventController",
+                      "static": false,
+                      "type": "class"
+                    }
+                  ],
+                  "name": "controller",
+                  "type": "package"
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "location": "it/polimi/amusic/security/SecurityService.java:27",
+                          "name": "getBearerToken",
+                          "static": false,
+                          "type": "function"
+                        }
+                      ],
+                      "location": "it/polimi/amusic/security/SecurityService.java",
+                      "name": "SecurityService",
+                      "static": false,
+                      "type": "class"
+                    }
+                  ],
+                  "name": "security",
+                  "type": "package"
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "location": "it/polimi/amusic/service/persistance/impl/EventServiceImpl.java:107",
+                                  "name": "findByGeoPointNearMe",
+                                  "static": false,
+                                  "type": "function"
+                                }
+                              ],
+                              "location": "it/polimi/amusic/service/persistance/impl/EventServiceImpl.java",
+                              "name": "EventServiceImpl",
+                              "static": false,
+                              "type": "class"
+                            }
+                          ],
+                          "name": "impl",
+                          "type": "package"
+                        }
+                      ],
+                      "name": "persistance",
+                      "type": "package"
+                    }
+                  ],
+                  "name": "service",
+                  "type": "package"
+                }
+              ],
+              "name": "amusic",
+              "type": "package"
+            }
+          ],
+          "name": "polimi",
+          "type": "package"
+        }
+      ],
+      "name": "it",
+      "type": "package"
+    }
+  ],
+  "version": "1.2",
+  "metadata": {
+    "app": "AMusic",
+    "language": {
+      "name": "java",
+      "version": "15.0.2+7-27",
+      "engine": "OpenJDK 64-Bit Server VM"
+    },
+    "client": {
+      "name": "appmap-java",
+      "url": "https://github.com/appland/appmap-java"
+    },
+    "recorder": {
+      "name": "remote_recording"
+    },
+    "recording": {},
+    "framework": {},
+    "name": "EventNearMe"
+  }
+}

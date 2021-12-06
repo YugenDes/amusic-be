@@ -20,6 +20,13 @@ public class PaymentBusinessServiceImpl implements PaymentBusinessService {
     private final PaymentRepository paymentRepository;
     private final PaymentMapperDecorator paymentMapper;
 
+    /**
+     * Ritorna la lista dei pagamenti effettuati da quell utente
+     *
+     * @param idUserDocument
+     * @return List<Payment> lista dei pagamenti
+     * @throws FirestoreException
+     */
     @Override
     public List<Payment> findByUser(String idUserDocument) throws FirestoreException {
         return paymentRepository
@@ -29,6 +36,15 @@ public class PaymentBusinessServiceImpl implements PaymentBusinessService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Ritorna le informazioni di pagamento
+     * Di un dato evento per un dato utente
+     *
+     * @param idUserDocument
+     * @param idEventDocument
+     * @return PaymentDto
+     * @throws FirestoreException
+     */
     @Override
     public Payment getInfoPaymentFromEvent(String idUserDocument, String idEventDocument) throws FirestoreException {
         return paymentMapper.getDtoNoEventFromDocument(paymentRepository.findByUserAndEvent(idUserDocument, idEventDocument));

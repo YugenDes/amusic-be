@@ -41,11 +41,23 @@ public class EventBusinessServiceImpl implements EventBusinessService {
     private final EventMapperDecorator eventMapper;
     private final Firestore firestore;
 
+    /**
+     * Persiste un nuovo evento
+     *
+     * @param request NewEventRequest
+     * @return EventDocument
+     */
     @Override
     public EventDocument newEvent(NewEventRequest request) {
         return eventRepository.save(eventMapper.getDocumentFromRequest(request));
     }
 
+    /**
+     * Aggiorna l'evento data la corretta request
+     *
+     * @param request UpdateEventRequest
+     * @return EventDocument
+     */
     @Override
     public EventDocument updateEvent(UpdateEventRequest request) {
         try {
@@ -61,28 +73,53 @@ public class EventBusinessServiceImpl implements EventBusinessService {
         }
     }
 
+    /**
+     * Modifica l'immagine di copertina dell evento
+     *
+     * @param eventIdDocument
+     * @param resource        ByteArrayResoruce
+     * @return EventDocument
+     */
     @Override
     public EventDocument changeImageLink(String eventIdDocument, Resource resource) {
-        final String linkFile = fileService.uploadFile(resource);
         return eventRepository.findById(eventIdDocument)
                 .map(eventDocument -> {
+                    final String fileLink = fileService.uploadFile(resource);
                     fileService.deleteFile(eventDocument.getImageUrl());
-                    return eventRepository.save(eventDocument.setImageUrl(linkFile));
+                    return eventRepository.save(eventDocument.setImageUrl(fileLink));
                 }).orElseThrow(() -> new EventNotFoundException("Evento {} non trovato", eventIdDocument));
     }
 
+    /**
+     * Query per ottenere il DTO dell evento tramite ID
+     *
+     * @param id
+     * @return Optional<Event>
+     */
     @Override
     public Optional<Event> findEventById(String id) {
         return eventRepository.findById(id)
                 .map(eventMapper::getDtoFromDocument);
     }
 
+    /**
+     * Query per ottenere il DTO dell evento tramite ID
+     * I risultato viene filtrato per data
+     *
+     * @param id
+     * @return Optional<Event>
+     */
     @Override
     public Optional<Event> findEventByIdAfterLocalDateNow(String id) {
         return eventRepository.findByIdAfterLocalDateNow(id)
                 .map(eventMapper::getDtoFromDocument);
     }
 
+    /**
+     * Torna tutti gli eventi
+     *
+     * @return List<Event>
+     */
     @Override
     public List<Event> findAll() {
         return eventRepository.findAll()
@@ -91,6 +128,12 @@ public class EventBusinessServiceImpl implements EventBusinessService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Torna tutti gli eventi della data passata
+     *
+     * @param localDate
+     * @return List<Event>
+     */
     @Override
     public List<Event> findByEventDate(LocalDate localDate) {
         return eventRepository.findByEventDate(localDate)
@@ -99,6 +142,13 @@ public class EventBusinessServiceImpl implements EventBusinessService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Torna tutti gli eventi in un specifico intervallo di tempo
+     *
+     * @param localDateStart
+     * @param localDateEnd
+     * @return List<Event>
+     */
     @Override
     public List<Event> findByEventDateBetween(LocalDate localDateStart, LocalDate localDateEnd) {
         return eventRepository.findByEventDateBetween(localDateStart, localDateEnd)
@@ -107,11 +157,26 @@ public class EventBusinessServiceImpl implements EventBusinessService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Torna tutti gli eventi a distanza fissata dal geopoint
+     *
+     * @param geoPoint
+     * @param distance
+     * @return
+     */
     @Override
     public List<Event> findByGeoPointNearMe(GeoPoint geoPoint, double distance) {
-        return null;
+        return eventRepository.findByGeoPointNearMe(geoPoint, distance)
+                .stream()
+                .map(eventMapper::getDtoFromDocument)
+                .collect(Collectors.toList());
     }
 
+    /**
+     * Ritorna la cronologia degli eventi
+     *
+     * @return List<Event>
+     */
     @Override
     public List<Event> getUserEventHistory() {
         return getUserFromSecurityContext()
@@ -123,6 +188,11 @@ public class EventBusinessServiceImpl implements EventBusinessService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Recupera l ' utente dal SecurityContext ovver l' utente loggato
+     *
+     * @return UserDocument
+     */
     private UserDocument getUserFromSecurityContext() {
         final UserDocument principal = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .map(Authentication::getPrincipal)

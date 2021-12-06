@@ -18,12 +18,12 @@ import it.polimi.amusic.service.EventBusinessService;
 import it.polimi.amusic.service.UserBusinessService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -65,7 +65,7 @@ class FirestoreServiceTest {
 
     @Test
     void saveNewEvent() {
-        eventRepository.save(new EventDocument()
+        final EventDocument qube = eventRepository.save(new EventDocument()
                 .setEventName("Qube")
                 .setEventDate(LocalDateTime.of(2021, 12, 13, 23, 00))
                 .setEventDatePublished(LocalDateTime.now())
@@ -75,7 +75,7 @@ class FirestoreServiceTest {
                 .setMaxPartecipants(100)
                 .setTicketPrice(12.5D));
 
-        eventRepository.save(new EventDocument()
+        final EventDocument piper = eventRepository.save(new EventDocument()
                 .setEventName("Piper Club")
                 .setEventDate(LocalDateTime.of(2021, 12, 14, 23, 00))
                 .setEventDatePublished(LocalDateTime.now())
@@ -85,7 +85,7 @@ class FirestoreServiceTest {
                 .setMaxPartecipants(200)
                 .setTicketPrice(20D));
 
-        eventRepository.save(new EventDocument()
+        final EventDocument meeting = eventRepository.save(new EventDocument()
                 .setEventName("Meeting Place Bar")
                 .setEventDate(LocalDateTime.of(2021, 12, 13, 19, 00))
                 .setEventDatePublished(LocalDateTime.now())
@@ -95,7 +95,7 @@ class FirestoreServiceTest {
                 .setMaxPartecipants(2)
                 .setTicketPrice(9D));
 
-        eventRepository.save(new EventDocument()
+        final EventDocument tBar = eventRepository.save(new EventDocument()
                 .setEventName("T Bar Ostiense")
                 .setEventDate(LocalDateTime.of(2021, 12, 15, 22, 30))
                 .setEventDatePublished(LocalDateTime.now())
@@ -104,40 +104,50 @@ class FirestoreServiceTest {
                 .setGeoHash(new GeoHash(41.863255373433056, 12.478290459422745).getGeoHashString())
                 .setMaxPartecipants(100)
                 .setTicketPrice(18.5D));
+
+        Assertions.assertNotNull(tBar.getId());
+        Assertions.assertNotNull(meeting.getId());
+        Assertions.assertNotNull(piper.getId());
+        Assertions.assertNotNull(qube.getId());
+
     }
 
 
     @Test
     void findEvent() {
         final List<Event> byEventDate = eventBusinessService.findByEventDate(LocalDate.of(2021, 12, 15));
-        Assert.isTrue(!byEventDate.isEmpty(), "Deve esserci un evento");
+        Assertions.assertFalse(byEventDate.isEmpty(), "Deve esserci un evento");
     }
 
     @Test
     void findEventByPartecipantsEmail() {
-        final List<EventDocument> eventDocuments = userRepository.findByEmail("andrea.messina@soft.it")
-                .map(userDocument -> eventRepository.findByParticipant(userDocument.getId()))
+        String eventDocumentId = "icuXDgj7mPkhY9Rln5cf";
+        userRepository.findById("puLxmw6ozrb7X7IuVWkr")
+                .map(userDocument -> userBusinessService.attendAnEvent(userDocument.getId(), eventDocumentId, true))
+                .map(Event::getPartecipants)
                 .orElseThrow();
 
-        eventDocuments.forEach(System.out::println);
-    }
-
-    @Test
-    void findPartecipantUser() {
-        eventRepository.findById("Xymi8cgmxAzydGMdYyXE")
-                .orElseThrow()
-                .getPartecipants()
+        final EventDocument eventDocument1 = eventRepository
+                .findByParticipant("puLxmw6ozrb7X7IuVWkr")
                 .stream()
-                .map(documentReference -> userRepository.findById(documentReference.getId()).orElseThrow())
-                .forEach(System.out::println);
+                .filter(eventDocument -> eventDocument.getId().equals(eventDocumentId))
+                .findFirst()
+                .orElseThrow();
+
+        Assertions.assertEquals(eventDocument1.getId(), eventDocumentId, "Impossilbe non trovare l'evento dato un partecipante appena iscritto");
     }
 
     @SneakyThrows
     @Test
     void findGeoPoint() {
-        final GeoPoint casa = new GeoPoint(41.908761427826434, 12.545459410032102);
-        final List<Event> byGeoPointNearMe = eventBusinessService.findByGeoPointNearMe(casa, 3);
-        byGeoPointNearMe.forEach(System.out::println);
+        //final GeoPoint casa = new GeoPoint(41.908761427826434, 12.545459410032102);
+        String eventDocumentId = "icuXDgj7mPkhY9Rln5cf";
+        final EventDocument eventDocument = eventRepository.findById(eventDocumentId).orElseThrow();
+        final List<Event> byGeoPointNearMe = eventBusinessService.findByGeoPointNearMe(eventDocument.getGeoPoint(), 1);
+        final Boolean presente = byGeoPointNearMe
+                .stream()
+                .anyMatch(event -> event.getId().equals(eventDocumentId));
+        Assertions.assertTrue(presente, "Non é possibile non trovare un evento vicono a esso dato lo stesso evento");
     }
 
 
@@ -186,49 +196,45 @@ class FirestoreServiceTest {
         final UserDocument save1 = userRepository.save(userDocument1);
         final UserDocument save3 = userRepository.save(admin);
 
-        System.out.println(save);
-        System.out.println(save1);
-        System.out.println(save3);
+        Assertions.assertNotNull(save.getId());
+        Assertions.assertNotNull(save1.getId());
+        Assertions.assertNotNull(save3.getId());
     }
 
     @Test
     void addFriendTest() {
+        contextLoads();
         final List<Friend> friends = userBusinessService.addFriend("JMapVlHllNOFuE6CrqmG");
-        friends.forEach(System.out::println);
+        final boolean isPresent = friends.stream().anyMatch(friend -> friend.getId().equals("JMapVlHllNOFuE6CrqmG"));
+        Assertions.assertTrue(isPresent, "Non é possibile non trovare un amico appena aggiunto");
     }
 
     @Test
     void removeFirendTest() {
+        contextLoads();
         final List<Friend> friends = userBusinessService.removeFriend("JMapVlHllNOFuE6CrqmG");
-        friends.forEach(System.out::println);
+        final boolean isNotPresent = friends.stream().noneMatch(friend -> friend.getId().equals("JMapVlHllNOFuE6CrqmG"));
+        Assertions.assertTrue(isNotPresent, "Non é possibile  trovare un amico appena rimosso");
     }
+
 
     @Test
     void attendEvent() {
-        contextLoads();
-        final Event event = userBusinessService.attendAnEvent("8Xq2gviMAwO1Pc3EjoAl", "Px1rphu8AiVS3aGnoSGj", true);
-        final Event event1 = userBusinessService.attendAnEvent("8Xq2gviMAwO1Pc3EjoAl", "DlDXMobm0uoGrsV4uqXg", false);
-        System.out.println(event);
-        System.out.println(event1);
+        final Event event = userBusinessService.attendAnEvent("puLxmw6ozrb7X7IuVWkr", "DlDXMobm0uoGrsV4uqXg", true);
+        final boolean isPresent = event.getPartecipants().stream().anyMatch(partecipant -> partecipant.getId().equals("puLxmw6ozrb7X7IuVWkr"));
+        Assertions.assertTrue(isPresent, "Non é possibile non trovare un partecipante appena aggiunto");
     }
 
-
-    @Test
-    void findEventByPartecipant() {
-        final List<EventDocument> events = eventRepository.findByParticipant("8Xq2gviMAwO1Pc3EjoAl");
-        events.forEach(System.out::println);
-    }
-
-    @Test
-    void getFriends() {
-        contextLoads();
-        userBusinessService.getFriends().forEach(System.out::println);
-    }
 
     @Test
     void getUserEventHistory() {
         contextLoads();
-        eventBusinessService.getUserEventHistory().forEach(System.out::println);
+        attendEvent();
+        final boolean isPresent = eventBusinessService
+                .getUserEventHistory()
+                .stream()
+                .anyMatch(event -> event.getId().equals("DlDXMobm0uoGrsV4uqXg"));
+        Assertions.assertTrue(isPresent, "Non é possibile non trovare nella coronologia un evento appena aggiunto");
     }
 
 
@@ -268,14 +274,5 @@ class FirestoreServiceTest {
 //        System.out.println(reduce);
 //        System.out.println(reduce1);
 //    }
-
-//     @Test
-//    void saveFirend(){
-//         final UserDocument userDocument = userService.findById("0v9hk14jhvCaltWyfkW0").orElseThrow();
-//         userDocument.addFriendIfAbsent("ArgzLAmRGiDPPe80DHEz");
-//         userDocument.addFriendIfAbsent("FrQCT2YTcx8OX6QiZ7NG");
-//         userService.save(userDocument);
-//     }
-
 
 }

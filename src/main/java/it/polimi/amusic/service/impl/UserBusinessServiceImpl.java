@@ -56,19 +56,29 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     private final UserMapperDecorator userMapper;
     private final EventMapperDecorator eventMapper;
 
+    /**
+     * Registro l'utente che atterra per la prima volta sulla piattaforma
+     *
+     * @param request RegistrationRequest
+     * @return UserDocument
+     * @throws FirebaseException
+     */
     @Override
     public UserDocument registerUser(@NonNull RegistrationRequest request) throws FirebaseException {
 
+        //Cerco se é gia presente nel db
         final Optional<UserDocument> byEmail = userRepository.findByEmail(request.getEmail());
 
         if (byEmail.isPresent()) {
             throw new UserAlreadyRegisteredException("Utente giá registrato {}", request.getEmail());
         }
 
+        //Assegno il ruolo da USER
         final RoleDocument userRole = roleRepository.findByAuthority(RoleDocument.RoleEnum.USER);
 
         final UserRecord userFireBase;
 
+        //Converto il token a UserRecord di firebase
         try {
             userFireBase = firebaseAuth.getUser(request.getFirebaseUidToken());
         } catch (FirebaseAuthException e) {
@@ -76,6 +86,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             throw new FirebaseException("Errore durante il recupero dell userFireBase  {}", e.getLocalizedMessage());
         }
 
+        //Converto dispalyName in name e surname
         String name;
         String surname;
         if (Objects.nonNull(userFireBase.getDisplayName())) {
@@ -88,13 +99,15 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             surname = "   ";
         }
 
+        //Nel caso di login da socil media prendo la foto
         String photoUrl = userFireBase.getPhotoUrl();
 
+        //Se non é presente assegno l'immagine del profilo default
         if (StringUtils.isBlank(photoUrl)) {
             photoUrl = "https://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/b65dc4ab-a928-43d6-be57-3ec7084e851a?generation=1638815917920229&alt=media";
         }
 
-
+        //Creo l'utente
         UserDocument userDocument = new UserDocument()
                 .setName(name.toUpperCase())
                 .setSurname(surname.toUpperCase())
@@ -113,6 +126,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         try {
             return firestore.runTransaction(transaction -> {
+                //Mando l'email di verifica email
                 sendEmailVerificationLink(request.getEmail());
                 return userRepository.save(userDocument);
             }).get();
@@ -130,6 +144,15 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .setProvider(AuthProvider.parseValueOf((String) ((ArrayMap) firebaseToken.getClaims().get("firebase")).get("sign_in_provider"))));
     }
 
+    /**
+     * L'utente loggato che ha acqusiato il biglietto viene registrato nei partecipanti dell' evento
+     *
+     * @param userIdDocument
+     * @param eventIdDocument
+     * @param visible         visibilita' partecipazione
+     * @return Event
+     * @throws FirestoreException
+     */
     @Override
     public Event attendAnEvent(@NonNull String userIdDocument, @NonNull String eventIdDocument, @NonNull Boolean visible) throws FirestoreException {
         final UserDocument userDocument = userRepository.findById(userIdDocument)
@@ -137,18 +160,21 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         try {
             return firestore.runTransaction(transaction ->
+                    //Trovo l' evento
                     eventRepository.findById(eventIdDocument)
                             .map(eventDocument -> {
+                                //Aggiungo l' user ai parcetipanti
                                 eventDocument.addPartecipantIfAbsent(new PartecipantDocument()
                                         .setId(userDocument.getId())
                                         .setName(userDocument.getName())
                                         .setSurname(userDocument.getSurname())
                                         .setVisible(visible)
                                         .setPhotoUrl(userDocument.getPhotoUrl()));
+                                //Aggiungo l evento alla lista degli eventi dell utente
                                 userDocument.addEventIfAbsent(eventDocument.getId());
+                                //Persisto
                                 userRepository.save(userDocument);
-                                return eventRepository.save(eventDocument);
-                            })
+                                return eventRepository.save(eventDocument);})
                             .map(eventMapper::getDtoFromDocument)
                             .orElseThrow(() -> new EventNotFoundException("Evento {} non trovato", eventIdDocument))).get();
         } catch (ExecutionException | InterruptedException e) {
@@ -194,21 +220,42 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 //                .collect(Collectors.toList());
     }
 
+    /**
+     * Cambio Immagine del profilo
+     *
+     * @param resource
+     * @return User
+     */
     @Override
     public User changeProPic(@NonNull Resource resource) {
         UserDocument userDocument = getUserFromSecurityContext();
 
+        //Se l' utente ha la foto
         String mediaLink = Optional.ofNullable(userDocument.getPhotoUrl())
                 .map(s -> {
+                    /*
+                    Se la foto proviene dal bucket di GCP
+                    E' possibile che se viene effettuato il login
+                    Con un social media la foto venga presa da li
+                    */
                     if (GcsRegexFilename.isFromGCS(s)) {
+                        //Cancello la foto dal bucket
                         fileService.deleteFile(userDocument.getPhotoUrl());
                     }
+                    //Carico la foto
                     return fileService.uploadFile(resource);
-                }).orElseGet(() -> fileService.uploadFile(resource));
+                })
+                //Altrimenti carico la foto e sostiuisco il link
+                .orElseGet(() -> fileService.uploadFile(resource));
         userRepository.save(userDocument.setPhotoUrl(mediaLink));
         return userMapper.getDtoFromDocument(userDocument);
     }
 
+    /**
+     * Invia email per il reset password
+     *
+     * @return operationStatus
+     */
     @Override
     public boolean changePassword() {
         UserDocument userDocument = getUserFromSecurityContext();
@@ -241,21 +288,41 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Aggiunge l'utente selezionato alla lista degli amici dell utente loggato
+     *
+     * @param idUserFirendDocument
+     * @return
+     * @throws UserNotFoundException
+     */
     @Override
     public List<Friend> addFriend(@NonNull String idUserFirendDocument) throws UserNotFoundException {
         final UserDocument userDocument = getUserFromSecurityContext();
+        //Trovo l' utente da aggiungere agli amici
         userRepository.findById(idUserFirendDocument).map(friend -> {
+            //Lo mappo
             final FriendDocument friendDocument = new FriendDocument()
                     .setFriendSince(Timestamp.now())
                     .setId(friend.getId());
+            //Se non 'e gia presente lo aggiungo
             if (!userDocument.addFriendIfAbsent(friendDocument)) {
+                //Se no exception
                 throw new UserOperationException("E' giá tuo amico");
             }
+            //Salvo l' utente
             return userRepository.save(userDocument);
+            //Se non trovo l' utente da aggiungere exception
         }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFirendDocument));
+        //Ritorno la lista degli amici dell utente loggato
         return getFriends();
     }
 
+    /**
+     * Rimuove l' amico selezionato dalla lista degli amici dell utente loggato
+     *
+     * @param idUserFirendDocument
+     * @return List<Friend>
+     */
     @Override
     public List<Friend> removeFriend(@NonNull String idUserFirendDocument) {
         final UserDocument userDocument = getUserFromSecurityContext();
@@ -268,6 +335,12 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         return getFriends();
     }
 
+    /**
+     * Aggiorna l' utente tramite la request
+     *
+     * @param request UpdateUserRequest
+     * @return User
+     */
     @Override
     public User updateUser(UpdateUserRequest request) {
         UserDocument userDocument = getUserFromSecurityContext();
@@ -285,6 +358,14 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         return userMapper.getDtoFromDocument(userRepository.save(userDocument));
     }
 
+    /**
+     * Permette la ricerca dell utente tramite nome e cognome
+     * Se la ricerca contiene uno spazio ricerco per displayName che contiente sia nome che cognome
+     * Se la ricerca contiente '@' ricerca per email
+     *
+     * @param param stringa di ricerca (Nome || Cognome || Email)
+     * @return List<User>
+     */
     @Override
     public List<User> searchUser(String param) {
 
@@ -294,24 +375,42 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         if (param.contains(" ")) {
             users.addAll(userRepository.findByDisplayNameStartWith(param));
+        } else if (param.contains("@")) {
+            userRepository.findByEmail(param).ifPresent(users::add);
         } else {
             users.addAll(userRepository.findByNameStartWith(param));
             users.addAll(userRepository.findBySurnameStartWith(param));
         }
 
         return users.stream()
+                //Rimuovo i possibili doppioni
+                .distinct()
+                //Rimuovo lo stesso utente che ha cercato
                 .filter(usersDocuments -> !usersDocuments.getId().equals(userDocument.getId()))
+                //Rimuovo gli utenti gia' amici
                 .filter(usersDocuments -> userDocument.getFirendList().stream().noneMatch(friendDocument -> friendDocument.getId().equals(usersDocuments.getId())))
                 .map(userMapper::getDtoFromDocument)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Query per trovare l' utente tramite id
+     *
+     * @param id
+     * @return User
+     */
     @Override
     public User findById(String id) {
         return userRepository.findById(id).map(userMapper::getDtoFromDocument).orElseThrow();
     }
 
 
+    /**
+     * Invia l' email di conferma dell' account
+     *
+     * @param email
+     * @throws AmusicEmailException
+     */
     private void sendEmailVerificationLink(@NonNull String email) throws AmusicEmailException {
         try {
             final String emailVerificationLink = firebaseAuth.generateEmailVerificationLink(email);
@@ -326,6 +425,11 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         }
     }
 
+    /**
+     * Recupera l ' utente dal SecurityContext ovver l' utente loggato
+     *
+     * @return UserDocument
+     */
     private UserDocument getUserFromSecurityContext() {
         final UserDocument principal = Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .map(Authentication::getPrincipal)

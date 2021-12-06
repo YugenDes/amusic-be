@@ -84,8 +84,11 @@ public class EventBusinessServiceImpl implements EventBusinessService {
     public EventDocument changeImageLink(String eventIdDocument, Resource resource) {
         return eventRepository.findById(eventIdDocument)
                 .map(eventDocument -> {
+                    //Carico la nuova immagine
                     final String fileLink = fileService.uploadFile(resource);
+                    //Elimino quella vecchia
                     fileService.deleteFile(eventDocument.getImageUrl());
+                    //Setto l'immagine nuova
                     return eventRepository.save(eventDocument.setImageUrl(fileLink));
                 }).orElseThrow(() -> new EventNotFoundException("Evento {} non trovato", eventIdDocument));
     }

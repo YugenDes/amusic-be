@@ -4,10 +4,7 @@ import it.polimi.amusic.model.document.PaymentDocument;
 import it.polimi.amusic.model.dto.Payment;
 import it.polimi.amusic.payment.model.PaymentProvider;
 import it.polimi.amusic.utils.TimestampUtils;
-import org.mapstruct.DecoratedWith;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -22,6 +19,7 @@ public interface PaymentMapper {
 
     @Mapping(target = "datePayment", expression = "java(TimestampUtils.convertTimestampToLocalDateTime(paymentDocument.getDatePayment()))")
     @Mapping(target = "vendor", expression = "java(PaymentProvider.valueOf(paymentDocument.getVendor()))")
+    @Named("getDtoNoEventFromDocument")
     Payment getDtoNoEventFromDocument(PaymentDocument paymentDocument);
 
     List<Payment> getDtosFromDocuments(List<PaymentDocument> paymentDocumentList);

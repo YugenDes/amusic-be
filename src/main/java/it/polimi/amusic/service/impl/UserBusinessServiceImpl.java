@@ -249,6 +249,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                         .map(FriendDocument::getId)
                         //Rimuovo la bidirezione
                         .filter(friendDocumentId -> !friendDocumentId.equals(userDocument.getId()))
+                        .filter(friendDocumentId -> !idFriendsOfUserLogged.contains(friendDocumentId))
                         //Filtro gli amici degli amici prendondo solo quelli presenti all evento
                         .filter(id -> !idUserFrequencyOnAllEventsListOrdered.contains(id))
                         .collect(Collectors.toList())));
@@ -264,7 +265,9 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .limit(6)
                 .collect(Collectors.toList());
 
-        List<Friend> suggestedFriend;
+        maxFrequency.removeAll(idFriendsOfUserLogged);
+
+        List<Friend> suggestedFriend = new ArrayList<>();
 
         //Mappo gli amici trovati in utenti e poi in DTO
         suggestedFriend = maxFrequency.stream()
@@ -274,14 +277,18 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         //Se l'utente non ha nessun amico intermedio
         //Restituisco i primi SEI piu frequenti agli eventi
-        if (suggestedFriend.size() == 0) {
-            suggestedFriend = idUserFrequencyOnAllEventsListOrdered
+        if (suggestedFriend.size() < 6) {
+            suggestedFriend.addAll(idUserFrequencyOnAllEventsListOrdered
                     .stream()
-                    .limit(6)
+                    .filter(s -> !s.equals(userDocument.getId()))
+                    .filter(s -> !idFriendsOfUserLogged.contains(s))
+                    .limit(6 - suggestedFriend.size())
                     .map(s -> userRepository.findById(s).orElse(null))
                     .filter(Objects::nonNull)
-                    .map(userMapper::mapUserDocumentToFriend).collect(Collectors.toList());
+                    .map(userMapper::mapUserDocumentToFriend)
+                    .collect(Collectors.toList()));
         }
+        //Rimuovo chi é gia amico
         return suggestedFriend;
 
     }

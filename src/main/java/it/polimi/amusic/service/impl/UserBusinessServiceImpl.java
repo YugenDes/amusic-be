@@ -65,7 +65,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
      *
      * @param request RegistrationRequest
      * @return UserDocument
-     * @throws FirebaseException
+     * @throws FirebaseException ex
      */
     @Override
     public UserDocument registerUser(@NonNull RegistrationRequest request) throws FirebaseException {
@@ -145,17 +145,17 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         return this.registerUser(new RegistrationRequest()
                 .setEmail(firebaseToken.getEmail())
                 .setFirebaseUidToken(firebaseToken.getUid())
-                .setProvider(AuthProvider.parseValueOf((String) ((ArrayMap) firebaseToken.getClaims().get("firebase")).get("sign_in_provider"))));
+                .setProvider(AuthProvider.parseValueOf((String) ((ArrayMap<?, ?>) firebaseToken.getClaims().get("firebase")).get("sign_in_provider"))));
     }
 
     /**
      * L'utente loggato che ha acqusiato il biglietto viene registrato nei partecipanti dell' evento
      *
-     * @param userIdDocument
-     * @param eventIdDocument
+     * @param userIdDocument  id
+     * @param eventIdDocument id
      * @param visible         visibilita' partecipazione
      * @return Event
-     * @throws FirestoreException
+     * @throws FirestoreException ex
      */
     @Override
     public Event attendAnEvent(@NonNull String userIdDocument, @NonNull String eventIdDocument, @NonNull Boolean visible) throws FirestoreException {
@@ -229,10 +229,10 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .collect(Collectors.toSet());
 
         /*
-         * Faccio la differenza tra due insieme ,
+         * Faccio la differenza tra due insieme,
          * il primo é l'insieme dei partecipanti agli eventi a cui ha partecipato l utente loggato
          * il secondo é l'insieme composto dagli amici del'utente loggato
-         * Cosi da avere l'insieme degli amici che effettivamente sono stati ad un evento con l utente loggato
+         * Cosi da avere l'insieme degli amici che effettivamente sono stati a un evento con l utente loggato
          */
         final Sets.SetView<String> intersection = Sets.intersection(Sets.newHashSet(idUserFrequencyOnAllEventsMap.keySet()), Sets.newHashSet(idFriendsOfUserLogged));
 
@@ -246,11 +246,11 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 //Creo una mappa con chiave l'id e valore la lista id degli amici dell amico
                 .collect(Collectors.toMap(UserDocument::getId, friendDocument -> friendDocument.getFirendList()
                         .stream()
-                        //Rimuovo la bidirezione
-                        .filter(friendDocument1 -> !friendDocument1.getId().equals(userDocument.getId()))
-                        //Filtro gli amici degli amici prendondo solo quelli presenti all evento
-                        .filter(friendDocument1 -> !idUserFrequencyOnAllEventsListOrdered.contains(friendDocument1.getId()))
                         .map(FriendDocument::getId)
+                        //Rimuovo la bidirezione
+                        .filter(friendDocumentId -> !friendDocumentId.equals(userDocument.getId()))
+                        //Filtro gli amici degli amici prendondo solo quelli presenti all evento
+                        .filter(id -> !idUserFrequencyOnAllEventsListOrdered.contains(id))
                         .collect(Collectors.toList())));
         //Per ogni amico di amico presente all evento dell utente loggato
         final List<String> maxFrequency = idFriendListFriend.values()
@@ -273,7 +273,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .map(userMapper::mapUserDocumentToFriend).collect(Collectors.toList());
 
         //Se l'utente non ha nessun amico intermedio
-        //Restituisco i primi 6 piu frequenti agli eventi
+        //Restituisco i primi SEI piu frequenti agli eventi
         if (suggestedFriend.size() == 0) {
             suggestedFriend = idUserFrequencyOnAllEventsListOrdered
                     .stream()
@@ -292,7 +292,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         UserDocument userDocument = getUserFromSecurityContext();
 
-        final Set<String> idFirendsOfUserLogged = userDocument
+        final Set<String> idFriendsOfUserLogged = userDocument
                 .getFirendList()
                 .stream()
                 .map(FriendDocument::getId)
@@ -302,28 +302,27 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         final Map<String, Long> idFriendsOfUserLoggedInTheSameEventsWithFrequencyMap = events.stream().map(eventDocument ->
                         // Ottengo l'intersezione dei due set a un costo di O(n+m)
-                        Sets.intersection(Sets.newHashSet(idFirendsOfUserLogged), Sets.newHashSet(eventDocument.getPartecipantsIds())))
+                        Sets.intersection(Sets.newHashSet(idFriendsOfUserLogged), Sets.newHashSet(eventDocument.getPartecipantsIds())))
                 //Appitisco lo stream di liste innestate
                 .flatMap(Collection::stream)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
-        final Map<String, List<String>> listIdFirendsOfFriendPresentInTheEvent = idFriendsOfUserLoggedInTheSameEventsWithFrequencyMap
-                .entrySet()
+        final Map<String, List<String>> listIdFriendsOfFriendPresentInTheEvent = idFriendsOfUserLoggedInTheSameEventsWithFrequencyMap
+                .keySet()
                 .stream()
-                .map(idFriendFrequencyEntry -> userRepository.findById(idFriendFrequencyEntry.getKey()).orElse(null))
+                .map(id -> userRepository.findById(id).orElse(null))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toMap(UserDocument::getId, userFriend -> userFriend.getFirendList().stream().map(FriendDocument::getId).collect(Collectors.toList())));
 
 
-        final Map<String, Map<String, Long>> idFriendsOfFriendsInTheSameEventsWithFrequencyMap = listIdFirendsOfFriendPresentInTheEvent
+        final Map<String, Map<String, Long>> idFriendsOfFriendsInTheSameEventsWithFrequencyMap = listIdFriendsOfFriendPresentInTheEvent
                 .entrySet()
                 .stream()
-                //Per ogni Entry <id Amico,Lista id Amici dell Amico>
+                //Per ogni Entry <id Amico, Lista id Amici dell Amico>
                 .map(idFriendListIdFriend ->
                         //Creo una nuova entry con chiave l'id amico
                         //E come valore una Mappa contenente per ogni amico di amico la frequenza negli eventi
                         Map.entry(idFriendListIdFriend.getKey(), events.stream()
-                                //TODO aggiungere controllo evento sia presente anche user document
                                 .filter(eventDocument -> eventDocument.getPartecipantsIds().contains(idFriendListIdFriend.getKey()))
                                 .map(eventDocument -> Sets.intersection(Sets.newHashSet(idFriendListIdFriend.getValue()), Sets.newHashSet(eventDocument.getPartecipantsIds()))
                                 ).flatMap(Collection::stream)
@@ -355,13 +354,13 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         final Vertex maxCost = findMaxCost(graph, userDocument.getId());
 
-        return Arrays.asList(userMapper.mapUserDocumentToFriend(userRepository.findById(maxCost.vertex).orElseThrow()));
+        return List.of(userMapper.mapUserDocumentToFriend(userRepository.findById(maxCost.vertex).orElseThrow()));
     }
 
     /**
      * Cambio Immagine del profilo
      *
-     * @param resource
+     * @param resource res
      * @return User
      */
     @Override
@@ -373,7 +372,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .map(s -> {
                     /*
                     Se la foto proviene dal bucket di GCP
-                    E' possibile che se viene effettuato il login
+                    È possibile che se viene effettuato il login
                     Con un social media la foto venga presa da li
                     */
                     if (GcsRegexFilename.isFromGCS(s) && !s.equals(FileService.BASE_USER_PHOTO_URL)) {
@@ -429,15 +428,15 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     /**
      * Aggiunge l'utente selezionato alla lista degli amici dell utente loggato
      *
-     * @param idUserFirendDocument
-     * @return
-     * @throws UserNotFoundException
+     * @param idUserFriendDocument id
+     * @return List<Friend>
+     * @throws UserNotFoundException ex
      */
     @Override
-    public List<Friend> addFriend(@NonNull String idUserFirendDocument) throws UserNotFoundException {
+    public List<Friend> addFriend(@NonNull String idUserFriendDocument) throws UserNotFoundException {
         final UserDocument userDocument = getUserFromSecurityContext();
         //Trovo l' utente da aggiungere agli amici
-        userRepository.findById(idUserFirendDocument).map(friend -> {
+        userRepository.findById(idUserFriendDocument).map(friend -> {
             //Lo mappo
             final FriendDocument friendDocument = new FriendDocument()
                     .setFriendSince(Timestamp.now())
@@ -450,7 +449,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             //Salvo l' utente
             return userRepository.save(userDocument);
             //Se non trovo l' utente da aggiungere exception
-        }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFirendDocument));
+        }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFriendDocument));
         //Ritorno la lista degli amici dell utente loggato
         return getFriends();
     }
@@ -458,18 +457,18 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     /**
      * Rimuove l' amico selezionato dalla lista degli amici dell utente loggato
      *
-     * @param idUserFirendDocument
+     * @param idUserFriendDocument id
      * @return List<Friend>
      */
     @Override
-    public List<Friend> removeFriend(@NonNull String idUserFirendDocument) {
+    public List<Friend> removeFriend(@NonNull String idUserFriendDocument) {
         final UserDocument userDocument = getUserFromSecurityContext();
-        userRepository.findById(idUserFirendDocument).map(friend -> {
+        userRepository.findById(idUserFriendDocument).map(friend -> {
             if (!userDocument.removeFriendIfPresent(friend.getId())) {
                 throw new FriendNotFoundExcpetion("L'amico {} non é stato trovato tra gli amici dell'utente {}", friend.getId(), userDocument.getId());
             }
             return userRepository.save(userDocument);
-        }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFirendDocument));
+        }).orElseThrow(() -> new UserNotFoundException("Utente {} non trovato", idUserFriendDocument));
         return getFriends();
     }
 
@@ -534,7 +533,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     /**
      * Query per trovare l' utente tramite id
      *
-     * @param id
+     * @param id id
      * @return User
      */
     @Override
@@ -546,8 +545,8 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     /**
      * Invia l' email di conferma dell' account
      *
-     * @param email
-     * @throws AmusicEmailException
+     * @param email email
+     * @throws AmusicEmailException ex
      */
     private void sendEmailVerificationLink(@NonNull String email) throws AmusicEmailException {
         try {

@@ -288,7 +288,6 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                     .map(userMapper::mapUserDocumentToFriend)
                     .collect(Collectors.toList()));
         }
-        //Rimuovo chi é gia amico
         return suggestedFriend;
 
     }

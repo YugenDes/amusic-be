@@ -1,0 +1,13 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'gcr.io/polimi-amusic/polimi-amusic-run', '.' ]
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'push', 'gcr.io/polimi-amusic/polimi-amusic-run' ]
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args: [ 'run', 'deploy', 'polimi-amusic-run', '--image', 'gcr.io/polimi-amusic/polimi-amusic-run', '--region', 'europe-west3' ]
+images:
+  - gcr.io/polimi-amusic/polimi-amusic-run

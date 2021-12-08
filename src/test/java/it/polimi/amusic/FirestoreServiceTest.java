@@ -241,7 +241,7 @@ class FirestoreServiceTest {
     void suggestedFriend() {
         contextLoads();
         final List<Friend> friends = userBusinessService.suggestedFriends();
-        Assertions.assertTrue(friends.size() <= 5, "La funzione deve tornare almeno 5 amici");
+        Assertions.assertTrue(friends.size() <= 6, "La funzione deve tornare almeno 5 amici");
     }
 
 }

@@ -16,7 +16,7 @@ class GoogleCloudStroageTest {
     @Autowired
     FileService fileService;
 
-    @Value("classpath:baseImageEvent.jfif")
+    @Value("classpath:baseImageProfile.jpg")
     Resource image;
 
     @Test

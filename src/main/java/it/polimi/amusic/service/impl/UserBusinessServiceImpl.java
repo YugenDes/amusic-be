@@ -3,6 +3,7 @@ package it.polimi.amusic.service.impl;
 import com.google.api.client.util.ArrayMap;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.Firestore;
+import com.google.common.collect.Sets;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -12,10 +13,7 @@ import it.polimi.amusic.external.email.EmailService;
 import it.polimi.amusic.external.gcs.FileService;
 import it.polimi.amusic.mapper.EventMapperDecorator;
 import it.polimi.amusic.mapper.UserMapperDecorator;
-import it.polimi.amusic.model.document.FriendDocument;
-import it.polimi.amusic.model.document.PartecipantDocument;
-import it.polimi.amusic.model.document.RoleDocument;
-import it.polimi.amusic.model.document.UserDocument;
+import it.polimi.amusic.model.document.*;
 import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.dto.Friend;
 import it.polimi.amusic.model.dto.User;
@@ -26,6 +24,9 @@ import it.polimi.amusic.repository.RoleRepository;
 import it.polimi.amusic.repository.UserRepository;
 import it.polimi.amusic.security.model.AuthProvider;
 import it.polimi.amusic.service.UserBusinessService;
+import it.polimi.amusic.utils.BFS.Graph;
+import it.polimi.amusic.utils.BFS.Vertex;
+import it.polimi.amusic.utils.BFS.WeightedEdge;
 import it.polimi.amusic.utils.GcsRegexFilename;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,10 @@ import org.springframework.util.Assert;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static it.polimi.amusic.utils.SuggestedFriendBFS.findMaxCost;
 
 @Service
 @RequiredArgsConstructor
@@ -104,7 +108,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         //Se non é presente assegno l'immagine del profilo default
         if (StringUtils.isBlank(photoUrl)) {
-            photoUrl = "https://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/b65dc4ab-a928-43d6-be57-3ec7084e851a?generation=1638815917920229&alt=media";
+            photoUrl = FileService.BASE_USER_PHOTO_URL;
         }
 
         //Creo l'utente
@@ -174,7 +178,8 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                                 userDocument.addEventIfAbsent(eventDocument.getId());
                                 //Persisto
                                 userRepository.save(userDocument);
-                                return eventRepository.save(eventDocument);})
+                                return eventRepository.save(eventDocument);
+                            })
                             .map(eventMapper::getDtoFromDocument)
                             .orElseThrow(() -> new EventNotFoundException("Evento {} non trovato", eventIdDocument))).get();
         } catch (ExecutionException | InterruptedException e) {
@@ -184,40 +189,173 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
     @Override
     public List<Friend> suggestedFriends() {
-        return getFriends();
+        //Recupero l'utenete loggato
+        UserDocument userDocument = getUserFromSecurityContext();
+
+        //Recupero gli eventi a cui ha partecipato l utente loggato
+        final List<EventDocument> byParticipant = eventRepository.findByParticipant(userDocument.getId());
+
+        //Se l'utente loggato non ha partecipato a nessun evento
+        //Non suggerisco nessun amico
+        if (byParticipant.size() == 0) {
+            return new ArrayList<>();
+        }
+
+        /*
+        Creo la mappa contenente tutti i partecipanti
+        e la frequenza agli eventi a cui ha partecipato l'utente loggato
+        */
+        final Map<String, Long> idUserFrequencyOnAllEventsMap = byParticipant
+                .stream()
+                //Prendo ogni lista di partecipanti di ogni evento
+                .map(EventDocument::getPartecipantsIds)
+                //Appiattisco lo stream da Stream<List<String>> in Stream<String>
+                .flatMap(Collection::stream)
+                //Raggruppo le stringhe per la loro frequenza
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        //Creo una lista di key ordinata per value
+        final List<String> idUserFrequencyOnAllEventsListOrdered = idUserFrequencyOnAllEventsMap.entrySet()
+                .stream()
+                .sorted((o1, o2) -> (int) (o1.getValue() - o2.getValue()))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+
+        //Set degli amici dell'utente
+        final Set<String> idFriendsOfUserLogged = userDocument
+                .getFirendList()
+                .stream()
+                .map(FriendDocument::getId)
+                .collect(Collectors.toSet());
+
+        /*
+         * Faccio la differenza tra due insieme ,
+         * il primo é l'insieme dei partecipanti agli eventi a cui ha partecipato l utente loggato
+         * il secondo é l'insieme composto dagli amici del'utente loggato
+         * Cosi da avere l'insieme degli amici che effettivamente sono stati ad un evento con l utente loggato
+         */
+        final Sets.SetView<String> intersection = Sets.intersection(Sets.newHashSet(idUserFrequencyOnAllEventsMap.keySet()), Sets.newHashSet(idFriendsOfUserLogged));
+
+        final Map<String, List<String>> idFriendListFriend = intersection
+                //Per ogni amico
+                .stream()
+                //Cerco l'utente
+                .map(s -> userRepository.findById(s)
+                        .orElse(null))
+                .filter(Objects::nonNull)
+                //Creo una mappa con chiave l'id e valore la lista id degli amici dell amico
+                .collect(Collectors.toMap(UserDocument::getId, friendDocument -> friendDocument.getFirendList()
+                        .stream()
+                        //Rimuovo la bidirezione
+                        .filter(friendDocument1 -> !friendDocument1.getId().equals(userDocument.getId()))
+                        //Filtro gli amici degli amici prendondo solo quelli presenti all evento
+                        .filter(friendDocument1 -> !idUserFrequencyOnAllEventsListOrdered.contains(friendDocument1.getId()))
+                        .map(FriendDocument::getId)
+                        .collect(Collectors.toList())));
+        //Per ogni amico di amico presente all evento dell utente loggato
+        final List<String> maxFrequency = idFriendListFriend.values()
+                .stream()
+                .flatMap(Collection::stream)
+                //Rimuovo i duplicati
+                .distinct()
+                //Ordino la lista dal piu frequente al meno
+                .sorted((o1, o2) -> (int) (idUserFrequencyOnAllEventsMap.get(o1) - idUserFrequencyOnAllEventsMap.get(o2)))
+                //Prendo i primi 6
+                .limit(6)
+                .collect(Collectors.toList());
+
+        List<Friend> suggestedFriend;
+
+        //Mappo gli amici trovati in utenti e poi in DTO
+        suggestedFriend = maxFrequency.stream()
+                .map(s -> userRepository.findById(s).orElse(null))
+                .filter(Objects::nonNull)
+                .map(userMapper::mapUserDocumentToFriend).collect(Collectors.toList());
+
+        //Se l'utente non ha nessun amico intermedio
+        //Restituisco i primi 6 piu frequenti agli eventi
+        if (suggestedFriend.size() == 0) {
+            suggestedFriend = idUserFrequencyOnAllEventsListOrdered
+                    .stream()
+                    .limit(6)
+                    .map(s -> userRepository.findById(s).orElse(null))
+                    .filter(Objects::nonNull)
+                    .map(userMapper::mapUserDocumentToFriend).collect(Collectors.toList());
+        }
+        return suggestedFriend;
+
+    }
 
 
-//        Map<String, List<String>> relationship = new ConcurrentHashMap<>();
-//
-//        participatedEvents
-//                .parallelStream()
-//                .forEach(eventDocument ->
-//                        relationship.putAll(eventDocument.getPartecipants()
-//                                .entrySet()
-//                                .stream()
-//                                .filter(userIdDocument -> !relationship.containsKey(userIdDocument))
-//                                .map(stringBooleanEntry ->
-//                                        userService.findById(stringBooleanEntry.getKey())
-//                                                .orElseGet(() -> {
-//                                                    log.warn("User {} non trovato", stringBooleanEntry.getKey());
-//                                                    return null;
-//                                                }))
-//                                .filter(Objects::nonNull)
-//                                .collect(Collectors.toMap(UserDocument::getId, UserDocument::getFirendList))));
-//
-//        SuggestFriendsDFS<String> core = new SuggestFriendsDFS<>();
-//
-//        relationship.forEach((user, friends) -> friends.forEach(friend -> core.addFriendship(user, friend)));
-//
-//        return core.getSuggestedFriends(idUserDocument, 2)
-//                .stream()
-//                .map(id -> userService.findById(id)
-//                        .orElseGet(() -> {
-//                            log.warn("User {} non trovato", id);
-//                            return null;
-//                        }))
-//                .filter(Objects::nonNull)
-//                .collect(Collectors.toList());
+    @Deprecated
+    public List<Friend> getSuggestedFriends() {
+
+        UserDocument userDocument = getUserFromSecurityContext();
+
+        final Set<String> idFirendsOfUserLogged = userDocument
+                .getFirendList()
+                .stream()
+                .map(FriendDocument::getId)
+                .collect(Collectors.toSet());
+
+        final List<EventDocument> events = eventRepository.findByParticipant(userDocument.getId());
+
+        final Map<String, Long> idFriendsOfUserLoggedInTheSameEventsWithFrequencyMap = events.stream().map(eventDocument ->
+                        // Ottengo l'intersezione dei due set a un costo di O(n+m)
+                        Sets.intersection(Sets.newHashSet(idFirendsOfUserLogged), Sets.newHashSet(eventDocument.getPartecipantsIds())))
+                //Appitisco lo stream di liste innestate
+                .flatMap(Collection::stream)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        final Map<String, List<String>> listIdFirendsOfFriendPresentInTheEvent = idFriendsOfUserLoggedInTheSameEventsWithFrequencyMap
+                .entrySet()
+                .stream()
+                .map(idFriendFrequencyEntry -> userRepository.findById(idFriendFrequencyEntry.getKey()).orElse(null))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toMap(UserDocument::getId, userFriend -> userFriend.getFirendList().stream().map(FriendDocument::getId).collect(Collectors.toList())));
+
+
+        final Map<String, Map<String, Long>> idFriendsOfFriendsInTheSameEventsWithFrequencyMap = listIdFirendsOfFriendPresentInTheEvent
+                .entrySet()
+                .stream()
+                //Per ogni Entry <id Amico,Lista id Amici dell Amico>
+                .map(idFriendListIdFriend ->
+                        //Creo una nuova entry con chiave l'id amico
+                        //E come valore una Mappa contenente per ogni amico di amico la frequenza negli eventi
+                        Map.entry(idFriendListIdFriend.getKey(), events.stream()
+                                //TODO aggiungere controllo evento sia presente anche user document
+                                .filter(eventDocument -> eventDocument.getPartecipantsIds().contains(idFriendListIdFriend.getKey()))
+                                .map(eventDocument -> Sets.intersection(Sets.newHashSet(idFriendListIdFriend.getValue()), Sets.newHashSet(eventDocument.getPartecipantsIds()))
+                                ).flatMap(Collection::stream)
+                                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        final double numberOfEvents = events.size();
+
+        final List<WeightedEdge> fristLayerOfFriends = idFriendsOfUserLoggedInTheSameEventsWithFrequencyMap.entrySet().stream().map(stringLongEntry -> {
+            double probability = stringLongEntry.getValue() / numberOfEvents;
+            return new WeightedEdge(userDocument.getId(), stringLongEntry.getKey(), probability);
+        }).collect(Collectors.toList());
+
+        final List<WeightedEdge> secondLayerOfFriend = idFriendsOfFriendsInTheSameEventsWithFrequencyMap
+                .entrySet()
+                .stream()
+                .map(stringMapEntry ->
+                        stringMapEntry.getValue().entrySet().stream().map(stringLongEntry -> {
+                            double probabilityReferredToFristLayerFriend = (double) stringLongEntry.getValue() / idFriendsOfUserLoggedInTheSameEventsWithFrequencyMap.get(stringMapEntry.getKey());
+                            return new WeightedEdge(stringMapEntry.getKey(), stringLongEntry.getKey(), probabilityReferredToFristLayerFriend);
+                        }).collect(Collectors.toList())
+                ).flatMap(Collection::stream)
+                .collect(Collectors.toList());
+
+        List<WeightedEdge> allEdge = new ArrayList<>(fristLayerOfFriends);
+        allEdge.addAll(secondLayerOfFriend);
+
+        Graph graph = new Graph(allEdge);
+
+        final Vertex maxCost = findMaxCost(graph, userDocument.getId());
+
+        return Arrays.asList(userMapper.mapUserDocumentToFriend(userRepository.findById(maxCost.vertex).orElseThrow()));
     }
 
     /**
@@ -238,7 +376,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                     E' possibile che se viene effettuato il login
                     Con un social media la foto venga presa da li
                     */
-                    if (GcsRegexFilename.isFromGCS(s)) {
+                    if (GcsRegexFilename.isFromGCS(s) && !s.equals(FileService.BASE_USER_PHOTO_URL)) {
                         //Cancello la foto dal bucket
                         fileService.deleteFile(userDocument.getPhotoUrl());
                     }

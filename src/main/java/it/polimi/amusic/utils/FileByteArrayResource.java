@@ -1,5 +1,6 @@
 package it.polimi.amusic.utils;
 
+import lombok.EqualsAndHashCode;
 import org.springframework.core.io.ByteArrayResource;
 
 /**
@@ -7,9 +8,10 @@ import org.springframework.core.io.ByteArrayResource;
  * Poiche ByteArrayResource non prevede il filename
  * Questa classe viene in supporto per questa mancanza
  */
+@EqualsAndHashCode(callSuper = true)
 public class FileByteArrayResource extends ByteArrayResource {
 
-    private String fileName;
+    private final String fileName;
 
     public FileByteArrayResource(String fileName, byte[] byteArray, String description) {
         super(byteArray, description);

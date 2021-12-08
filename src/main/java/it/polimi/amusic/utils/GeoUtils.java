@@ -16,12 +16,16 @@ public class GeoUtils {
     private static final double MIN_LONGITUDE = Math.toRadians(-180d); // -PI
     private static final double MAX_LONGITUDE = Math.toRadians(180d);  //  PI
 
+    private GeoUtils() {
+
+    }
+
     /**
-     * Calcola la distanza tra due punti in latitudine e longitutune con la formula Haversine
+     * Calcola la distanza tra due punti in latitudine e longitude con la formula Haversine
      *
      * @param geoPointStart Punto di partenza
-     * @param geoPointEnd Punto di destinazione
-     * @returns Distance in km
+     * @param geoPointEnd   Punto di destinazione
+     * @return Distance in km
      */
     public static double distance(GeoPoint geoPointStart, GeoPoint geoPointEnd) {
         double latDistance = Math.toRadians(geoPointEnd.getLatitude() - geoPointStart.getLatitude());
@@ -30,16 +34,16 @@ public class GeoUtils {
                 + Math.cos(Math.toRadians(geoPointStart.getLatitude())) * Math.cos(Math.toRadians(geoPointEnd.getLatitude()))
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = RADIUS_EARTH * c; // convert to km
-        return distance;
+        return RADIUS_EARTH * c;
     }
 
 
     /**
      * Controlla se la latitudine e longitudine in radianti sono entro i limiti
      * latitudine e longitudine non possono essere 90/180 o -90/-180
-     * @param latitudeRadians
-     * @param longitudeRadians
+     *
+     * @param latitudeRadians  latitudeRadians
+     * @param longitudeRadians longitudeRadians
      */
     public static void checkBounds(double latitudeRadians, double longitudeRadians) {
         if (latitudeRadians < MIN_LATITUDE || latitudeRadians > MAX_LATITUDE ||
@@ -49,10 +53,10 @@ public class GeoUtils {
 
 
     /**
-     * @param latitudeRadians latitudine in radianti.
+     * @param latitudeRadians  latitudine in radianti.
      * @param longitudeRadians longitudine in radianti.
      */
-    public static GeoPoint getGeoPointfromRadians(double latitudeRadians, double longitudeRadians) {
+    public static GeoPoint getGeoPointFromRadians(double latitudeRadians, double longitudeRadians) {
         //Controllo se i valori sono entro i limiti
         checkBounds(latitudeRadians, longitudeRadians);
         //Converto i valori da radianti a gradi
@@ -71,9 +75,10 @@ public class GeoUtils {
      * <p>For more information about the formulae used in this method visit
      * <a href="http://JanMatuschek.de/LatitudeLongitudeBoundingCoordinates">
      * http://JanMatuschek.de/LatitudeLongitudeBoundingCoordinates</a>.</p>
+     *
      * @param distance the distance from the point represented by this
-     * GeoLocation instance. Must me measured in the same unit as the radius
-     * argument.
+     *                 GeoLocation instance. Must be measured in the same unit as the radius
+     *                 argument.
      * @return an array of two GeoLocation objects such that:<ul>
      * <li>The latitude of any point within the specified distance is greater
      * or equal to the latitude of the first array element and smaller or
@@ -104,7 +109,8 @@ public class GeoUtils {
         double minLatitude = radLat - radDist;
         double maxLatitude = radLat + radDist;
 
-        double minLongitude, maxLongitude;
+        double minLongitude;
+        double maxLongitude;
         if (minLatitude > MIN_LATITUDE && maxLatitude < MAX_LATITUDE) {
             double deltaLon = Math.asin(Math.sin(radDist) /
                     Math.cos(radLat));
@@ -120,8 +126,8 @@ public class GeoUtils {
             maxLongitude = MAX_LONGITUDE;
         }
 
-        //Creo un array contenente i due geopoint formando il rettangolo dell area
-        return Arrays.asList(getGeoPointfromRadians(minLatitude, minLongitude),getGeoPointfromRadians(maxLatitude, maxLongitude));
+        //Creo un array contenente i due geoPoint formando il rettangolo dell area
+        return Arrays.asList(getGeoPointFromRadians(minLatitude, minLongitude), getGeoPointFromRadians(maxLatitude, maxLongitude));
 
     }
 }

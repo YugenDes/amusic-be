@@ -1,19 +1,44 @@
 package it.polimi.amusic.mapper;
 
+import it.polimi.amusic.model.document.FriendDocument;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.model.dto.Friend;
+import it.polimi.amusic.model.dto.Partecipant;
 import it.polimi.amusic.model.dto.User;
+import it.polimi.amusic.model.request.UpdateUserRequest;
 import it.polimi.amusic.utils.TimestampUtils;
-import org.mapstruct.DecoratedWith;
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
-@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE , uses = TimestampUtils.class)
+@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, uses = TimestampUtils.class)
 @DecoratedWith(UserMapperDecorator.class)
 public interface UserMapper {
 
+    @Mapping(target = "name", expression = "java(userDocument.getName().charAt(0 ) + userDocument.getName().substring(1).toLowerCase())")
+    @Mapping(target = "surname", expression = "java(userDocument.getSurname().charAt(0 ) + userDocument.getSurname().substring(1).toLowerCase())")
+    @Mapping(target = "birthDay", expression = "java(TimestampUtils.convertTimestampToLocalDate(userDocument.getBirthDay()))")
     User getDtoFromDocument(UserDocument userDocument);
 
-    Friend mapUserFirendDocumentToFriend(UserDocument userDocument);
+    Friend mapUserFirendDocumentToFriend(FriendDocument friendDocument);
 
+    @Mapping(target = "displayName", expression = "java(userDocument.getName().charAt(0 ) + userDocument.getName().substring(1).toLowerCase()+' '+userDocument.getSurname().charAt(0 ) + userDocument.getSurname().substring(1).toLowerCase())")
+    Friend mapUserDocumentToFriend(UserDocument userDocument);
+
+    @Mapping(target = "birthDay", expression = "java(TimestampUtils.convertLocalDateToTimestamp(request.getBirthDay()))")
+    UserDocument updateUserDocumentFromUpdateRequest(@MappingTarget UserDocument document, UpdateUserRequest request);
+
+    @Mapping(target = "name", expression = "java(userDocument.getName().charAt(0 ) + userDocument.getName().substring(1).toLowerCase())")
+    @Mapping(target = "surname", expression = "java(userDocument.getSurname().charAt(0 ) + userDocument.getSurname().substring(1).toLowerCase())")
+    Partecipant mapUserDocumentToPartecipant(UserDocument userDocument);
+
+    @AfterMapping
+    default User afterMappingUser(UserDocument userDocument, @MappingTarget User user) {
+        return user.setDisplayName(user.getName() + " " + user.getSurname());
+    }
+
+    @AfterMapping
+    default Friend afetMappingFriend(UserDocument userDocument, @MappingTarget Friend friend) {
+        String displayName = userDocument.getName().charAt(0) + userDocument.getName().substring(1).toLowerCase()
+                + " " + userDocument.getSurname().charAt(0) + userDocument.getSurname().substring(1).toLowerCase();
+        return friend.setDisplayName(displayName);
+    }
 }

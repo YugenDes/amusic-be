@@ -5,13 +5,13 @@ import com.google.cloud.firestore.GeoPoint;
 import com.google.cloud.firestore.annotation.DocumentId;
 import it.polimi.amusic.utils.TimestampUtils;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.cloud.gcp.data.firestore.Document;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Accessors(chain = true)
@@ -22,13 +22,17 @@ public class EventDocument implements Serializable {
     private String id;
     private String eventName;
     private String description;
+    //Via CAP Comune
+    private String address;
     private Timestamp eventDatePublished;
     private Timestamp eventDate;
     private String imageUrl;
+    private String phoneNumber;
     private GeoPoint geoPoint;
     private String geoHash;
     private Integer maxPartecipants = 50;
-    private Map<String, Boolean> partecipants = new HashMap<>();
+    private List<PartecipantDocument> partecipants = new ArrayList<>();
+    private List<String> partecipantsIds = new ArrayList<>();
     private Double ticketPrice;
 
 
@@ -52,9 +56,11 @@ public class EventDocument implements Serializable {
         return this;
     }
 
-    public boolean addPartecipantIfAbsent(String userIdDocument,Boolean visible) {
-        if (Objects.isNull(partecipants.get(userIdDocument)) && partecipants.size() < maxPartecipants) {
-            return partecipants.put(userIdDocument,visible);
+    public boolean addPartecipantIfAbsent(PartecipantDocument partecipantDocument) {
+        if (!partecipantsIds.contains(partecipantDocument.getId()) && partecipants.size() < maxPartecipants) {
+            partecipants.add(partecipantDocument);
+            partecipantsIds.add(partecipantDocument.getId());
+            return true;
         } else {
             return false;
         }

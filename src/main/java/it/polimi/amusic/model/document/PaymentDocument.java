@@ -21,8 +21,8 @@ public class PaymentDocument implements Serializable {
     private Timestamp datePayment;
     private Double amount;
     private String vendor;
-    private String userIdDocument;
-    private String eventIdDocument;
+    private String idUserDocument;
+    private String idEventDocument;
 
 
 }

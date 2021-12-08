@@ -11,10 +11,6 @@ public class RegistrationRequest {
     @NonNull
     private String email;
     @NonNull
-    private String name;
-    @NonNull
-    private String surname;
-    @NonNull
     private String firebaseUidToken;
     @NonNull
     private AuthProvider provider;

@@ -1,37 +1,42 @@
-package it.polimi.amusic.service.persistance.impl;
+package it.polimi.amusic.repository.impl;
 
 import com.firebase.geofire.core.GeoHash;
 import com.google.cloud.firestore.*;
 import it.polimi.amusic.exception.FirestoreException;
 import it.polimi.amusic.mapper.EventMapperDecorator;
 import it.polimi.amusic.model.document.EventDocument;
-import it.polimi.amusic.model.dto.Event;
-import it.polimi.amusic.service.persistance.EventService;
+import it.polimi.amusic.repository.EventRepository;
 import it.polimi.amusic.utils.GeoUtils;
 import it.polimi.amusic.utils.TimestampUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-@Service
+@Component
 @Slf4j
 @RequiredArgsConstructor
-public class EventServiceImpl implements EventService {
+public class EventRepositoryImpl implements EventRepository {
 
     private final Firestore firestore;
-    private final EventMapperDecorator eventMapperDecorator;
+    private final EventMapperDecorator eventMapper;
+
+    static final String EVENT_DATE = "eventDate";
+    static final String EVENT_NAME = "eventName";
+    static final String PARTECIPANTS = "partecipantsIds";
+    static final String COLLECTION_NAME = "events";
 
     @Override
     public EventDocument save(EventDocument eventDocument) throws FirestoreException {
         try {
-            final CollectionReference events = firestore.collection("events");
+            final CollectionReference events = firestore.collection(COLLECTION_NAME);
             DocumentReference document;
             if (StringUtils.isNotBlank(eventDocument.getId())) {
                 document = events.document(eventDocument.getId());
@@ -49,7 +54,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public Optional<EventDocument> findById(String id) throws FirestoreException {
         try {
-            return Optional.ofNullable(firestore.collection("events")
+            return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
                             .document(id)
                             .get().get())
                     .map(documentSnapshot -> documentSnapshot.toObject(EventDocument.class));
@@ -59,18 +64,33 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> findAll() {
+    public Optional<EventDocument> findByIdAfterLocalDateNow(String id) {
+        try {
+            return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
+                            .whereEqualTo("id", id)
+                            .whereGreaterThanOrEqualTo(EVENT_DATE, Objects.requireNonNull(TimestampUtils.convertLocalDateToTimestamp(LocalDate.now())))
+                            .get().get())
+                    .map(documentSnapshot -> documentSnapshot.toObjects(EventDocument.class))
+                    .map(eventDocuments -> eventDocuments
+                            .stream()
+                            .filter(eventDocument -> eventDocument.getId().equals(id))
+                            .findFirst()
+                            .orElse(null));
+        } catch (ExecutionException | InterruptedException e) {
+            throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
+        }
+    }
+
+    @Override
+    public List<EventDocument> findAll() {
         try {
             return Optional.ofNullable(firestore
-                            .collection("events")
-                            .limit(50)
+                            .collection(COLLECTION_NAME)
+                            .limit(20)
                             .get()
                             .get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))
-                    .orElseThrow()
-                    .stream()
-                    .map(eventMapperDecorator::getDtoFromDocument)
-                    .collect(Collectors.toList());
+                    .orElseThrow();
         } catch (ExecutionException | InterruptedException e) {
             throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
         }
@@ -79,7 +99,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDocument> findByEventName(String eventName) throws FirestoreException {
         try {
-            return Optional.ofNullable(firestore.collection("events").whereArrayContains("eventName", eventName)
+            return Optional.ofNullable(firestore.collection(COLLECTION_NAME).whereArrayContains(EVENT_NAME, eventName)
                             .get()
                             .get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))
@@ -90,16 +110,18 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> findByGeoPointNearMe(GeoPoint center, double distance) {
+    public List<EventDocument> findByGeoPointNearMe(GeoPoint center, double distance) {
 
+        //Creo il boundingBox
         final GeoPoint min = GeoUtils.boundingGeoPoints(center, distance).get(0);
         final GeoPoint max = GeoUtils.boundingGeoPoints(center, distance).get(1);
 
+        //Hasho i geoPoint
         String minGeoHashString = new GeoHash(min.getLatitude(), min.getLongitude()).getGeoHashString();
         String maxGeoHashString = new GeoHash(max.getLatitude(), max.getLongitude()).getGeoHashString();
 
         try {
-            return Optional.ofNullable(firestore.collection("events")
+            return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
                             .orderBy("geoHash")
                             .startAt(minGeoHashString)
                             .endAt(maxGeoHashString)
@@ -108,20 +130,24 @@ public class EventServiceImpl implements EventService {
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))
                     .orElseThrow()
                     .parallelStream()
+                    //Tramite la funzione distanza filtro gli eventi effettivamente a distanza cercata
+                    //Per evitare i falsi positivi
                     .filter(eventDocument ->
                             GeoUtils.distance(center, eventDocument.getGeoPoint()) <= distance)
-                    .map(eventMapperDecorator::getDtoFromDocument)
                     .collect(Collectors.toList());
         } catch (InterruptedException | ExecutionException e) {
             throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
         }
     }
 
+
     @Override
-    public List<EventDocument> findByPartecipant(String userIdDocument) throws FirestoreException {
+    public List<EventDocument> findByParticipant(String userIdDocument) throws FirestoreException {
         try {
-            return Optional.ofNullable(firestore.collection("events")
-                            .whereArrayContains("partecipants", userIdDocument)
+            return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
+                            .whereArrayContains(PARTECIPANTS, userIdDocument)
+                            .orderBy("eventDate", Query.Direction.DESCENDING)
+                            .limit(10)
                             .get().get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))
                     .orElseThrow();
@@ -131,36 +157,30 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> findByEventDate(LocalDate localDate) throws FirestoreException {
+    public List<EventDocument> findByEventDate(LocalDate localDate) throws FirestoreException {
         try {
-            return Optional.ofNullable(firestore.collection("events")
-                            .whereGreaterThanOrEqualTo("eventDate", TimestampUtils.convertLocalDateToTimestamp(localDate))
-                            .whereLessThanOrEqualTo("eventDate", TimestampUtils.convertLocalDateToTimestamp(localDate.plusDays(1)))
+            return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
+                            .whereGreaterThanOrEqualTo(EVENT_DATE, Objects.requireNonNull(TimestampUtils.convertLocalDateToTimestamp(localDate)))
+                            .whereLessThanOrEqualTo(EVENT_DATE, Objects.requireNonNull(TimestampUtils.convertLocalDateToTimestamp(localDate.plusDays(1))))
                             .get()
                             .get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))
-                    .orElseThrow()
-                    .stream()
-                    .map(eventMapperDecorator::getDtoFromDocument)
-                    .collect(Collectors.toList());
+                    .orElseThrow();
         } catch (InterruptedException | ExecutionException e) {
             throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
         }
     }
 
     @Override
-    public List<Event> findByEventDateBetween(LocalDate localDateStart, LocalDate localDateEnd) {
+    public List<EventDocument> findByEventDateBetween(LocalDate localDateStart, LocalDate localDateEnd) {
         try {
-            return Optional.ofNullable(firestore.collection("events")
-                            .whereGreaterThanOrEqualTo("eventDate", TimestampUtils.convertLocalDateToTimestamp(localDateStart))
-                            .whereLessThanOrEqualTo("eventDate", TimestampUtils.convertLocalDateToTimestamp(localDateEnd.plusDays(1)))
+            return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
+                            .whereGreaterThanOrEqualTo(EVENT_DATE, Objects.requireNonNull(TimestampUtils.convertLocalDateToTimestamp(localDateStart)))
+                            .whereLessThanOrEqualTo(EVENT_DATE, Objects.requireNonNull(TimestampUtils.convertLocalDateToTimestamp(localDateEnd.plusDays(1))))
                             .get()
                             .get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))
-                    .orElseThrow()
-                    .stream()
-                    .map(eventMapperDecorator::getDtoFromDocument)
-                    .collect(Collectors.toList());
+                    .orElseThrow();
         } catch (InterruptedException | ExecutionException e) {
             throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
         }
@@ -169,7 +189,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public void deleteEvent(String id) {
         try {
-            firestore.collection("events")
+            firestore.collection(COLLECTION_NAME)
                     .document(id)
                     .delete().get();
         } catch (InterruptedException | ExecutionException e) {

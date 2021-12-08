@@ -4,7 +4,6 @@ import it.polimi.amusic.exception.AmusicEmailException;
 import it.polimi.amusic.external.email.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -29,7 +28,7 @@ public class EmailServiceImpl implements EmailService {
             //Creo un MimeMessage cosi da poter inserire allegati
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom("noreply@amusic.com");
+            helper.setFrom("noreply@polimi-amusic.appspotmail.com");
             helper.setTo(request.getEmailTo());
             helper.setSubject(request.getSubject());
             helper.setText(request.getText(), request.getHtmlText());
@@ -37,7 +36,7 @@ public class EmailServiceImpl implements EmailService {
                 helper.addInline("Ticket", request.getAttachment());
                 helper.addAttachment(request.getAttachment().getName(), request.getAttachment());
             }
-            javaMailSender.send(message);
+            //  javaMailSender.send(message);
             return true;
         } catch (MailException | MessagingException e) {
             log.error("Errore durante l'invio dell mail : {}", e.getLocalizedMessage());

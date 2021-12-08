@@ -1,13 +1,12 @@
-package it.polimi.amusic.service.persistance;
+package it.polimi.amusic.repository;
 
-import com.google.cloud.firestore.DocumentReference;
 import it.polimi.amusic.exception.FirestoreException;
 import it.polimi.amusic.model.document.PaymentDocument;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public interface PaymentService {
+public interface PaymentRepository {
 
     PaymentDocument savePayment(PaymentDocument paymentDocument) throws FirestoreException;
 
@@ -17,5 +16,7 @@ public interface PaymentService {
 
     List<PaymentDocument> findByDate(LocalDate localDate) throws FirestoreException;
 
-    List<PaymentDocument> findByUser(DocumentReference userDocument) throws FirestoreException;
+    List<PaymentDocument> findByUser(String idUserDocument) throws FirestoreException;
+
+    PaymentDocument findByUserAndEvent(String idUserDocument, String idEventDocument) throws FirestoreException;
 }

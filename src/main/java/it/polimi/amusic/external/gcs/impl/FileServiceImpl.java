@@ -4,7 +4,9 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
 import it.polimi.amusic.exception.GCPBucketException;
 import it.polimi.amusic.external.gcs.FileService;
+import it.polimi.amusic.utils.GcsRegexFilename;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -14,21 +16,26 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FileServiceImpl implements FileService {
 
     private final GoogleCredentials credentials;
+    private static final String BUCKET_NAME = "polimi-amusic.appspot.com";
 
     /**
      * Carica il file sul bucket di google cloud
-     * @param file
+     *
+     * @param file file
      * @return String fileUrl
-     * @throws GCPBucketException
+     * @throws GCPBucketException exception
      */
+    //TODO aggiungre compressione immagine
     @Override
     public String uploadFile(Resource file) throws GCPBucketException {
+        log.info("Uploading photo to GCS");
         //Creo l'identificatore del blob
         //Utilizzo come name strategy la creazione di un UUID random
-        BlobId blobId = BlobId.of("polimi-amusic.appspot.com", UUID.randomUUID().toString());
+        BlobId blobId = BlobId.of(BUCKET_NAME, UUID.randomUUID().toString());
         //Creo le info associate al blob
         BlobInfo blobInfo = BlobInfo
                 .newBuilder(blobId)
@@ -51,14 +58,16 @@ public class FileServiceImpl implements FileService {
 
     /**
      * Scarica il file dal bucket di google cloud
-     * @param fileName
+     *
+     * @param url filename
      * @return Resource file
-     * @throws GCPBucketException
+     * @throws GCPBucketException exception
      */
     @Override
-    public Resource downloadFile(String fileName) throws GCPBucketException {
+    public Resource downloadFile(String url) throws GCPBucketException {
         //Creo l'identificatore del blob associato al filename
-        BlobId blobId = BlobId.of("polimi-amusic.appspot.com", fileName);
+        final String filename = GcsRegexFilename.getFilenameFromGcsUrl(url);
+        BlobId blobId = BlobId.of(BUCKET_NAME, filename);
         final Storage service = StorageOptions.newBuilder()
                 .setCredentials(credentials)
                 .build()
@@ -68,7 +77,7 @@ public class FileServiceImpl implements FileService {
         try {
             //Lo converto in un formato gestibile come Resource
             final byte[] content = blob.getContent();
-            return new ByteArrayResource(content, fileName);
+            return new ByteArrayResource(content, filename);
         } catch (StorageException | NullPointerException e) {
             throw new GCPBucketException("Errore durante il download del file {}", e.getLocalizedMessage());
         }
@@ -76,25 +85,26 @@ public class FileServiceImpl implements FileService {
 
     /**
      * Cancella il file dal bucket di google cloud
-     * @param fileName
+     *
+     * @param url url
      * @return boolean status dell'operazione
-     * @throws GCPBucketException
+     * @throws GCPBucketException exception
      */
     @Override
-    public boolean deleteFile(String fileName) throws GCPBucketException {
+    public boolean deleteFile(String url) throws GCPBucketException {
+        final String filename = GcsRegexFilename.getFilenameFromGcsUrl(url);
         try {
+            log.info("Deleting photo from GCS {}", filename);
             //Creo l'identificatore del blob associato al filename
-            BlobId blobId = BlobId.of("polimi-amusic.appspot.com", fileName);
+            BlobId blobId = BlobId.of(BUCKET_NAME, filename);
             final Storage service = StorageOptions.newBuilder()
                     .setCredentials(credentials)
                     .build()
                     .getService();
             //Elimino il file
-            final boolean delete = service.delete(blobId);
-            //il metodo ritorna vero/falso a seconda se é riuscito a eliminare il blob
-            return delete;
+            return service.delete(blobId);
         } catch (Exception e) {
-            throw new GCPBucketException("Errore durante l'eliminazione del file {}", fileName);
+            throw new GCPBucketException("Errore durante l'eliminazione del file {}", filename);
         }
     }
 }

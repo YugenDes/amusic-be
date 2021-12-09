@@ -173,8 +173,7 @@
                 <version>3.0.0</version>
                 <configuration>
                     <to>
-                        <!--                        <image>europe-west6-docker.pkg.dev/polimi-amusic/amusic-repo/amusic-docker-image</image>-->
-                        <image>gcr.io/polimi-amusic/amusic-docker-image</image>
+                          <image>gcr.io/polimi-amusic/amusic-docker-image</image>
                     </to>
 
                     <container>

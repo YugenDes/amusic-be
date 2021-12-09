@@ -112,6 +112,23 @@ class FirestoreServiceTest {
 
     }
 
+    @Test
+    void saveNewEventSingle() {
+        final EventDocument event = eventRepository.save(new EventDocument()
+                .setEventName("Studio 7")
+                .setEventDate(LocalDateTime.of(2021, 12, 15, 21, 00))
+                .setEventDatePublished(LocalDateTime.now())
+                .setDescription("Musica eclettica in un locale multisala alla moda rivolto ad over 30, con divani bianchi e pareti a specchio. Puro divertimento per gli over del nostro quartiere. Vi aspettano giochi di vario tipo, bella musica anni 90 e drink da urlo!\n" +
+                        "Evento della serata ore 21.00 gara di coppia a... venite a scoprirlo!")
+                .setGeoPoint(new GeoPoint(41.973516471434536, 12.442224500451731))
+                .setGeoHash(new GeoHash(41.973516471434536, 12.442224500451731).getGeoHashString())
+                .setMaxPartecipants(100)
+                .setAddress("Via di Grottarossa, 175, 00189 Roma RM")
+                .setPhoneNumber("+393356581983")
+                .setTicketPrice(18.5D));
+        Assertions.assertNotNull(event.getId());
+    }
+
 
     @Test
     void findEvent() {

@@ -1,0 +1,3870 @@
+{
+  "events": [
+    {
+      "defined_class": "it.polimi.amusic.security.SecurityService",
+      "event": "call",
+      "id": 2221,
+      "lineno": 27,
+      "method_id": "getBearerToken",
+      "parameters": [
+        {
+          "class": "org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest",
+          "kind": "req",
+          "name": "request",
+          "object_id": 1095929709,
+          "value": "org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest@41528f6d"
+        }
+      ],
+      "path": "it/polimi/amusic/security/SecurityService.java",
+      "receiver": {
+        "class": "it.polimi.amusic.security.SecurityService",
+        "object_id": 265763469,
+        "value": "it.polimi.amusic.security.SecurityService@fd73a8d"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2222,
+      "parent_id": 2221,
+      "return_value": {
+        "class": "java.lang.String",
+        "object_id": 770395612,
+        "value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjQ3OTg5ZTU4ZWU1ODM4OTgzZDhhNDQwNWRlOTVkYTllZTZmNWVlYjgiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiQW5kcmVhIE1lc3NpbmEiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUFUWEFKeXlPcDBDaFZnRDQ3d1VQSlg1cmZCTFp3ZFZBZFEtNUxrMVg2Zmo9czk2LWMiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vcG9saW1pLWFtdXNpYyIsImF1ZCI6InBvbGltaS1hbXVzaWMiLCJhdXRoX3RpbWUiOjE2MzkwNDYyNjQsInVzZXJfaWQiOiJaVmF4cEJJYUk1WFR2NXVFSTlVR01KamhjRm0yIiwic3ViIjoiWlZheHBCSWFJNVhUdjV1RUk5VUdNSmpoY0ZtMiIsImlhdCI6MTYzOTA0NjI2NCwiZXhwIjoxNjM5MDQ5ODY0LCJlbWFpbCI6ImFuZHJlYS5tZXNzaW5hMjIwMzk5QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7Imdvb2dsZS5jb20iOlsiMTAzNTM0MDUyODg2MzM5ODg3MzgzIl0sImVtYWlsIjpbImFuZHJlYS5tZXNzaW5hMjIwMzk5QGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6Imdvb2dsZS5jb20ifX0.icl2cxBwmnYV65gwCyPRNP20pnqr4pPZ9F0PHgKq0HwtwWgZJxhubaknR4KEU2bB9GBT8MkQ2QdUhBXPlBhaYDwdUoz-5d1bc1CbYIChc94CC60r5xn5mnG6xhGwDxUeEOIXz9bYW-wT89Aq5D3ru_BB71b89e7I40OBFuJje79l6hnlRYXMNiaAqzW0SY-Pkv97b5..."
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+      "event": "call",
+      "id": 2223,
+      "lineno": 57,
+      "method_id": "findByEmail",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "email",
+          "object_id": 13842170,
+          "value": "andrea.messina220399@gmail.com"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/UserRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+        "object_id": 442213254,
+        "value": "it.polimi.amusic.repository.impl.UserRepositoryImpl@1a5ba386"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2224,
+      "parent_id": 2223,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 1129529991,
+        "value": "Optional[UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dt..."
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+      "event": "call",
+      "id": 2225,
+      "lineno": 157,
+      "method_id": "updateFromFirebase",
+      "parameters": [
+        {
+          "class": "it.polimi.amusic.model.document.UserDocument",
+          "kind": "req",
+          "name": "userDocument",
+          "object_id": 1252367021,
+          "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+        },
+        {
+          "class": "com.google.firebase.auth.FirebaseToken",
+          "kind": "req",
+          "name": "firebaseToken",
+          "object_id": 656388190,
+          "value": "com.google.firebase.auth.FirebaseToken@271fb05e"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/UserRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+        "object_id": 442213254,
+        "value": "it.polimi.amusic.repository.impl.UserRepositoryImpl@1a5ba386"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.document.UserDocument",
+      "event": "call",
+      "id": 2226,
+      "lineno": 17,
+      "method_id": "setEmailVerified",
+      "parameters": [
+        {
+          "class": "java.lang.Boolean",
+          "kind": "req",
+          "name": "emailVerified",
+          "object_id": 293292177,
+          "value": "true"
+        }
+      ],
+      "path": "it/polimi/amusic/model/document/UserDocument.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2227,
+      "parent_id": 2226,
+      "return_value": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.document.UserDocument",
+      "event": "call",
+      "id": 2228,
+      "lineno": 17,
+      "method_id": "setLastLogin",
+      "parameters": [
+        {
+          "class": "com.google.cloud.Timestamp",
+          "kind": "req",
+          "name": "lastLogin",
+          "object_id": 895906957,
+          "value": "2021-12-09T10:37:44Z"
+        }
+      ],
+      "path": "it/polimi/amusic/model/document/UserDocument.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2229,
+      "parent_id": 2228,
+      "return_value": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.document.UserDocument",
+      "event": "call",
+      "id": 2230,
+      "lineno": 17,
+      "method_id": "setEnabled",
+      "parameters": [
+        {
+          "class": "java.lang.Boolean",
+          "kind": "req",
+          "name": "enabled",
+          "object_id": 498298446,
+          "value": "true"
+        }
+      ],
+      "path": "it/polimi/amusic/model/document/UserDocument.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2231,
+      "parent_id": 2230,
+      "return_value": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+      "event": "call",
+      "id": 2232,
+      "lineno": 137,
+      "method_id": "save",
+      "parameters": [
+        {
+          "class": "it.polimi.amusic.model.document.UserDocument",
+          "kind": "req",
+          "name": "userDocument",
+          "object_id": 1252367021,
+          "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/UserRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+        "object_id": 442213254,
+        "value": "it.polimi.amusic.repository.impl.UserRepositoryImpl@1a5ba386"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.document.UserDocument",
+      "event": "call",
+      "id": 2233,
+      "lineno": 88,
+      "method_id": "isEnabled",
+      "path": "it/polimi/amusic/model/document/UserDocument.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2234,
+      "parent_id": 2233,
+      "return_value": {
+        "class": "java.lang.Boolean",
+        "object_id": 284493355,
+        "value": "true"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.document.UserDocument",
+      "event": "call",
+      "id": 2235,
+      "lineno": 52,
+      "method_id": "isAccountExpired",
+      "path": "it/polimi/amusic/model/document/UserDocument.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2236,
+      "parent_id": 2235,
+      "return_value": {
+        "class": "java.lang.Boolean",
+        "object_id": 614098051,
+        "value": "false"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.document.UserDocument",
+      "event": "call",
+      "id": 2237,
+      "lineno": 53,
+      "method_id": "isCredentialsExpired",
+      "path": "it/polimi/amusic/model/document/UserDocument.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2238,
+      "parent_id": 2237,
+      "return_value": {
+        "class": "java.lang.Boolean",
+        "object_id": 45580018,
+        "value": "false"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.document.UserDocument",
+      "event": "call",
+      "id": 2239,
+      "lineno": 51,
+      "method_id": "isAccountLocked",
+      "path": "it/polimi/amusic/model/document/UserDocument.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2240,
+      "parent_id": 2239,
+      "return_value": {
+        "class": "java.lang.Boolean",
+        "object_id": 1703548011,
+        "value": "false"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.document.UserDocument",
+      "event": "call",
+      "id": 2241,
+      "lineno": 73,
+      "method_id": "isAccountNonExpired",
+      "path": "it/polimi/amusic/model/document/UserDocument.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2242,
+      "parent_id": 2241,
+      "return_value": {
+        "class": "java.lang.Boolean",
+        "object_id": 1228233593,
+        "value": "true"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.document.UserDocument",
+      "event": "call",
+      "id": 2243,
+      "lineno": 78,
+      "method_id": "isAccountNonLocked",
+      "path": "it/polimi/amusic/model/document/UserDocument.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2244,
+      "parent_id": 2243,
+      "return_value": {
+        "class": "java.lang.Boolean",
+        "object_id": 1212398224,
+        "value": "true"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.document.UserDocument",
+      "event": "call",
+      "id": 2245,
+      "lineno": 83,
+      "method_id": "isCredentialsNonExpired",
+      "path": "it/polimi/amusic/model/document/UserDocument.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2246,
+      "parent_id": 2245,
+      "return_value": {
+        "class": "java.lang.Boolean",
+        "object_id": 2034407335,
+        "value": "true"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.document.UserDocument",
+      "event": "call",
+      "id": 2247,
+      "lineno": 41,
+      "method_id": "isEmailVerified",
+      "path": "it/polimi/amusic/model/document/UserDocument.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2248,
+      "parent_id": 2247,
+      "return_value": {
+        "class": "java.lang.Boolean",
+        "object_id": 602378449,
+        "value": "true"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.document.UserDocument",
+      "event": "call",
+      "id": 2249,
+      "lineno": 17,
+      "method_id": "setId",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 1943034663,
+          "value": "R9oU54EZeqKUAgSonV72"
+        }
+      ],
+      "path": "it/polimi/amusic/model/document/UserDocument.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2250,
+      "parent_id": 2249,
+      "return_value": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2251,
+      "parent_id": 2232,
+      "return_value": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2252,
+      "parent_id": 2225,
+      "return_value": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.document.UserDocument",
+      "event": "call",
+      "id": 2253,
+      "lineno": 88,
+      "method_id": "isEnabled",
+      "path": "it/polimi/amusic/model/document/UserDocument.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.document.UserDocument",
+        "object_id": 1252367021,
+        "value": "UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dtrue, acco..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2254,
+      "parent_id": 2253,
+      "return_value": {
+        "class": "java.lang.Boolean",
+        "object_id": 1557445339,
+        "value": "true"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "call",
+      "http_server_request": {
+        "normalized_path_info": "/private/user/friends",
+        "path_info": "/private/user/friends",
+        "protocol": "HTTP/1.1",
+        "request_method": "GET"
+      },
+      "id": 2256,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+      "event": "call",
+      "id": 2261,
+      "lineno": 69,
+      "method_id": "findById",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 1943034663,
+          "value": "R9oU54EZeqKUAgSonV72"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/UserRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+        "object_id": 442213254,
+        "value": "it.polimi.amusic.repository.impl.UserRepositoryImpl@1a5ba386"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2262,
+      "parent_id": 2261,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 270688494,
+        "value": "Optional[UserDocument(id\u003dR9oU54EZeqKUAgSonV72, firebaseUID\u003dZVaxpBIaI5XTv5uEI9UGMJjhcFm2, email\u003dandrea.messina220399@gmail.com, provider\u003dGOOGLE, authorities\u003d[RoleDocument(id\u003dR9oU54EZeqKUAgSonV72, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/11823503-a05f-4078-af4a-1f631d1f1a43?generation\u003d1638821539616317\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dANDREA, surname\u003dMESSINA, displayName\u003dAndrea Messina, birthDay\u003d1999-03-21T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z), FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z), FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z), FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)], eventList\u003d[DlDXMobm0uoGrsV4uqXg, icuXDgj7mPkhY9Rln5cf, Q8jDzEYZIZXTmC8z09JO], lastLogin\u003d2021-12-09T10:37:44Z, createDate\u003d2021-12-03T10:04:01Z, emailVerified\u003dt..."
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.mapper.UserMapperDecorator",
+      "event": "call",
+      "id": 2263,
+      "lineno": 41,
+      "method_id": "mapUserFirendDocumentToFriend",
+      "parameters": [
+        {
+          "class": "it.polimi.amusic.model.document.FriendDocument",
+          "kind": "req",
+          "name": "friendDocument",
+          "object_id": 16501345,
+          "value": "FriendDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, friendSince\u003d2021-12-08T11:59:31.329000000Z)"
+        }
+      ],
+      "path": "it/polimi/amusic/mapper/UserMapperDecorator.java",
+      "receiver": {
+        "class": "it.polimi.amusic.mapper.UserMapperImpl",
+        "object_id": 2064388000,
+        "value": "it.polimi.amusic.mapper.UserMapperImpl@7b0c0fa0"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+      "event": "call",
+      "id": 2264,
+      "lineno": 69,
+      "method_id": "findById",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 1997204965,
+          "value": "puLxmw6ozrb7X7IuVWkr"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/UserRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+        "object_id": 442213254,
+        "value": "it.polimi.amusic.repository.impl.UserRepositoryImpl@1a5ba386"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2265,
+      "parent_id": 2264,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 100801481,
+        "value": "Optional[UserDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, firebaseUID\u003dlhKU6BOwyVTVVhZ4HVYyDvrT9352, email\u003dalbertomanuguerra18@gmail.com, provider\u003dAMUSIC, authorities\u003d[RoleDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dALBERTO, surname\u003dMANUGUERRA, displayName\u003dALBERTO MANUGUERRA, birthDay\u003dnull, city\u003dTrapani, sex\u003dFemmina, firendList\u003d[FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-03T17:39:58.408000000Z), FriendDocument(id\u003dR9oU54EZeqKUAgSonV72, friendSince\u003d2021-12-04T14:58:56.109000000Z), FriendDocument(id\u003d8Xq2gviMAwO1Pc3EjoAl, friendSince\u003d2021-12-04T14:59:10.849000000Z)], eventList\u003d[icuXDgj7mPkhY9Rln5cf, Px1rphu8AiVS3aGnoSGj, DlDXMobm0uoGrsV4uqXg, hzAoaO1JqWrnsPF5AWEc], lastLogin\u003d2021-12-08T21:38:35Z, createDate\u003d1970-01-19T23:07:24.868658000Z, emailVerified\u003dtrue, accountNonExpired\u003dtrue, accountNonLocked\u003dtrue, credent..."
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.mapper.UserMapperDecorator",
+      "event": "call",
+      "id": 2266,
+      "lineno": 58,
+      "method_id": "mapUserDocumentToFriend",
+      "parameters": [
+        {
+          "class": "it.polimi.amusic.model.document.UserDocument",
+          "kind": "req",
+          "name": "userDocument",
+          "object_id": 168264652,
+          "value": "UserDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, firebaseUID\u003dlhKU6BOwyVTVVhZ4HVYyDvrT9352, email\u003dalbertomanuguerra18@gmail.com, provider\u003dAMUSIC, authorities\u003d[RoleDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dALBERTO, surname\u003dMANUGUERRA, displayName\u003dALBERTO MANUGUERRA, birthDay\u003dnull, city\u003dTrapani, sex\u003dFemmina, firendList\u003d[FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-03T17:39:58.408000000Z), FriendDocument(id\u003dR9oU54EZeqKUAgSonV72, friendSince\u003d2021-12-04T14:58:56.109000000Z), FriendDocument(id\u003d8Xq2gviMAwO1Pc3EjoAl, friendSince\u003d2021-12-04T14:59:10.849000000Z)], eventList\u003d[icuXDgj7mPkhY9Rln5cf, Px1rphu8AiVS3aGnoSGj, DlDXMobm0uoGrsV4uqXg, hzAoaO1JqWrnsPF5AWEc], lastLogin\u003d2021-12-08T21:38:35Z, createDate\u003d1970-01-19T23:07:24.868658000Z, emailVerified\u003dtrue, accountNonExpired\u003dtrue, accountNonLocked\u003dtrue, credentialsNonEx..."
+        }
+      ],
+      "path": "it/polimi/amusic/mapper/UserMapperDecorator.java",
+      "receiver": {
+        "class": "it.polimi.amusic.mapper.UserMapperImpl",
+        "object_id": 2064388000,
+        "value": "it.polimi.amusic.mapper.UserMapperImpl@7b0c0fa0"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.mapper.UserMapperImpl_",
+      "event": "call",
+      "id": 2267,
+      "lineno": 74,
+      "method_id": "mapUserDocumentToFriend",
+      "parameters": [
+        {
+          "class": "it.polimi.amusic.model.document.UserDocument",
+          "kind": "req",
+          "name": "userDocument",
+          "object_id": 168264652,
+          "value": "UserDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, firebaseUID\u003dlhKU6BOwyVTVVhZ4HVYyDvrT9352, email\u003dalbertomanuguerra18@gmail.com, provider\u003dAMUSIC, authorities\u003d[RoleDocument(id\u003dpuLxmw6ozrb7X7IuVWkr, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dALBERTO, surname\u003dMANUGUERRA, displayName\u003dALBERTO MANUGUERRA, birthDay\u003dnull, city\u003dTrapani, sex\u003dFemmina, firendList\u003d[FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-03T17:39:58.408000000Z), FriendDocument(id\u003dR9oU54EZeqKUAgSonV72, friendSince\u003d2021-12-04T14:58:56.109000000Z), FriendDocument(id\u003d8Xq2gviMAwO1Pc3EjoAl, friendSince\u003d2021-12-04T14:59:10.849000000Z)], eventList\u003d[icuXDgj7mPkhY9Rln5cf, Px1rphu8AiVS3aGnoSGj, DlDXMobm0uoGrsV4uqXg, hzAoaO1JqWrnsPF5AWEc], lastLogin\u003d2021-12-08T21:38:35Z, createDate\u003d1970-01-19T23:07:24.868658000Z, emailVerified\u003dtrue, accountNonExpired\u003dtrue, accountNonLocked\u003dtrue, credentialsNonEx..."
+        }
+      ],
+      "path": "it/polimi/amusic/mapper/UserMapperImpl_.java",
+      "receiver": {
+        "class": "it.polimi.amusic.mapper.UserMapperImpl_",
+        "object_id": 1888574632,
+        "value": "it.polimi.amusic.mapper.UserMapperImpl_@70915ca8"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2268,
+      "lineno": 10,
+      "method_id": "setId",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 1713781317,
+          "value": "puLxmw6ozrb7X7IuVWkr"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dnull, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2269,
+      "parent_id": 2268,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dnull, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2270,
+      "lineno": 10,
+      "method_id": "setPhotoUrl",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "photoUrl",
+          "object_id": 990277735,
+          "value": "https://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2271,
+      "parent_id": 2270,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2272,
+      "lineno": 40,
+      "method_id": "convertTimestampToLocalDateTime",
+      "parameters": [
+        {
+          "class": "com.google.cloud.Timestamp",
+          "kind": "req",
+          "name": "timestamp",
+          "object_id": 502983167,
+          "value": "2021-12-08T21:38:35Z"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2273,
+      "parent_id": 2272,
+      "return_value": {
+        "class": "java.time.LocalDateTime",
+        "object_id": 1596848396,
+        "value": "2021-12-08T22:38:35"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2274,
+      "lineno": 10,
+      "method_id": "setLastLogin",
+      "parameters": [
+        {
+          "class": "java.time.LocalDateTime",
+          "kind": "req",
+          "name": "lastLogin",
+          "object_id": 1596848396,
+          "value": "2021-12-08T22:38:35"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dnull, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2275,
+      "parent_id": 2274,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dnull, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2276,
+      "lineno": 10,
+      "method_id": "setDisplayName",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "displayName",
+          "object_id": 828679504,
+          "value": "Alberto Manuguerra"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2277,
+      "parent_id": 2276,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2278,
+      "lineno": 10,
+      "method_id": "setDisplayName",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "displayName",
+          "object_id": 94674545,
+          "value": "Alberto Manuguerra"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2279,
+      "parent_id": 2278,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2280,
+      "parent_id": 2267,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+      "event": "call",
+      "id": 2281,
+      "lineno": 117,
+      "method_id": "findEventByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 776189500,
+          "value": "icuXDgj7mPkhY9Rln5cf"
+        }
+      ],
+      "path": "it/polimi/amusic/service/impl/EventBusinessServiceImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+        "object_id": 1036756620,
+        "value": "it.polimi.amusic.service.impl.EventBusinessServiceImpl@3dcba68c"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+      "event": "call",
+      "id": 2282,
+      "lineno": 69,
+      "method_id": "findByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 776189500,
+          "value": "icuXDgj7mPkhY9Rln5cf"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/EventRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+        "object_id": 284273874,
+        "value": "it.polimi.amusic.repository.impl.EventRepositoryImpl@10f1acd2"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2283,
+      "lineno": 24,
+      "method_id": "convertLocalDateToTimestamp",
+      "parameters": [
+        {
+          "class": "java.time.LocalDate",
+          "kind": "req",
+          "name": "localDateToConvert",
+          "object_id": 2144488521,
+          "value": "2021-12-09"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2284,
+      "parent_id": 2283,
+      "return_value": {
+        "class": "com.google.cloud.Timestamp",
+        "object_id": 1719377404,
+        "value": "2021-12-08T23:00:00Z"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2285,
+      "parent_id": 2282,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2286,
+      "parent_id": 2281,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+      "event": "call",
+      "id": 2287,
+      "lineno": 117,
+      "method_id": "findEventByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 67102514,
+          "value": "Px1rphu8AiVS3aGnoSGj"
+        }
+      ],
+      "path": "it/polimi/amusic/service/impl/EventBusinessServiceImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+        "object_id": 1036756620,
+        "value": "it.polimi.amusic.service.impl.EventBusinessServiceImpl@3dcba68c"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+      "event": "call",
+      "id": 2288,
+      "lineno": 69,
+      "method_id": "findByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 67102514,
+          "value": "Px1rphu8AiVS3aGnoSGj"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/EventRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+        "object_id": 284273874,
+        "value": "it.polimi.amusic.repository.impl.EventRepositoryImpl@10f1acd2"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2289,
+      "lineno": 24,
+      "method_id": "convertLocalDateToTimestamp",
+      "parameters": [
+        {
+          "class": "java.time.LocalDate",
+          "kind": "req",
+          "name": "localDateToConvert",
+          "object_id": 177778951,
+          "value": "2021-12-09"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2290,
+      "parent_id": 2289,
+      "return_value": {
+        "class": "com.google.cloud.Timestamp",
+        "object_id": 322978787,
+        "value": "2021-12-08T23:00:00Z"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2291,
+      "parent_id": 2288,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2292,
+      "parent_id": 2287,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+      "event": "call",
+      "id": 2293,
+      "lineno": 117,
+      "method_id": "findEventByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 1481315597,
+          "value": "DlDXMobm0uoGrsV4uqXg"
+        }
+      ],
+      "path": "it/polimi/amusic/service/impl/EventBusinessServiceImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+        "object_id": 1036756620,
+        "value": "it.polimi.amusic.service.impl.EventBusinessServiceImpl@3dcba68c"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+      "event": "call",
+      "id": 2294,
+      "lineno": 69,
+      "method_id": "findByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 1481315597,
+          "value": "DlDXMobm0uoGrsV4uqXg"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/EventRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+        "object_id": 284273874,
+        "value": "it.polimi.amusic.repository.impl.EventRepositoryImpl@10f1acd2"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2295,
+      "lineno": 24,
+      "method_id": "convertLocalDateToTimestamp",
+      "parameters": [
+        {
+          "class": "java.time.LocalDate",
+          "kind": "req",
+          "name": "localDateToConvert",
+          "object_id": 779256111,
+          "value": "2021-12-09"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2296,
+      "parent_id": 2295,
+      "return_value": {
+        "class": "com.google.cloud.Timestamp",
+        "object_id": 1811874511,
+        "value": "2021-12-08T23:00:00Z"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2297,
+      "parent_id": 2294,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2298,
+      "parent_id": 2293,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+      "event": "call",
+      "id": 2299,
+      "lineno": 117,
+      "method_id": "findEventByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 741100873,
+          "value": "hzAoaO1JqWrnsPF5AWEc"
+        }
+      ],
+      "path": "it/polimi/amusic/service/impl/EventBusinessServiceImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+        "object_id": 1036756620,
+        "value": "it.polimi.amusic.service.impl.EventBusinessServiceImpl@3dcba68c"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+      "event": "call",
+      "id": 2300,
+      "lineno": 69,
+      "method_id": "findByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 741100873,
+          "value": "hzAoaO1JqWrnsPF5AWEc"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/EventRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+        "object_id": 284273874,
+        "value": "it.polimi.amusic.repository.impl.EventRepositoryImpl@10f1acd2"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2301,
+      "lineno": 24,
+      "method_id": "convertLocalDateToTimestamp",
+      "parameters": [
+        {
+          "class": "java.time.LocalDate",
+          "kind": "req",
+          "name": "localDateToConvert",
+          "object_id": 200036343,
+          "value": "2021-12-09"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2302,
+      "parent_id": 2301,
+      "return_value": {
+        "class": "com.google.cloud.Timestamp",
+        "object_id": 1774261147,
+        "value": "2021-12-08T23:00:00Z"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2303,
+      "parent_id": 2300,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2304,
+      "parent_id": 2299,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2305,
+      "lineno": 10,
+      "method_id": "setNextEvents",
+      "parameters": [
+        {
+          "class": "java.util.ArrayList",
+          "kind": "req",
+          "name": "nextEvents",
+          "object_id": 891775846,
+          "value": "[]"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003dnull, nextEvents\u003d[])"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2306,
+      "parent_id": 2305,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003dnull, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2307,
+      "parent_id": 2266,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003dnull, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2308,
+      "lineno": 32,
+      "method_id": "convertTimestampToLocalDate",
+      "parameters": [
+        {
+          "class": "com.google.cloud.Timestamp",
+          "kind": "req",
+          "name": "timestamp",
+          "object_id": 1268706529,
+          "value": "2021-12-08T11:59:31.329000000Z"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2309,
+      "parent_id": 2308,
+      "return_value": {
+        "class": "java.time.LocalDate",
+        "object_id": 1343362150,
+        "value": "2021-12-08"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2310,
+      "lineno": 10,
+      "method_id": "setFriendSince",
+      "parameters": [
+        {
+          "class": "java.time.LocalDate",
+          "kind": "req",
+          "name": "friendSince",
+          "object_id": 1343362150,
+          "value": "2021-12-08"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003d2021-12-08, nextEvents\u003d[])"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2311,
+      "parent_id": 2310,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003d2021-12-08, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2312,
+      "parent_id": 2263,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 2011070936,
+        "value": "Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003d2021-12-08, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.mapper.UserMapperDecorator",
+      "event": "call",
+      "id": 2313,
+      "lineno": 41,
+      "method_id": "mapUserFirendDocumentToFriend",
+      "parameters": [
+        {
+          "class": "it.polimi.amusic.model.document.FriendDocument",
+          "kind": "req",
+          "name": "friendDocument",
+          "object_id": 1199744827,
+          "value": "FriendDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, friendSince\u003d2021-12-08T12:00:26.598000000Z)"
+        }
+      ],
+      "path": "it/polimi/amusic/mapper/UserMapperDecorator.java",
+      "receiver": {
+        "class": "it.polimi.amusic.mapper.UserMapperImpl",
+        "object_id": 2064388000,
+        "value": "it.polimi.amusic.mapper.UserMapperImpl@7b0c0fa0"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+      "event": "call",
+      "id": 2314,
+      "lineno": 69,
+      "method_id": "findById",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 666308309,
+          "value": "dgI2THsHq9YUSZq0kcZ2"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/UserRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+        "object_id": 442213254,
+        "value": "it.polimi.amusic.repository.impl.UserRepositoryImpl@1a5ba386"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2315,
+      "parent_id": 2314,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 1009530770,
+        "value": "Optional[UserDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, firebaseUID\u003dfgSoq9mFmVQOvoaVeDPXi0adHqr1, email\u003dasd@asd.it, provider\u003dAMUSIC, authorities\u003d[RoleDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dASD, surname\u003dASD, displayName\u003dAsd Asd, birthDay\u003d2021-12-01T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[], eventList\u003d[DlDXMobm0uoGrsV4uqXg, Px1rphu8AiVS3aGnoSGj], lastLogin\u003d2021-12-06T19:48:04Z, createDate\u003d2021-12-06T19:21:01Z, emailVerified\u003dfalse, accountNonExpired\u003dtrue, accountNonLocked\u003dtrue, credentialsNonExpired\u003dtrue, enabled\u003dtrue, password\u003dnull, username\u003dasd@asd.it, accountLocked\u003dfalse, accountExpired\u003dfalse, credentialsExpired\u003dfalse)]"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.mapper.UserMapperDecorator",
+      "event": "call",
+      "id": 2316,
+      "lineno": 58,
+      "method_id": "mapUserDocumentToFriend",
+      "parameters": [
+        {
+          "class": "it.polimi.amusic.model.document.UserDocument",
+          "kind": "req",
+          "name": "userDocument",
+          "object_id": 1470027143,
+          "value": "UserDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, firebaseUID\u003dfgSoq9mFmVQOvoaVeDPXi0adHqr1, email\u003dasd@asd.it, provider\u003dAMUSIC, authorities\u003d[RoleDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dASD, surname\u003dASD, displayName\u003dAsd Asd, birthDay\u003d2021-12-01T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[], eventList\u003d[DlDXMobm0uoGrsV4uqXg, Px1rphu8AiVS3aGnoSGj], lastLogin\u003d2021-12-06T19:48:04Z, createDate\u003d2021-12-06T19:21:01Z, emailVerified\u003dfalse, accountNonExpired\u003dtrue, accountNonLocked\u003dtrue, credentialsNonExpired\u003dtrue, enabled\u003dtrue, password\u003dnull, username\u003dasd@asd.it, accountLocked\u003dfalse, accountExpired\u003dfalse, credentialsExpired\u003dfalse)"
+        }
+      ],
+      "path": "it/polimi/amusic/mapper/UserMapperDecorator.java",
+      "receiver": {
+        "class": "it.polimi.amusic.mapper.UserMapperImpl",
+        "object_id": 2064388000,
+        "value": "it.polimi.amusic.mapper.UserMapperImpl@7b0c0fa0"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.mapper.UserMapperImpl_",
+      "event": "call",
+      "id": 2317,
+      "lineno": 74,
+      "method_id": "mapUserDocumentToFriend",
+      "parameters": [
+        {
+          "class": "it.polimi.amusic.model.document.UserDocument",
+          "kind": "req",
+          "name": "userDocument",
+          "object_id": 1470027143,
+          "value": "UserDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, firebaseUID\u003dfgSoq9mFmVQOvoaVeDPXi0adHqr1, email\u003dasd@asd.it, provider\u003dAMUSIC, authorities\u003d[RoleDocument(id\u003ddgI2THsHq9YUSZq0kcZ2, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dASD, surname\u003dASD, displayName\u003dAsd Asd, birthDay\u003d2021-12-01T23:00:00Z, city\u003dRoma, sex\u003dMaschio, firendList\u003d[], eventList\u003d[DlDXMobm0uoGrsV4uqXg, Px1rphu8AiVS3aGnoSGj], lastLogin\u003d2021-12-06T19:48:04Z, createDate\u003d2021-12-06T19:21:01Z, emailVerified\u003dfalse, accountNonExpired\u003dtrue, accountNonLocked\u003dtrue, credentialsNonExpired\u003dtrue, enabled\u003dtrue, password\u003dnull, username\u003dasd@asd.it, accountLocked\u003dfalse, accountExpired\u003dfalse, credentialsExpired\u003dfalse)"
+        }
+      ],
+      "path": "it/polimi/amusic/mapper/UserMapperImpl_.java",
+      "receiver": {
+        "class": "it.polimi.amusic.mapper.UserMapperImpl_",
+        "object_id": 1888574632,
+        "value": "it.polimi.amusic.mapper.UserMapperImpl_@70915ca8"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2318,
+      "lineno": 10,
+      "method_id": "setId",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 149981644,
+          "value": "dgI2THsHq9YUSZq0kcZ2"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dnull, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2319,
+      "parent_id": 2318,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dnull, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2320,
+      "lineno": 10,
+      "method_id": "setPhotoUrl",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "photoUrl",
+          "object_id": 363019025,
+          "value": "https://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2321,
+      "parent_id": 2320,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2322,
+      "lineno": 40,
+      "method_id": "convertTimestampToLocalDateTime",
+      "parameters": [
+        {
+          "class": "com.google.cloud.Timestamp",
+          "kind": "req",
+          "name": "timestamp",
+          "object_id": 181015177,
+          "value": "2021-12-06T19:48:04Z"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2323,
+      "parent_id": 2322,
+      "return_value": {
+        "class": "java.time.LocalDateTime",
+        "object_id": 1985860801,
+        "value": "2021-12-06T20:48:04"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2324,
+      "lineno": 10,
+      "method_id": "setLastLogin",
+      "parameters": [
+        {
+          "class": "java.time.LocalDateTime",
+          "kind": "req",
+          "name": "lastLogin",
+          "object_id": 1985860801,
+          "value": "2021-12-06T20:48:04"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dnull, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2325,
+      "parent_id": 2324,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dnull, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2326,
+      "lineno": 10,
+      "method_id": "setDisplayName",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "displayName",
+          "object_id": 1843770875,
+          "value": "Asd Asd"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2327,
+      "parent_id": 2326,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2328,
+      "lineno": 10,
+      "method_id": "setDisplayName",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "displayName",
+          "object_id": 1992892465,
+          "value": "Asd Asd"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2329,
+      "parent_id": 2328,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2330,
+      "parent_id": 2317,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+      "event": "call",
+      "id": 2331,
+      "lineno": 117,
+      "method_id": "findEventByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 1766609925,
+          "value": "DlDXMobm0uoGrsV4uqXg"
+        }
+      ],
+      "path": "it/polimi/amusic/service/impl/EventBusinessServiceImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+        "object_id": 1036756620,
+        "value": "it.polimi.amusic.service.impl.EventBusinessServiceImpl@3dcba68c"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+      "event": "call",
+      "id": 2332,
+      "lineno": 69,
+      "method_id": "findByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 1766609925,
+          "value": "DlDXMobm0uoGrsV4uqXg"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/EventRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+        "object_id": 284273874,
+        "value": "it.polimi.amusic.repository.impl.EventRepositoryImpl@10f1acd2"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2333,
+      "lineno": 24,
+      "method_id": "convertLocalDateToTimestamp",
+      "parameters": [
+        {
+          "class": "java.time.LocalDate",
+          "kind": "req",
+          "name": "localDateToConvert",
+          "object_id": 287335633,
+          "value": "2021-12-09"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2334,
+      "parent_id": 2333,
+      "return_value": {
+        "class": "com.google.cloud.Timestamp",
+        "object_id": 1673027453,
+        "value": "2021-12-08T23:00:00Z"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2335,
+      "parent_id": 2332,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2336,
+      "parent_id": 2331,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+      "event": "call",
+      "id": 2337,
+      "lineno": 117,
+      "method_id": "findEventByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 2115998746,
+          "value": "Px1rphu8AiVS3aGnoSGj"
+        }
+      ],
+      "path": "it/polimi/amusic/service/impl/EventBusinessServiceImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+        "object_id": 1036756620,
+        "value": "it.polimi.amusic.service.impl.EventBusinessServiceImpl@3dcba68c"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+      "event": "call",
+      "id": 2338,
+      "lineno": 69,
+      "method_id": "findByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 2115998746,
+          "value": "Px1rphu8AiVS3aGnoSGj"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/EventRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+        "object_id": 284273874,
+        "value": "it.polimi.amusic.repository.impl.EventRepositoryImpl@10f1acd2"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2339,
+      "lineno": 24,
+      "method_id": "convertLocalDateToTimestamp",
+      "parameters": [
+        {
+          "class": "java.time.LocalDate",
+          "kind": "req",
+          "name": "localDateToConvert",
+          "object_id": 845763558,
+          "value": "2021-12-09"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2340,
+      "parent_id": 2339,
+      "return_value": {
+        "class": "com.google.cloud.Timestamp",
+        "object_id": 10360590,
+        "value": "2021-12-08T23:00:00Z"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2341,
+      "parent_id": 2338,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2342,
+      "parent_id": 2337,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2343,
+      "lineno": 10,
+      "method_id": "setNextEvents",
+      "parameters": [
+        {
+          "class": "java.util.ArrayList",
+          "kind": "req",
+          "name": "nextEvents",
+          "object_id": 2031574860,
+          "value": "[]"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003dnull, nextEvents\u003d[])"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2344,
+      "parent_id": 2343,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003dnull, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2345,
+      "parent_id": 2316,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003dnull, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2346,
+      "lineno": 32,
+      "method_id": "convertTimestampToLocalDate",
+      "parameters": [
+        {
+          "class": "com.google.cloud.Timestamp",
+          "kind": "req",
+          "name": "timestamp",
+          "object_id": 444210367,
+          "value": "2021-12-08T12:00:26.598000000Z"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2347,
+      "parent_id": 2346,
+      "return_value": {
+        "class": "java.time.LocalDate",
+        "object_id": 2016948342,
+        "value": "2021-12-08"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2348,
+      "lineno": 10,
+      "method_id": "setFriendSince",
+      "parameters": [
+        {
+          "class": "java.time.LocalDate",
+          "kind": "req",
+          "name": "friendSince",
+          "object_id": 2016948342,
+          "value": "2021-12-08"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003d2021-12-08, nextEvents\u003d[])"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2349,
+      "parent_id": 2348,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003d2021-12-08, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2350,
+      "parent_id": 2313,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 735748266,
+        "value": "Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003d2021-12-08, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.mapper.UserMapperDecorator",
+      "event": "call",
+      "id": 2351,
+      "lineno": 41,
+      "method_id": "mapUserFirendDocumentToFriend",
+      "parameters": [
+        {
+          "class": "it.polimi.amusic.model.document.FriendDocument",
+          "kind": "req",
+          "name": "friendDocument",
+          "object_id": 1568844335,
+          "value": "FriendDocument(id\u003dUUspYTp277zJRPHCgokl, friendSince\u003d2021-12-08T12:00:51.944000000Z)"
+        }
+      ],
+      "path": "it/polimi/amusic/mapper/UserMapperDecorator.java",
+      "receiver": {
+        "class": "it.polimi.amusic.mapper.UserMapperImpl",
+        "object_id": 2064388000,
+        "value": "it.polimi.amusic.mapper.UserMapperImpl@7b0c0fa0"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+      "event": "call",
+      "id": 2352,
+      "lineno": 69,
+      "method_id": "findById",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 1428542201,
+          "value": "UUspYTp277zJRPHCgokl"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/UserRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+        "object_id": 442213254,
+        "value": "it.polimi.amusic.repository.impl.UserRepositoryImpl@1a5ba386"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2353,
+      "parent_id": 2352,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 2084994061,
+        "value": "Optional[UserDocument(id\u003dUUspYTp277zJRPHCgokl, firebaseUID\u003dlgm9VsWeeHbHMSQlwfaVMCk5pWY2, email\u003dwqfde@we.we, provider\u003dAMUSIC, authorities\u003d[RoleDocument(id\u003dUUspYTp277zJRPHCgokl, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dRVGWREG, surname\u003dEWEGW, displayName\u003dRvgwreg Ewegw, birthDay\u003dnull, city\u003dnull, sex\u003dnull, firendList\u003d[], eventList\u003d[DlDXMobm0uoGrsV4uqXg, hzAoaO1JqWrnsPF5AWEc], lastLogin\u003d2021-12-03T12:02:37Z, createDate\u003d2021-12-03T12:02:37Z, emailVerified\u003dfalse, accountNonExpired\u003dtrue, accountNonLocked\u003dtrue, credentialsNonExpired\u003dtrue, enabled\u003dtrue, password\u003dnull, username\u003dwqfde@we.we, accountLocked\u003dfalse, accountExpired\u003dfalse, credentialsExpired\u003dfalse)]"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.mapper.UserMapperDecorator",
+      "event": "call",
+      "id": 2354,
+      "lineno": 58,
+      "method_id": "mapUserDocumentToFriend",
+      "parameters": [
+        {
+          "class": "it.polimi.amusic.model.document.UserDocument",
+          "kind": "req",
+          "name": "userDocument",
+          "object_id": 357217073,
+          "value": "UserDocument(id\u003dUUspYTp277zJRPHCgokl, firebaseUID\u003dlgm9VsWeeHbHMSQlwfaVMCk5pWY2, email\u003dwqfde@we.we, provider\u003dAMUSIC, authorities\u003d[RoleDocument(id\u003dUUspYTp277zJRPHCgokl, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dRVGWREG, surname\u003dEWEGW, displayName\u003dRvgwreg Ewegw, birthDay\u003dnull, city\u003dnull, sex\u003dnull, firendList\u003d[], eventList\u003d[DlDXMobm0uoGrsV4uqXg, hzAoaO1JqWrnsPF5AWEc], lastLogin\u003d2021-12-03T12:02:37Z, createDate\u003d2021-12-03T12:02:37Z, emailVerified\u003dfalse, accountNonExpired\u003dtrue, accountNonLocked\u003dtrue, credentialsNonExpired\u003dtrue, enabled\u003dtrue, password\u003dnull, username\u003dwqfde@we.we, accountLocked\u003dfalse, accountExpired\u003dfalse, credentialsExpired\u003dfalse)"
+        }
+      ],
+      "path": "it/polimi/amusic/mapper/UserMapperDecorator.java",
+      "receiver": {
+        "class": "it.polimi.amusic.mapper.UserMapperImpl",
+        "object_id": 2064388000,
+        "value": "it.polimi.amusic.mapper.UserMapperImpl@7b0c0fa0"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.mapper.UserMapperImpl_",
+      "event": "call",
+      "id": 2355,
+      "lineno": 74,
+      "method_id": "mapUserDocumentToFriend",
+      "parameters": [
+        {
+          "class": "it.polimi.amusic.model.document.UserDocument",
+          "kind": "req",
+          "name": "userDocument",
+          "object_id": 357217073,
+          "value": "UserDocument(id\u003dUUspYTp277zJRPHCgokl, firebaseUID\u003dlgm9VsWeeHbHMSQlwfaVMCk5pWY2, email\u003dwqfde@we.we, provider\u003dAMUSIC, authorities\u003d[RoleDocument(id\u003dUUspYTp277zJRPHCgokl, authority\u003dUSER)], photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, phoneNumber\u003dnull, name\u003dRVGWREG, surname\u003dEWEGW, displayName\u003dRvgwreg Ewegw, birthDay\u003dnull, city\u003dnull, sex\u003dnull, firendList\u003d[], eventList\u003d[DlDXMobm0uoGrsV4uqXg, hzAoaO1JqWrnsPF5AWEc], lastLogin\u003d2021-12-03T12:02:37Z, createDate\u003d2021-12-03T12:02:37Z, emailVerified\u003dfalse, accountNonExpired\u003dtrue, accountNonLocked\u003dtrue, credentialsNonExpired\u003dtrue, enabled\u003dtrue, password\u003dnull, username\u003dwqfde@we.we, accountLocked\u003dfalse, accountExpired\u003dfalse, credentialsExpired\u003dfalse)"
+        }
+      ],
+      "path": "it/polimi/amusic/mapper/UserMapperImpl_.java",
+      "receiver": {
+        "class": "it.polimi.amusic.mapper.UserMapperImpl_",
+        "object_id": 1888574632,
+        "value": "it.polimi.amusic.mapper.UserMapperImpl_@70915ca8"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2356,
+      "lineno": 10,
+      "method_id": "setId",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 2127082766,
+          "value": "UUspYTp277zJRPHCgokl"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dnull, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2357,
+      "parent_id": 2356,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dnull, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2358,
+      "lineno": 10,
+      "method_id": "setPhotoUrl",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "photoUrl",
+          "object_id": 405589819,
+          "value": "https://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2359,
+      "parent_id": 2358,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2360,
+      "lineno": 40,
+      "method_id": "convertTimestampToLocalDateTime",
+      "parameters": [
+        {
+          "class": "com.google.cloud.Timestamp",
+          "kind": "req",
+          "name": "timestamp",
+          "object_id": 1448613075,
+          "value": "2021-12-03T12:02:37Z"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2361,
+      "parent_id": 2360,
+      "return_value": {
+        "class": "java.time.LocalDateTime",
+        "object_id": 1492437904,
+        "value": "2021-12-03T13:02:37"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2362,
+      "lineno": 10,
+      "method_id": "setLastLogin",
+      "parameters": [
+        {
+          "class": "java.time.LocalDateTime",
+          "kind": "req",
+          "name": "lastLogin",
+          "object_id": 1492437904,
+          "value": "2021-12-03T13:02:37"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dnull, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2363,
+      "parent_id": 2362,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dnull, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2364,
+      "lineno": 10,
+      "method_id": "setDisplayName",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "displayName",
+          "object_id": 247323830,
+          "value": "Rvgwreg Ewegw"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2365,
+      "parent_id": 2364,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2366,
+      "lineno": 10,
+      "method_id": "setDisplayName",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "displayName",
+          "object_id": 1311640246,
+          "value": "Rvgwreg Ewegw"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2367,
+      "parent_id": 2366,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2368,
+      "parent_id": 2355,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+      "event": "call",
+      "id": 2369,
+      "lineno": 117,
+      "method_id": "findEventByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 2146929942,
+          "value": "DlDXMobm0uoGrsV4uqXg"
+        }
+      ],
+      "path": "it/polimi/amusic/service/impl/EventBusinessServiceImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+        "object_id": 1036756620,
+        "value": "it.polimi.amusic.service.impl.EventBusinessServiceImpl@3dcba68c"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+      "event": "call",
+      "id": 2370,
+      "lineno": 69,
+      "method_id": "findByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 2146929942,
+          "value": "DlDXMobm0uoGrsV4uqXg"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/EventRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+        "object_id": 284273874,
+        "value": "it.polimi.amusic.repository.impl.EventRepositoryImpl@10f1acd2"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2371,
+      "lineno": 24,
+      "method_id": "convertLocalDateToTimestamp",
+      "parameters": [
+        {
+          "class": "java.time.LocalDate",
+          "kind": "req",
+          "name": "localDateToConvert",
+          "object_id": 9763006,
+          "value": "2021-12-09"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2372,
+      "parent_id": 2371,
+      "return_value": {
+        "class": "com.google.cloud.Timestamp",
+        "object_id": 1090382673,
+        "value": "2021-12-08T23:00:00Z"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2373,
+      "parent_id": 2370,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2374,
+      "parent_id": 2369,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+      "event": "call",
+      "id": 2375,
+      "lineno": 117,
+      "method_id": "findEventByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 1080227318,
+          "value": "hzAoaO1JqWrnsPF5AWEc"
+        }
+      ],
+      "path": "it/polimi/amusic/service/impl/EventBusinessServiceImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+        "object_id": 1036756620,
+        "value": "it.polimi.amusic.service.impl.EventBusinessServiceImpl@3dcba68c"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+      "event": "call",
+      "id": 2376,
+      "lineno": 69,
+      "method_id": "findByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 1080227318,
+          "value": "hzAoaO1JqWrnsPF5AWEc"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/EventRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+        "object_id": 284273874,
+        "value": "it.polimi.amusic.repository.impl.EventRepositoryImpl@10f1acd2"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2377,
+      "lineno": 24,
+      "method_id": "convertLocalDateToTimestamp",
+      "parameters": [
+        {
+          "class": "java.time.LocalDate",
+          "kind": "req",
+          "name": "localDateToConvert",
+          "object_id": 113485430,
+          "value": "2021-12-09"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2378,
+      "parent_id": 2377,
+      "return_value": {
+        "class": "com.google.cloud.Timestamp",
+        "object_id": 537753108,
+        "value": "2021-12-08T23:00:00Z"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2379,
+      "parent_id": 2376,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2380,
+      "parent_id": 2375,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2381,
+      "lineno": 10,
+      "method_id": "setNextEvents",
+      "parameters": [
+        {
+          "class": "java.util.ArrayList",
+          "kind": "req",
+          "name": "nextEvents",
+          "object_id": 2053108815,
+          "value": "[]"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003dnull, nextEvents\u003d[])"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2382,
+      "parent_id": 2381,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003dnull, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2383,
+      "parent_id": 2354,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003dnull, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2384,
+      "lineno": 32,
+      "method_id": "convertTimestampToLocalDate",
+      "parameters": [
+        {
+          "class": "com.google.cloud.Timestamp",
+          "kind": "req",
+          "name": "timestamp",
+          "object_id": 90103620,
+          "value": "2021-12-08T12:00:51.944000000Z"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2385,
+      "parent_id": 2384,
+      "return_value": {
+        "class": "java.time.LocalDate",
+        "object_id": 614756703,
+        "value": "2021-12-08"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2386,
+      "lineno": 10,
+      "method_id": "setFriendSince",
+      "parameters": [
+        {
+          "class": "java.time.LocalDate",
+          "kind": "req",
+          "name": "friendSince",
+          "object_id": 614756703,
+          "value": "2021-12-08"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003d2021-12-08, nextEvents\u003d[])"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2387,
+      "parent_id": 2386,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003d2021-12-08, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2388,
+      "parent_id": 2351,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 590978934,
+        "value": "Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003d2021-12-08, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.mapper.UserMapperDecorator",
+      "event": "call",
+      "id": 2389,
+      "lineno": 41,
+      "method_id": "mapUserFirendDocumentToFriend",
+      "parameters": [
+        {
+          "class": "it.polimi.amusic.model.document.FriendDocument",
+          "kind": "req",
+          "name": "friendDocument",
+          "object_id": 2053381593,
+          "value": "FriendDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, friendSince\u003d2021-12-08T14:31:09.278000000Z)"
+        }
+      ],
+      "path": "it/polimi/amusic/mapper/UserMapperDecorator.java",
+      "receiver": {
+        "class": "it.polimi.amusic.mapper.UserMapperImpl",
+        "object_id": 2064388000,
+        "value": "it.polimi.amusic.mapper.UserMapperImpl@7b0c0fa0"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+      "event": "call",
+      "id": 2390,
+      "lineno": 69,
+      "method_id": "findById",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 607155279,
+          "value": "KEbQFCdd6M3XYfqKEZWS"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/UserRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.UserRepositoryImpl",
+        "object_id": 442213254,
+        "value": "it.polimi.amusic.repository.impl.UserRepositoryImpl@1a5ba386"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2391,
+      "parent_id": 2390,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 1478521682,
+        "value": "Optional[UserDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, firebaseUID\u003dpiE6YISK65d9xd4U1vOJM212N5G3, email\u003dlibanodomenico@gmail.com, provider\u003dAMUSIC, authorities\u003d[RoleDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, authority\u003dUSER)], photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, phoneNumber\u003dnull, name\u003dDOMENICO, surname\u003dLIBANO, displayName\u003dDomenico Libano, birthDay\u003dnull, city\u003dnull, sex\u003dnull, firendList\u003d[], eventList\u003d[hzAoaO1JqWrnsPF5AWEc, DlDXMobm0uoGrsV4uqXg], lastLogin\u003d2021-12-08T14:33:40Z, createDate\u003d2021-12-02T14:34:47Z, emailVerified\u003dtrue, accountNonExpired\u003dtrue, accountNonLocked\u003dtrue, credentialsNonExpired\u003dtrue, enabled\u003dtrue, password\u003dnull, username\u003dlibanodomenico@gmail.com, accountLocked\u003dfalse, accountExpired\u003dfalse, credentialsExpired\u003dfalse)]"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.mapper.UserMapperDecorator",
+      "event": "call",
+      "id": 2392,
+      "lineno": 58,
+      "method_id": "mapUserDocumentToFriend",
+      "parameters": [
+        {
+          "class": "it.polimi.amusic.model.document.UserDocument",
+          "kind": "req",
+          "name": "userDocument",
+          "object_id": 486794873,
+          "value": "UserDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, firebaseUID\u003dpiE6YISK65d9xd4U1vOJM212N5G3, email\u003dlibanodomenico@gmail.com, provider\u003dAMUSIC, authorities\u003d[RoleDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, authority\u003dUSER)], photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, phoneNumber\u003dnull, name\u003dDOMENICO, surname\u003dLIBANO, displayName\u003dDomenico Libano, birthDay\u003dnull, city\u003dnull, sex\u003dnull, firendList\u003d[], eventList\u003d[hzAoaO1JqWrnsPF5AWEc, DlDXMobm0uoGrsV4uqXg], lastLogin\u003d2021-12-08T14:33:40Z, createDate\u003d2021-12-02T14:34:47Z, emailVerified\u003dtrue, accountNonExpired\u003dtrue, accountNonLocked\u003dtrue, credentialsNonExpired\u003dtrue, enabled\u003dtrue, password\u003dnull, username\u003dlibanodomenico@gmail.com, accountLocked\u003dfalse, accountExpired\u003dfalse, credentialsExpired\u003dfalse)"
+        }
+      ],
+      "path": "it/polimi/amusic/mapper/UserMapperDecorator.java",
+      "receiver": {
+        "class": "it.polimi.amusic.mapper.UserMapperImpl",
+        "object_id": 2064388000,
+        "value": "it.polimi.amusic.mapper.UserMapperImpl@7b0c0fa0"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.mapper.UserMapperImpl_",
+      "event": "call",
+      "id": 2393,
+      "lineno": 74,
+      "method_id": "mapUserDocumentToFriend",
+      "parameters": [
+        {
+          "class": "it.polimi.amusic.model.document.UserDocument",
+          "kind": "req",
+          "name": "userDocument",
+          "object_id": 486794873,
+          "value": "UserDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, firebaseUID\u003dpiE6YISK65d9xd4U1vOJM212N5G3, email\u003dlibanodomenico@gmail.com, provider\u003dAMUSIC, authorities\u003d[RoleDocument(id\u003dKEbQFCdd6M3XYfqKEZWS, authority\u003dUSER)], photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, phoneNumber\u003dnull, name\u003dDOMENICO, surname\u003dLIBANO, displayName\u003dDomenico Libano, birthDay\u003dnull, city\u003dnull, sex\u003dnull, firendList\u003d[], eventList\u003d[hzAoaO1JqWrnsPF5AWEc, DlDXMobm0uoGrsV4uqXg], lastLogin\u003d2021-12-08T14:33:40Z, createDate\u003d2021-12-02T14:34:47Z, emailVerified\u003dtrue, accountNonExpired\u003dtrue, accountNonLocked\u003dtrue, credentialsNonExpired\u003dtrue, enabled\u003dtrue, password\u003dnull, username\u003dlibanodomenico@gmail.com, accountLocked\u003dfalse, accountExpired\u003dfalse, credentialsExpired\u003dfalse)"
+        }
+      ],
+      "path": "it/polimi/amusic/mapper/UserMapperImpl_.java",
+      "receiver": {
+        "class": "it.polimi.amusic.mapper.UserMapperImpl_",
+        "object_id": 1888574632,
+        "value": "it.polimi.amusic.mapper.UserMapperImpl_@70915ca8"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2394,
+      "lineno": 10,
+      "method_id": "setId",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 277510671,
+          "value": "KEbQFCdd6M3XYfqKEZWS"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dnull, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2395,
+      "parent_id": 2394,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dnull, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2396,
+      "lineno": 10,
+      "method_id": "setPhotoUrl",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "photoUrl",
+          "object_id": 1760507466,
+          "value": "https://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2397,
+      "parent_id": 2396,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dnull, lastLogin\u003dnull, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2398,
+      "lineno": 40,
+      "method_id": "convertTimestampToLocalDateTime",
+      "parameters": [
+        {
+          "class": "com.google.cloud.Timestamp",
+          "kind": "req",
+          "name": "timestamp",
+          "object_id": 679027969,
+          "value": "2021-12-08T14:33:40Z"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2399,
+      "parent_id": 2398,
+      "return_value": {
+        "class": "java.time.LocalDateTime",
+        "object_id": 1963936245,
+        "value": "2021-12-08T15:33:40"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2400,
+      "lineno": 10,
+      "method_id": "setLastLogin",
+      "parameters": [
+        {
+          "class": "java.time.LocalDateTime",
+          "kind": "req",
+          "name": "lastLogin",
+          "object_id": 1963936245,
+          "value": "2021-12-08T15:33:40"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dnull, lastLogin\u003d2021-12-08T15:33:40, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2401,
+      "parent_id": 2400,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dnull, lastLogin\u003d2021-12-08T15:33:40, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2402,
+      "lineno": 10,
+      "method_id": "setDisplayName",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "displayName",
+          "object_id": 1738998386,
+          "value": "Domenico Libano"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dDomenico Libano, lastLogin\u003d2021-12-08T15:33:40, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2403,
+      "parent_id": 2402,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dDomenico Libano, lastLogin\u003d2021-12-08T15:33:40, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2404,
+      "lineno": 10,
+      "method_id": "setDisplayName",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "displayName",
+          "object_id": 2049970613,
+          "value": "Domenico Libano"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dDomenico Libano, lastLogin\u003d2021-12-08T15:33:40, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2405,
+      "parent_id": 2404,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dDomenico Libano, lastLogin\u003d2021-12-08T15:33:40, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2406,
+      "parent_id": 2393,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dDomenico Libano, lastLogin\u003d2021-12-08T15:33:40, friendSince\u003dnull, nextEvents\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+      "event": "call",
+      "id": 2407,
+      "lineno": 117,
+      "method_id": "findEventByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 1678595279,
+          "value": "hzAoaO1JqWrnsPF5AWEc"
+        }
+      ],
+      "path": "it/polimi/amusic/service/impl/EventBusinessServiceImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+        "object_id": 1036756620,
+        "value": "it.polimi.amusic.service.impl.EventBusinessServiceImpl@3dcba68c"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+      "event": "call",
+      "id": 2408,
+      "lineno": 69,
+      "method_id": "findByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 1678595279,
+          "value": "hzAoaO1JqWrnsPF5AWEc"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/EventRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+        "object_id": 284273874,
+        "value": "it.polimi.amusic.repository.impl.EventRepositoryImpl@10f1acd2"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2409,
+      "lineno": 24,
+      "method_id": "convertLocalDateToTimestamp",
+      "parameters": [
+        {
+          "class": "java.time.LocalDate",
+          "kind": "req",
+          "name": "localDateToConvert",
+          "object_id": 660949977,
+          "value": "2021-12-09"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2410,
+      "parent_id": 2409,
+      "return_value": {
+        "class": "com.google.cloud.Timestamp",
+        "object_id": 347944427,
+        "value": "2021-12-08T23:00:00Z"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2411,
+      "parent_id": 2408,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2412,
+      "parent_id": 2407,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+      "event": "call",
+      "id": 2413,
+      "lineno": 117,
+      "method_id": "findEventByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 2009057520,
+          "value": "DlDXMobm0uoGrsV4uqXg"
+        }
+      ],
+      "path": "it/polimi/amusic/service/impl/EventBusinessServiceImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.service.impl.EventBusinessServiceImpl",
+        "object_id": 1036756620,
+        "value": "it.polimi.amusic.service.impl.EventBusinessServiceImpl@3dcba68c"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+      "event": "call",
+      "id": 2414,
+      "lineno": 69,
+      "method_id": "findByIdAfterLocalDateNow",
+      "parameters": [
+        {
+          "class": "java.lang.String",
+          "kind": "req",
+          "name": "id",
+          "object_id": 2009057520,
+          "value": "DlDXMobm0uoGrsV4uqXg"
+        }
+      ],
+      "path": "it/polimi/amusic/repository/impl/EventRepositoryImpl.java",
+      "receiver": {
+        "class": "it.polimi.amusic.repository.impl.EventRepositoryImpl",
+        "object_id": 284273874,
+        "value": "it.polimi.amusic.repository.impl.EventRepositoryImpl@10f1acd2"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2415,
+      "lineno": 24,
+      "method_id": "convertLocalDateToTimestamp",
+      "parameters": [
+        {
+          "class": "java.time.LocalDate",
+          "kind": "req",
+          "name": "localDateToConvert",
+          "object_id": 656779815,
+          "value": "2021-12-09"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2416,
+      "parent_id": 2415,
+      "return_value": {
+        "class": "com.google.cloud.Timestamp",
+        "object_id": 1535857679,
+        "value": "2021-12-08T23:00:00Z"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2417,
+      "parent_id": 2414,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2418,
+      "parent_id": 2413,
+      "return_value": {
+        "class": "java.util.Optional",
+        "object_id": 185642589,
+        "value": "Optional.empty"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2419,
+      "lineno": 10,
+      "method_id": "setNextEvents",
+      "parameters": [
+        {
+          "class": "java.util.ArrayList",
+          "kind": "req",
+          "name": "nextEvents",
+          "object_id": 1008910732,
+          "value": "[]"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dDomenico Libano, lastLogin\u003d2021-12-08T15:33:40, friendSince\u003dnull, nextEvents\u003d[])"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2420,
+      "parent_id": 2419,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dDomenico Libano, lastLogin\u003d2021-12-08T15:33:40, friendSince\u003dnull, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2421,
+      "parent_id": 2392,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dDomenico Libano, lastLogin\u003d2021-12-08T15:33:40, friendSince\u003dnull, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.utils.TimestampUtils",
+      "event": "call",
+      "id": 2422,
+      "lineno": 32,
+      "method_id": "convertTimestampToLocalDate",
+      "parameters": [
+        {
+          "class": "com.google.cloud.Timestamp",
+          "kind": "req",
+          "name": "timestamp",
+          "object_id": 1395519577,
+          "value": "2021-12-08T14:31:09.278000000Z"
+        }
+      ],
+      "path": "it/polimi/amusic/utils/TimestampUtils.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2423,
+      "parent_id": 2422,
+      "return_value": {
+        "class": "java.time.LocalDate",
+        "object_id": 505976211,
+        "value": "2021-12-08"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.dto.Friend",
+      "event": "call",
+      "id": 2424,
+      "lineno": 10,
+      "method_id": "setFriendSince",
+      "parameters": [
+        {
+          "class": "java.time.LocalDate",
+          "kind": "req",
+          "name": "friendSince",
+          "object_id": 505976211,
+          "value": "2021-12-08"
+        }
+      ],
+      "path": "it/polimi/amusic/model/dto/Friend.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dDomenico Libano, lastLogin\u003d2021-12-08T15:33:40, friendSince\u003d2021-12-08, nextEvents\u003d[])"
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2425,
+      "parent_id": 2424,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dDomenico Libano, lastLogin\u003d2021-12-08T15:33:40, friendSince\u003d2021-12-08, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2426,
+      "parent_id": 2389,
+      "return_value": {
+        "class": "it.polimi.amusic.model.dto.Friend",
+        "object_id": 1277939098,
+        "value": "Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, displayName\u003dDomenico Libano, lastLogin\u003d2021-12-08T15:33:40, friendSince\u003d2021-12-08, nextEvents\u003d[])"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.response.AMusicResponse",
+      "event": "call",
+      "id": 2427,
+      "lineno": 9,
+      "method_id": "builder",
+      "path": "it/polimi/amusic/model/response/AMusicResponse.java",
+      "static": true,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2428,
+      "parent_id": 2427,
+      "return_value": {
+        "class": "it.polimi.amusic.model.response.AMusicResponse$AMusicResponseBuilder",
+        "object_id": 1141254248,
+        "value": "AMusicResponse.AMusicResponseBuilder(body\u003dnull, messages\u003dnull)"
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.response.AMusicResponse$AMusicResponseBuilder",
+      "event": "call",
+      "id": 2429,
+      "lineno": 9,
+      "method_id": "body",
+      "parameters": [
+        {
+          "class": "java.util.ArrayList",
+          "kind": "req",
+          "name": "body",
+          "object_id": 1631800090,
+          "value": "[Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6RfVEUhkls\u003ds96-c, dis..."
+        }
+      ],
+      "path": "it/polimi/amusic/model/response/AMusicResponse.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.response.AMusicResponse$AMusicResponseBuilder",
+        "object_id": 1141254248,
+        "value": "AMusicResponse.AMusicResponseBuilder(body\u003d[Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2430,
+      "parent_id": 2429,
+      "return_value": {
+        "class": "it.polimi.amusic.model.response.AMusicResponse$AMusicResponseBuilder",
+        "object_id": 1141254248,
+        "value": "AMusicResponse.AMusicResponseBuilder(body\u003d[Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5..."
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.model.response.AMusicResponse$AMusicResponseBuilder",
+      "event": "call",
+      "id": 2431,
+      "lineno": 9,
+      "method_id": "build",
+      "path": "it/polimi/amusic/model/response/AMusicResponse.java",
+      "receiver": {
+        "class": "it.polimi.amusic.model.response.AMusicResponse$AMusicResponseBuilder",
+        "object_id": 1141254248,
+        "value": "AMusicResponse.AMusicResponseBuilder(body\u003d[Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5..."
+      },
+      "static": false,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2432,
+      "parent_id": 2431,
+      "return_value": {
+        "class": "it.polimi.amusic.model.response.AMusicResponse",
+        "object_id": 508777423,
+        "value": "AMusicResponse(body\u003d[Friend(id\u003dpuLxmw6ozrb7X7IuVWkr, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/3be79f9c-6bd1-4b8a-b192-e235091c7d51?generation\u003d1638903850598428\u0026alt\u003dmedia, displayName\u003dAlberto Manuguerra, lastLogin\u003d2021-12-08T22:38:35, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003ddgI2THsHq9YUSZq0kcZ2, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/cfb55f88-788e-46ad-8d09-941dd0cf034c?generation\u003d1638821497468021\u0026alt\u003dmedia, displayName\u003dAsd Asd, lastLogin\u003d2021-12-06T20:48:04, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003dUUspYTp277zJRPHCgokl, photoUrl\u003dhttps://storage.googleapis.com/download/storage/v1/b/polimi-amusic.appspot.com/o/4040f9a7-2612-4392-926f-b56c78f33220?generation\u003d1638967287738590\u0026alt\u003dmedia, displayName\u003dRvgwreg Ewegw, lastLogin\u003d2021-12-03T13:02:37, friendSince\u003d2021-12-08, nextEvents\u003d[]), Friend(id\u003dKEbQFCdd6M3XYfqKEZWS, photoUrl\u003dhttps://lh3.googleusercontent.com/a-/AOh14GiSIyBK5nmcmotue5jPvPHMb45OcV6..."
+      },
+      "thread_id": 57
+    },
+    {
+      "defined_class": "it.polimi.amusic.security.SecurityService",
+      "event": "call",
+      "id": 2435,
+      "lineno": 27,
+      "method_id": "getBearerToken",
+      "parameters": [
+        {
+          "class": "org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest",
+          "kind": "req",
+          "name": "request",
+          "object_id": 568995509,
+          "value": "org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest@21ea2eb5"
+        }
+      ],
+      "path": "it/polimi/amusic/security/SecurityService.java",
+      "receiver": {
+        "class": "it.polimi.amusic.security.SecurityService",
+        "object_id": 265763469,
+        "value": "it.polimi.amusic.security.SecurityService@fd73a8d"
+      },
+      "static": false,
+      "thread_id": 59
+    },
+    {
+      "event": "return",
+      "http_server_response": {
+        "mime_type": "application/json",
+        "status": 200
+      },
+      "id": 2433,
+      "parent_id": 2256,
+      "thread_id": 57
+    },
+    {
+      "event": "return",
+      "id": 2436,
+      "parent_id": 2435,
+      "thread_id": 59
+    }
+  ],
+  "classMap": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "location": "it/polimi/amusic/repository/impl/UserRepositoryImpl.java:137",
+                              "name": "save",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/repository/impl/UserRepositoryImpl.java:157",
+                              "name": "updateFromFirebase",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/repository/impl/UserRepositoryImpl.java:69",
+                              "name": "findById",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/repository/impl/UserRepositoryImpl.java:57",
+                              "name": "findByEmail",
+                              "static": false,
+                              "type": "function"
+                            }
+                          ],
+                          "location": "it/polimi/amusic/repository/impl/UserRepositoryImpl.java",
+                          "name": "UserRepositoryImpl",
+                          "static": false,
+                          "type": "class"
+                        },
+                        {
+                          "children": [
+                            {
+                              "location": "it/polimi/amusic/repository/impl/EventRepositoryImpl.java:69",
+                              "name": "findByIdAfterLocalDateNow",
+                              "static": false,
+                              "type": "function"
+                            }
+                          ],
+                          "location": "it/polimi/amusic/repository/impl/EventRepositoryImpl.java",
+                          "name": "EventRepositoryImpl",
+                          "static": false,
+                          "type": "class"
+                        }
+                      ],
+                      "name": "impl",
+                      "type": "package"
+                    }
+                  ],
+                  "name": "repository",
+                  "type": "package"
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "location": "it/polimi/amusic/model/dto/Friend.java:10",
+                              "name": "setFriendSince",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/dto/Friend.java:10",
+                              "name": "setPhotoUrl",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/dto/Friend.java:10",
+                              "name": "setLastLogin",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/dto/Friend.java:10",
+                              "name": "setNextEvents",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/dto/Friend.java:10",
+                              "name": "setDisplayName",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/dto/Friend.java:10",
+                              "name": "setId",
+                              "static": false,
+                              "type": "function"
+                            }
+                          ],
+                          "location": "it/polimi/amusic/model/dto/Friend.java",
+                          "name": "Friend",
+                          "static": false,
+                          "type": "class"
+                        }
+                      ],
+                      "name": "dto",
+                      "type": "package"
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "location": "it/polimi/amusic/model/document/UserDocument.java:73",
+                              "name": "isAccountNonExpired",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/document/UserDocument.java:17",
+                              "name": "setLastLogin",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/document/UserDocument.java:53",
+                              "name": "isCredentialsExpired",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/document/UserDocument.java:17",
+                              "name": "setEmailVerified",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/document/UserDocument.java:52",
+                              "name": "isAccountExpired",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/document/UserDocument.java:41",
+                              "name": "isEmailVerified",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/document/UserDocument.java:17",
+                              "name": "setEnabled",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/document/UserDocument.java:83",
+                              "name": "isCredentialsNonExpired",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/document/UserDocument.java:78",
+                              "name": "isAccountNonLocked",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/document/UserDocument.java:88",
+                              "name": "isEnabled",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/document/UserDocument.java:51",
+                              "name": "isAccountLocked",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/document/UserDocument.java:17",
+                              "name": "setId",
+                              "static": false,
+                              "type": "function"
+                            }
+                          ],
+                          "location": "it/polimi/amusic/model/document/UserDocument.java",
+                          "name": "UserDocument",
+                          "static": false,
+                          "type": "class"
+                        }
+                      ],
+                      "name": "document",
+                      "type": "package"
+                    },
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "location": "it/polimi/amusic/model/response/AMusicResponse.java:9",
+                              "name": "build",
+                              "static": false,
+                              "type": "function"
+                            },
+                            {
+                              "location": "it/polimi/amusic/model/response/AMusicResponse.java:9",
+                              "name": "body",
+                              "static": false,
+                              "type": "function"
+                            }
+                          ],
+                          "location": "it/polimi/amusic/model/response/AMusicResponse.java",
+                          "name": "AMusicResponse$AMusicResponseBuilder",
+                          "static": true,
+                          "type": "class"
+                        },
+                        {
+                          "children": [
+                            {
+                              "location": "it/polimi/amusic/model/response/AMusicResponse.java:9",
+                              "name": "builder",
+                              "static": true,
+                              "type": "function"
+                            }
+                          ],
+                          "location": "it/polimi/amusic/model/response/AMusicResponse.java",
+                          "name": "AMusicResponse",
+                          "static": false,
+                          "type": "class"
+                        }
+                      ],
+                      "name": "response",
+                      "type": "package"
+                    }
+                  ],
+                  "name": "model",
+                  "type": "package"
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "location": "it/polimi/amusic/mapper/UserMapperDecorator.java:58",
+                          "name": "mapUserDocumentToFriend",
+                          "static": false,
+                          "type": "function"
+                        },
+                        {
+                          "location": "it/polimi/amusic/mapper/UserMapperDecorator.java:41",
+                          "name": "mapUserFirendDocumentToFriend",
+                          "static": false,
+                          "type": "function"
+                        }
+                      ],
+                      "location": "it/polimi/amusic/mapper/UserMapperDecorator.java",
+                      "name": "UserMapperDecorator",
+                      "static": false,
+                      "type": "class"
+                    },
+                    {
+                      "children": [
+                        {
+                          "location": "it/polimi/amusic/mapper/UserMapperImpl_.java:74",
+                          "name": "mapUserDocumentToFriend",
+                          "static": false,
+                          "type": "function"
+                        }
+                      ],
+                      "location": "it/polimi/amusic/mapper/UserMapperImpl_.java",
+                      "name": "UserMapperImpl_",
+                      "static": false,
+                      "type": "class"
+                    }
+                  ],
+                  "name": "mapper",
+                  "type": "package"
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "location": "it/polimi/amusic/utils/TimestampUtils.java:32",
+                          "name": "convertTimestampToLocalDate",
+                          "static": true,
+                          "type": "function"
+                        },
+                        {
+                          "location": "it/polimi/amusic/utils/TimestampUtils.java:40",
+                          "name": "convertTimestampToLocalDateTime",
+                          "static": true,
+                          "type": "function"
+                        },
+                        {
+                          "location": "it/polimi/amusic/utils/TimestampUtils.java:24",
+                          "name": "convertLocalDateToTimestamp",
+                          "static": true,
+                          "type": "function"
+                        }
+                      ],
+                      "location": "it/polimi/amusic/utils/TimestampUtils.java",
+                      "name": "TimestampUtils",
+                      "static": false,
+                      "type": "class"
+                    }
+                  ],
+                  "name": "utils",
+                  "type": "package"
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "location": "it/polimi/amusic/security/SecurityService.java:27",
+                          "name": "getBearerToken",
+                          "static": false,
+                          "type": "function"
+                        }
+                      ],
+                      "location": "it/polimi/amusic/security/SecurityService.java",
+                      "name": "SecurityService",
+                      "static": false,
+                      "type": "class"
+                    }
+                  ],
+                  "name": "security",
+                  "type": "package"
+                },
+                {
+                  "children": [
+                    {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "location": "it/polimi/amusic/service/impl/EventBusinessServiceImpl.java:117",
+                              "name": "findEventByIdAfterLocalDateNow",
+                              "static": false,
+                              "type": "function"
+                            }
+                          ],
+                          "location": "it/polimi/amusic/service/impl/EventBusinessServiceImpl.java",
+                          "name": "EventBusinessServiceImpl",
+                          "static": false,
+                          "type": "class"
+                        }
+                      ],
+                      "name": "impl",
+                      "type": "package"
+                    }
+                  ],
+                  "name": "service",
+                  "type": "package"
+                }
+              ],
+              "name": "amusic",
+              "type": "package"
+            }
+          ],
+          "name": "polimi",
+          "type": "package"
+        }
+      ],
+      "name": "it",
+      "type": "package"
+    }
+  ],
+  "version": "1.2",
+  "metadata": {
+    "app": "AMusic",
+    "language": {
+      "name": "java",
+      "version": "15.0.2+7-27",
+      "engine": "OpenJDK 64-Bit Server VM"
+    },
+    "client": {
+      "name": "appmap-java",
+      "url": "https://github.com/appland/appmap-java"
+    },
+    "recorder": {
+      "name": "remote_recording"
+    },
+    "recording": {},
+    "framework": {},
+    "name": "FriendList"
+  }
+}

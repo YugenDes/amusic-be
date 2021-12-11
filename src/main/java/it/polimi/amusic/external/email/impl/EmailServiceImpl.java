@@ -36,7 +36,7 @@ public class EmailServiceImpl implements EmailService {
                 helper.addInline("Ticket", request.getAttachment());
                 helper.addAttachment(request.getAttachment().getName(), request.getAttachment());
             }
-            //  javaMailSender.send(message);
+              javaMailSender.send(message);
             return true;
         } catch (MailException | MessagingException e) {
             log.error("Errore durante l'invio dell mail : {}", e.getLocalizedMessage());

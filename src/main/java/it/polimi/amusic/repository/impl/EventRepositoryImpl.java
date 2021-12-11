@@ -67,15 +67,10 @@ public class EventRepositoryImpl implements EventRepository {
     public Optional<EventDocument> findByIdAfterLocalDateNow(String id) {
         try {
             return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
-                            .whereEqualTo("id", id)
-                            .whereGreaterThanOrEqualTo(EVENT_DATE, Objects.requireNonNull(TimestampUtils.convertLocalDateToTimestamp(LocalDate.now())))
+                            .document(id)
                             .get().get())
-                    .map(documentSnapshot -> documentSnapshot.toObjects(EventDocument.class))
-                    .map(eventDocuments -> eventDocuments
-                            .stream()
-                            .filter(eventDocument -> eventDocument.getId().equals(id))
-                            .findFirst()
-                            .orElse(null));
+                    .map(documentSnapshot -> documentSnapshot.toObject(EventDocument.class))
+                    .filter(eventDocument -> eventDocument.getEventDate().compareTo(TimestampUtils.convertLocalDateToTimestamp(LocalDate.now())) > 0);
         } catch (ExecutionException | InterruptedException e) {
             throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
         }

@@ -69,7 +69,7 @@ public class SuggestedFriendBFS {
         return maxCostVertex;
     }
 
-    public static void main(String[] args) {
+    public void test() {
         List<WeightedEdge> weightedEdges = Arrays.asList(
                 new WeightedEdge("Andrea", "Cristina", 0.5d),
                 new WeightedEdge("Andrea", "Gabriel", 0.3d),

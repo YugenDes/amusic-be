@@ -1,1 +1,0 @@
-stripe.exe listen --forward-to localhost:8080/public/stripe/webhook

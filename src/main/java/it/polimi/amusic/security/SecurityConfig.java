@@ -14,6 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -49,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/v2/api-docs",
                 "/configuration/ui",
                 "/swagger-resources/**",
@@ -58,19 +61,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/webjars/**");
     }
 
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(restSecProps.getAllowedOrigins());
+        configuration.setAllowedMethods(restSecProps.getAllowedMethods());
+        configuration.setAllowedHeaders(restSecProps.getAllowedHeaders());
+        configuration.setExposedHeaders(restSecProps.getExposedHeaders());
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors()
-                //.configurationSource(corsConfigurationSource())
-                .and()
                 .csrf()
                 .disable()
-                .formLogin()
-                .disable()
-                .httpBasic()
-                .disable()
+                .cors()
+                .configurationSource(corsConfigurationSource())
+                .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(restAuthenticationEntryPoint())
                 .and()

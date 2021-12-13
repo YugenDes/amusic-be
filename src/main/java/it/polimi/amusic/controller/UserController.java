@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
@@ -28,7 +29,7 @@ public class UserController {
     @Value("${file.size.limit.byte}")
     private Long fileSizeLimitInByte;
 
-    @GetMapping("/profile")
+    @GetMapping("/private/profile")
     public AMusicResponse<User> getUser() {
         log.info("New request to /profile {}", getUserIdDocumentFromSecurityContext());
         final User byId = userBusinessService.findById(getUserIdDocumentFromSecurityContext());

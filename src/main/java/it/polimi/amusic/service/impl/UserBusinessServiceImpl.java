@@ -196,9 +196,22 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         final List<EventDocument> byParticipant = eventRepository.findByParticipant(userDocument.getId());
 
         //Se l'utente loggato non ha partecipato a nessun evento
-        //Non suggerisco nessun amico
-        if (byParticipant.size() == 0) {
-            return new ArrayList<>();
+        //ed ha degli amici
+        //Suggerisco gli amici degli amici
+        if (byParticipant.size() == 0 || userDocument.getFirendList().size() > 0) {
+            return userDocument
+                    .getFirendList()
+                    .stream()
+                    .limit(6)
+                    .map(friendDocument -> userRepository.findById(friendDocument.getId()).orElse(null))
+                    .filter(Objects::nonNull)
+                    .map(UserDocument::getFirendList)
+                    .flatMap(Collection::stream)
+                    .map(friendDocument -> userRepository.findById(friendDocument.getId()).orElse(null))
+                    .filter(Objects::nonNull)
+                    .map(userMapper::mapUserDocumentToFriend)
+                    .limit(6)
+                    .collect(Collectors.toList());
         }
 
         /*
@@ -259,6 +272,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .flatMap(Collection::stream)
                 //Rimuovo i duplicati
                 .distinct()
+                .filter(s -> Objects.nonNull(idUserFrequencyOnAllEventsMap.get(s)))
                 //Ordino la lista dal piu frequente al meno
                 .sorted((o1, o2) -> (int) (idUserFrequencyOnAllEventsMap.get(o1) - idUserFrequencyOnAllEventsMap.get(o2)))
                 //Prendo i primi 6

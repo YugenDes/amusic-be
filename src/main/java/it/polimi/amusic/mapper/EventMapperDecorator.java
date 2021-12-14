@@ -11,6 +11,7 @@ import it.polimi.amusic.model.request.NewEventRequest;
 import it.polimi.amusic.model.request.UpdateEventRequest;
 import it.polimi.amusic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,7 +45,9 @@ public abstract class EventMapperDecorator implements EventMapper {
      */
     @Override
     public Event getDtoFromDocument(EventDocument document) {
+        final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         final Event dtoFromDocument = eventMapper.getDtoFromDocument(document);
+        dtoFromDocument.setBought(principal.getEventList().contains(document.getId()));
         final List<Partecipant> visibleUsers = document.getPartecipants()
                 .stream()
                 //Filtro per quegli utenti che hanno il visible a true

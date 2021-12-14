@@ -8,7 +8,6 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class RegistrationRequest {
-    @NonNull
     private String email;
     @NonNull
     private String firebaseUidToken;

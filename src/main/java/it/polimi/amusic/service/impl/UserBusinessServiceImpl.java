@@ -4,10 +4,7 @@ import com.google.api.client.util.ArrayMap;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.Firestore;
 import com.google.common.collect.Sets;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
-import com.google.firebase.auth.UserRecord;
+import com.google.firebase.auth.*;
 import it.polimi.amusic.exception.*;
 import it.polimi.amusic.external.email.EmailService;
 import it.polimi.amusic.external.gcs.FileService;
@@ -71,10 +68,10 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     public UserDocument registerUser(@NonNull RegistrationRequest request) throws FirebaseException {
 
         //Cerco se é gia presente nel db
-        final Optional<UserDocument> byEmail = userRepository.findByEmail(request.getEmail());
+        final Optional<UserDocument> byUid = userRepository.findByFirebaseUid(request.getFirebaseUidToken());
 
-        if (byEmail.isPresent()) {
-            throw new UserAlreadyRegisteredException("Utente giá registrato {}", request.getEmail());
+        if (byUid.isPresent()) {
+            throw new UserAlreadyRegisteredException("Utente giá registrato {}", request.getFirebaseUidToken());
         }
 
         //Assegno il ruolo da USER
@@ -90,33 +87,35 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             throw new FirebaseException("Errore durante il recupero dell userFireBase  {}", e.getLocalizedMessage());
         }
 
-        //Converto dispalyName in name e surname
+        final UserInfo userInfo = userFireBase.getProviderData()[0];
+
         String name;
         String surname;
-        if (Objects.nonNull(userFireBase.getDisplayName())) {
-            name = userFireBase.getDisplayName().split(" ")[0];
-            surname = userFireBase.getDisplayName().split(" ")[1];
+        String photoUrl;
+
+        String email;
+        if (Objects.nonNull(userInfo) && StringUtils.isNotBlank(userInfo.getDisplayName())) {
+            //Se non é presente assegno l'immagine del profilo default
+            if (StringUtils.isNotBlank(userInfo.getPhotoUrl())) {
+                //Nel caso di login da socil media prendo la foto
+                photoUrl = userInfo.getPhotoUrl();
+            } else {
+                //Nel caso di login da Amusic setto l immagine base
+                photoUrl = FileService.BASE_USER_PHOTO_URL;
+            }
+            name = userInfo.getDisplayName().substring(0, userFireBase.getDisplayName().indexOf(" "));
+            surname = userInfo.getDisplayName().substring(userFireBase.getDisplayName().indexOf(" ") + 1);
+            email = userInfo.getEmail();
         } else {
-            //Nel caso di GITHUB non prevede un displayName
-            //Sara compito dell user aggiungere un nome e un cognome
-            name = "   ";
-            surname = "   ";
-        }
-
-        //Nel caso di login da socil media prendo la foto
-        String photoUrl = userFireBase.getPhotoUrl();
-
-        //Se non é presente assegno l'immagine del profilo default
-        if (StringUtils.isBlank(photoUrl)) {
-            photoUrl = FileService.BASE_USER_PHOTO_URL;
+            throw new FirebaseException("user infos not found inside token");
         }
 
         //Creo l'utente
         UserDocument userDocument = new UserDocument()
                 .setName(name.toUpperCase())
                 .setSurname(surname.toUpperCase())
-                .setDisplayName(userFireBase.getDisplayName())
-                .setEmail(request.getEmail().toLowerCase())
+                .setDisplayName(userInfo.getDisplayName())
+                .setEmail(email.toLowerCase())
                 .setFirebaseUID(userFireBase.getUid())
                 .setProvider(request.getProvider())
                 .setAuthorities(Collections.singletonList(userRole))
@@ -128,16 +127,23 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .setEnabled(!userFireBase.isDisabled())
                 .setAccountNonLocked(!userFireBase.isDisabled());
 
+
         try {
             return firestore.runTransaction(transaction -> {
+                final UserRecord.UpdateRequest updateRequest = firebaseAuth
+                        .getUser(request.getFirebaseUidToken())
+                        .updateRequest()
+                        .setEmail(email);
+                final UserRecord userRecord = firebaseAuth.updateUser(updateRequest);
                 //Mando l'email di verifica email
-                sendEmailVerificationLink(request.getEmail());
+                sendEmailVerificationLink(userRecord.getEmail());
                 return userRepository.save(userDocument);
             }).get();
 
         } catch (AmusicEmailException | ExecutionException | InterruptedException e) {
             throw new RegistrationException("Errore durante la registrazione {}", e.getLocalizedMessage());
         }
+
     }
 
     @Override

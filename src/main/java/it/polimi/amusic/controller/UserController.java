@@ -81,7 +81,7 @@ public class UserController {
     @PostMapping(value = "/private/user/uploadPhoto", produces = "application/json")
     public AMusicResponse<User> uploadPhoto(@RequestParam("file") MultipartFile multipartFile) {
         if (multipartFile.getSize() > fileSizeLimitInByte) {
-            throw new FileSizeLimitExceedException("Il file supera i limiti di 2MB : {}MB", multipartFile.getSize() / byteSize);
+            throw new FileSizeLimitExceedException("Il file supera i limiti di 5MB : {}MB", multipartFile.getSize() / byteSize);
         }
         log.info("New request to /private/user/uploadPhoto {} size {}", getUserIdDocumentFromSecurityContext(), multipartFile.getSize());
         final User user = userBusinessService.changeProPic(multipartFile.getResource());

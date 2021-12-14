@@ -83,6 +83,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                     .orElseGet(() -> {
                         //Se non é presente allora registro l'utente nel db
                         try {
+                            log.info("Nuovo utente {}", decodedToken.getEmail());
                             return userBusinessService.registerUser(decodedToken);
                         } catch (Exception e) {
                             try {

@@ -39,6 +39,12 @@ public class SecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * Estrae dall header Authorization il token JWT
+     * E verifica tramite firebase se è un token proveniente da firebase
+     *
+     * @param request
+     */
     private void verifyToken(HttpServletRequest request) {
         FirebaseToken decodedToken = null;
         Credentials.CredentialType type = null;

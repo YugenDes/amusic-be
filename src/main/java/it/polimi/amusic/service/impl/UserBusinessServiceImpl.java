@@ -89,8 +89,8 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         final UserInfo userInfo = userFireBase.getProviderData()[0];
 
-        String name = "";
-        String surname = "";
+        String name = "   ";
+        String surname = "   ";
         String photoUrl;
 
         String email;

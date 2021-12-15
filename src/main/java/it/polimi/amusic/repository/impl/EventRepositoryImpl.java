@@ -156,7 +156,6 @@ public class EventRepositoryImpl implements EventRepository {
         try {
             return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
                             .whereGreaterThanOrEqualTo(EVENT_DATE, Objects.requireNonNull(TimestampUtils.convertLocalDateToTimestamp(localDate)))
-                            .whereLessThanOrEqualTo(EVENT_DATE, Objects.requireNonNull(TimestampUtils.convertLocalDateToTimestamp(localDate.plusDays(1))))
                             .get()
                             .get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))

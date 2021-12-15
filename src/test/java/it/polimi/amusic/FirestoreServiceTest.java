@@ -132,6 +132,7 @@ class FirestoreServiceTest {
 
     @Test
     void findEvent() {
+        contextLoads();
         final List<Event> byEventDate = eventBusinessService.findByEventDate(LocalDate.of(2021, 12, 15));
         Assertions.assertFalse(byEventDate.isEmpty(), "Deve esserci un evento");
     }
@@ -158,6 +159,7 @@ class FirestoreServiceTest {
     @SneakyThrows
     @Test
     void findGeoPoint() {
+        contextLoads();
         //final GeoPoint casa = new GeoPoint(41.908761427826434, 12.545459410032102);
         String eventDocumentId = "icuXDgj7mPkhY9Rln5cf";
         final EventDocument eventDocument = eventRepository.findById(eventDocumentId).orElseThrow();
@@ -238,6 +240,7 @@ class FirestoreServiceTest {
 
     @Test
     void attendEvent() {
+        contextLoads();
         final Event event = userBusinessService.attendAnEvent("puLxmw6ozrb7X7IuVWkr", "DlDXMobm0uoGrsV4uqXg", true);
         final boolean isPresent = event.getPartecipants().stream().anyMatch(partecipant -> partecipant.getId().equals("puLxmw6ozrb7X7IuVWkr"));
         Assertions.assertTrue(isPresent, "Non é possibile non trovare un partecipante appena aggiunto");

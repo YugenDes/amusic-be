@@ -104,8 +104,8 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 photoUrl = FileService.BASE_USER_PHOTO_URL;
             }
             if (!userInfo.getProviderId().equals("github.com")) {
-                name = userInfo.getDisplayName().substring(0, userFireBase.getDisplayName().indexOf(" "));
-                surname = userInfo.getDisplayName().substring(userFireBase.getDisplayName().indexOf(" ") + 1);
+                name = userInfo.getDisplayName().substring(0, userFireBase.getDisplayName().indexOf(" ")).toUpperCase();
+                surname = userInfo.getDisplayName().substring(userFireBase.getDisplayName().indexOf(" ") + 1).toUpperCase();
             }
             if (StringUtils.isBlank(userInfo.getEmail())) {
                 log.warn("Nessuna email trovata");
@@ -117,12 +117,12 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             throw new FirebaseException("Informazioni utente non trovate all interno del token di registrazione");
         }
 
-        log.info("Email registered {}", email);
+        log.info("User registered email:{} , name '{}' , surname '{}' , uid {}", email, name, surname, userFireBase.getUid());
 
         //Creo l'utente
         UserDocument userDocument = new UserDocument()
-                .setName(name.toUpperCase())
-                .setSurname(surname.toUpperCase())
+                .setName(name)
+                .setSurname(surname)
                 .setDisplayName(userInfo.getDisplayName())
                 .setEmail(email)
                 .setFirebaseUID(userFireBase.getUid())
@@ -216,15 +216,23 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             return userDocument
                     .getFirendList()
                     .stream()
+                    //Limito a 6 entrate
                     .limit(6)
+                    //Per ogni amico lo cerco sul db
                     .map(friendDocument -> userRepository.findById(friendDocument.getId()).orElse(null))
+                    //Filtro i possibili oggetti null
                     .filter(Objects::nonNull)
+                    //Per ogni amico prendo la lista dei suoi amici
                     .map(UserDocument::getFirendList)
+                    //appiattisco lo stream
                     .flatMap(Collection::stream)
+                    //per ogni id cerco il document (amici degli amici)
                     .map(friendDocument -> userRepository.findById(friendDocument.getId()).orElse(null))
                     .filter(Objects::nonNull)
-                    .map(userMapper::mapUserDocumentToFriend)
+                    //limito a 6 entrate
                     .limit(6)
+                    //Mappo il documento to dto
+                    .map(userMapper::mapUserDocumentToFriend)
                     .collect(Collectors.toList());
         }
 

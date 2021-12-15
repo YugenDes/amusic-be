@@ -265,4 +265,12 @@ class FirestoreServiceTest {
         Assertions.assertTrue(friends.size() <= 6, "La funzione deve tornare almeno 5 amici");
     }
 
+    @Test
+    void eventNearMe() {
+        contextLoads();
+        final List<Event> byGeoPointNearMe = eventBusinessService.findByGeoPointNearMe(new GeoPoint(41.90182786258616, 12.4942199057119), 15);
+        byGeoPointNearMe.forEach(System.out::println);
+        Assertions.assertTrue(byGeoPointNearMe.size() != 0);
+    }
+
 }

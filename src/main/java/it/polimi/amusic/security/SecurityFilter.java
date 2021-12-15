@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import it.polimi.amusic.exception.FirebaseException;
+import it.polimi.amusic.exception.UserAlreadyRegisteredException;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.repository.UserRepository;
 import it.polimi.amusic.security.model.Credentials;
@@ -84,19 +85,21 @@ public class SecurityFilter extends OncePerRequestFilter {
                     .orElseGet(() -> {
                         //Se non é presente allora registro l'utente nel db
                         try {
-                            log.info("Nuovo utente {}", decodedToken.getEmail());
+                            log.info("Nuovo utente {}", decodedToken.getUid());
                             return userBusinessService.registerUser(decodedToken);
+                        } catch (UserAlreadyRegisteredException e) {
+                            throw e;
                         } catch (Exception e) {
-//                            try {
-//                                //Nel caso in cui andasse in errore la registrazione
-//                                //Dobbiamo eliminare l' utente anche da firebase auth per evitare
-//                                //Incoerenze tra le due piattaforme
-//                                log.error("Error on filter {}",e.getLocalizedMessage());
-//                               // FirebaseAuth.getInstance().deleteUser(decodedToken.getUid());
-//                                log.warn("FirebaseUser {} deleted", decodedToken.getUid());
-//                            } catch (FirebaseAuthException ex) {
-//                                throw new FirebaseException("Errore durante la cancellazione del profilo");
-//                            }
+                            try {
+                                //Nel caso in cui andasse in errore la registrazione
+                                //Dobbiamo eliminare l' utente anche da firebase auth per evitare
+                                //Incoerenze tra le due piattaforme
+                                log.error("Error on filter {}", e.getLocalizedMessage());
+                                FirebaseAuth.getInstance().deleteUser(decodedToken.getUid());
+                                log.warn("FirebaseUser {} deleted", decodedToken.getUid());
+                            } catch (FirebaseAuthException ex) {
+                                throw new FirebaseException("Errore durante la cancellazione del profilo");
+                            }
                         }
                         return null;
                     });

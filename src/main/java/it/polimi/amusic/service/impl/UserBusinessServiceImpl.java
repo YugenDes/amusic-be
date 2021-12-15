@@ -89,12 +89,12 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         final UserInfo userInfo = userFireBase.getProviderData()[0];
 
-        String name;
-        String surname;
+        String name = "Change";
+        String surname = "Name";
         String photoUrl;
 
         String email;
-        if (Objects.nonNull(userInfo) && StringUtils.isNotBlank(userInfo.getDisplayName())) {
+        if (Objects.nonNull(userInfo)) {
             //Se non é presente assegno l'immagine del profilo default
             if (StringUtils.isNotBlank(userInfo.getPhotoUrl())) {
                 //Nel caso di login da socil media prendo la foto
@@ -103,19 +103,28 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 //Nel caso di login da Amusic setto l immagine base
                 photoUrl = FileService.BASE_USER_PHOTO_URL;
             }
-            name = userInfo.getDisplayName().substring(0, userFireBase.getDisplayName().indexOf(" "));
-            surname = userInfo.getDisplayName().substring(userFireBase.getDisplayName().indexOf(" ") + 1);
-            email = userInfo.getEmail();
+            if (!userInfo.getProviderId().equals("github.com")) {
+                name = userInfo.getDisplayName().substring(0, userFireBase.getDisplayName().indexOf(" "));
+                surname = userInfo.getDisplayName().substring(userFireBase.getDisplayName().indexOf(" ") + 1);
+            }
+            if (StringUtils.isBlank(userInfo.getEmail())) {
+                log.warn("Nessuna email trovata");
+                email = null;
+            } else {
+                email = userInfo.getEmail().toLowerCase();
+            }
         } else {
             throw new FirebaseException("user infos not found inside token");
         }
+
+        log.info("Email registered {}", email);
 
         //Creo l'utente
         UserDocument userDocument = new UserDocument()
                 .setName(name.toUpperCase())
                 .setSurname(surname.toUpperCase())
                 .setDisplayName(userInfo.getDisplayName())
-                .setEmail(email.toLowerCase())
+                .setEmail(email)
                 .setFirebaseUID(userFireBase.getUid())
                 .setProvider(request.getProvider())
                 .setAuthorities(Collections.singletonList(userRole))
@@ -130,18 +139,24 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         try {
             return firestore.runTransaction(transaction -> {
-                final UserRecord.UpdateRequest updateRequest = firebaseAuth
-                        .getUser(request.getFirebaseUidToken())
-                        .updateRequest()
-                        .setEmail(email);
-                final UserRecord userRecord = firebaseAuth.updateUser(updateRequest);
-                //Mando l'email di verifica email
-                sendEmailVerificationLink(userRecord.getEmail());
+                if (email != null) {
+                    final UserRecord.UpdateRequest updateRequest = firebaseAuth
+                            .getUser(request.getFirebaseUidToken())
+                            .updateRequest()
+                            .setEmail(email);
+                    final UserRecord userRecord = firebaseAuth.updateUser(updateRequest);
+                    //Mando l'email di verifica email
+                    sendEmailVerificationLink(userRecord.getEmail());
+                }
                 return userRepository.save(userDocument);
             }).get();
 
         } catch (AmusicEmailException | ExecutionException | InterruptedException e) {
-            throw new RegistrationException("Errore durante la registrazione {}", e.getLocalizedMessage());
+            if (e.getLocalizedMessage().contains("(EMAIL_EXISTS)")) {
+                throw new UserAlreadyRegisteredException("Utente giá registrato {}", email);
+            } else {
+                throw new RegistrationException("Errore durante la registrazione {}", e.getLocalizedMessage());
+            }
         }
 
     }
@@ -168,29 +183,23 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         final UserDocument userDocument = userRepository.findById(userIdDocument)
                 .orElseThrow(() -> new UserNotFoundException("L'utente {} non é stato trovato", userIdDocument));
 
-        try {
-            return firestore.runTransaction(transaction ->
-                    //Trovo l' evento
-                    eventRepository.findById(eventIdDocument)
-                            .map(eventDocument -> {
-                                //Aggiungo l' user ai parcetipanti
-                                eventDocument.addPartecipantIfAbsent(new PartecipantDocument()
-                                        .setId(userDocument.getId())
-                                        .setName(userDocument.getName())
-                                        .setSurname(userDocument.getSurname())
-                                        .setVisible(visible)
-                                        .setPhotoUrl(userDocument.getPhotoUrl()));
-                                //Aggiungo l evento alla lista degli eventi dell utente
-                                userDocument.addEventIfAbsent(eventDocument.getId());
-                                //Persisto
-                                userRepository.save(userDocument);
-                                return eventRepository.save(eventDocument);
-                            })
-                            .map(eventMapper::getDtoFromDocument)
-                            .orElseThrow(() -> new EventNotFoundException("Evento {} non trovato", eventIdDocument))).get();
-        } catch (ExecutionException | InterruptedException e) {
-            throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
-        }
+        return eventRepository.findById(eventIdDocument)
+                .map(eventDocument -> {
+                    //Aggiungo l' user ai parcetipanti
+                    eventDocument.addPartecipantIfAbsent(new PartecipantDocument()
+                            .setId(userDocument.getId())
+                            .setName(userDocument.getName())
+                            .setSurname(userDocument.getSurname())
+                            .setVisible(visible)
+                            .setPhotoUrl(userDocument.getPhotoUrl()));
+                    //Aggiungo l evento alla lista degli eventi dell utente
+                    userDocument.addEventIfAbsent(eventDocument.getId());
+                    //Persisto
+                    userRepository.save(userDocument);
+                    return eventRepository.save(eventDocument);
+                })
+                .map(eventMapper::getDtoFromDocument)
+                .orElseThrow(() -> new EventNotFoundException("Evento {} non trovato", eventIdDocument));
     }
 
     @Override

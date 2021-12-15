@@ -57,7 +57,7 @@ class FirestoreServiceTest {
 
 
     void contextLoads() {
-        final UserDocument userDocument = userRepository.findById("puLxmw6ozrb7X7IuVWkr").orElseThrow();
+        final UserDocument userDocument = userRepository.findById("2BMY2q1MKsOP54r5KV2N").orElseThrow();
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDocument, null);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
@@ -138,14 +138,15 @@ class FirestoreServiceTest {
 
     @Test
     void findEventByPartecipantsEmail() {
-        String eventDocumentId = "icuXDgj7mPkhY9Rln5cf";
-        userRepository.findById("puLxmw6ozrb7X7IuVWkr")
+        contextLoads();
+        String eventDocumentId = "DlDXMobm0uoGrsV4uqXg";
+        userRepository.findById("2BMY2q1MKsOP54r5KV2N")
                 .map(userDocument -> userBusinessService.attendAnEvent(userDocument.getId(), eventDocumentId, true))
                 .map(Event::getPartecipants)
                 .orElseThrow();
 
         final EventDocument eventDocument1 = eventRepository
-                .findByParticipant("puLxmw6ozrb7X7IuVWkr")
+                .findByParticipant("2BMY2q1MKsOP54r5KV2N")
                 .stream()
                 .filter(eventDocument -> eventDocument.getId().equals(eventDocumentId))
                 .findFirst()

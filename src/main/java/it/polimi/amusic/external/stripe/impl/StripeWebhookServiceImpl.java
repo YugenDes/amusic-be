@@ -50,6 +50,8 @@ public class StripeWebhookServiceImpl implements StripeWebhookService {
                 final Boolean visible = Boolean.valueOf(charge.getMetadata().get("visible"));
                 final UserDocument userDocument = userRepository.findById(userDocumentId).orElseThrow();
                 final EventDocument eventDocument = eventRepository.findById(eventDocumentId).orElseThrow();
+                log.info("Charge {}", charge.getMetadata());
+                log.info("Attend event {} , {}", userDocumentId, eventDocumentId);
 
                 userBusinessService.attendAnEvent(userDocumentId, eventDocumentId, visible);
 
@@ -62,12 +64,14 @@ public class StripeWebhookServiceImpl implements StripeWebhookService {
                         .setStatus(charge.getStatus())
                         .setVendor(PaymentProvider.STRIPE.name()));
 
-                emailService.sendEmail(new EmailService.EmailRequest()
-                        .setEmailTo(userDocument.getEmail())
-                        .setSubject("Pagamento avvenuto con successo")
-                        .setText(MessageBuilder.buildMessage("L acquisto per il ticket {} é avvenuto con successo per una somma di {}€", eventDocument.getEventName(), charge.getAmount() / 100D))
-                        .setHtmlText(false)
-                        .setAttachment(QRCodeGenerator.generateQRCodeImage(charge.getId())));
+                if (userDocument.getEmail() != null) {
+                    emailService.sendEmail(new EmailService.EmailRequest()
+                            .setEmailTo(userDocument.getEmail())
+                            .setSubject("Pagamento avvenuto con successo")
+                            .setText(MessageBuilder.buildMessage("L acquisto per il ticket {} é avvenuto con successo per una somma di {}€", eventDocument.getEventName(), charge.getAmount() / 100D))
+                            .setHtmlText(false)
+                            .setAttachment(QRCodeGenerator.generateQRCodeImage(charge.getId())));
+                }
 
                 log.info("User {} attend event {}", userDocumentId, eventDocumentId);
                 break;

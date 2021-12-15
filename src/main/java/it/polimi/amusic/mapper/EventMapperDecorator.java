@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -47,10 +48,11 @@ public abstract class EventMapperDecorator implements EventMapper {
      */
     @Override
     public Event getDtoFromDocument(EventDocument document) {
-        final UserDocument principal = (UserDocument) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        final UserDocument userDocument = userRepository.findById(principal.getId()).orElseThrow();
         final Event dtoFromDocument = eventMapper.getDtoFromDocument(document);
-        dtoFromDocument.setBought(userDocument.getEventList().contains(document.getId()));
+        Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .filter(o -> o instanceof UserDocument)
+                .map(o -> (UserDocument) o)
+                .ifPresent(userDocument -> dtoFromDocument.setBought(userDocument.getEventList().contains(document.getId())));
         final List<Partecipant> visibleUsers = document.getPartecipants()
                 .stream()
                 //Filtro per quegli utenti che hanno il visible a true

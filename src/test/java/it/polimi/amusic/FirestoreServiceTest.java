@@ -57,7 +57,7 @@ class FirestoreServiceTest {
 
 
     void contextLoads() {
-        final UserDocument userDocument = userRepository.findById("2BMY2q1MKsOP54r5KV2N").orElseThrow();
+        final UserDocument userDocument = userRepository.findById("riesgZgx9d4CpW8yTose").orElseThrow();
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDocument, null);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }

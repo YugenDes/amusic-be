@@ -68,7 +68,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     public UserDocument registerUser(@NonNull RegistrationRequest request) throws FirebaseException {
 
         //Cerco se é gia presente nel db
-        final Optional<UserDocument> byUid = userRepository.findByFirebaseUid(request.getFirebaseUidToken());
+        final Optional<UserDocument> byUid = userRepository.findByEmail(request.getFirebaseUidToken());
 
         if (byUid.isPresent()) {
             throw new UserAlreadyRegisteredException("Utente giá registrato {}", request.getFirebaseUidToken());
@@ -89,8 +89,8 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         final UserInfo userInfo = userFireBase.getProviderData()[0];
 
-        String name = "Change";
-        String surname = "Name";
+        String name = "";
+        String surname = "";
         String photoUrl;
 
         String email;
@@ -109,12 +109,12 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             }
             if (StringUtils.isBlank(userInfo.getEmail())) {
                 log.warn("Nessuna email trovata");
-                email = null;
+                throw new RegistrationException("Non è stata trovata nessuna email valida");
             } else {
                 email = userInfo.getEmail().toLowerCase();
             }
         } else {
-            throw new FirebaseException("user infos not found inside token");
+            throw new FirebaseException("Informazioni utente non trovate all interno del token di registrazione");
         }
 
         log.info("Email registered {}", email);
@@ -139,15 +139,14 @@ public class UserBusinessServiceImpl implements UserBusinessService {
 
         try {
             return firestore.runTransaction(transaction -> {
-                if (email != null) {
-                    final UserRecord.UpdateRequest updateRequest = firebaseAuth
-                            .getUser(request.getFirebaseUidToken())
-                            .updateRequest()
-                            .setEmail(email);
-                    final UserRecord userRecord = firebaseAuth.updateUser(updateRequest);
-                    //Mando l'email di verifica email
-                    sendEmailVerificationLink(userRecord.getEmail());
-                }
+                //Aggiorno l utente di firebase con l' email arrivata dal token
+                final UserRecord.UpdateRequest updateRequest = firebaseAuth
+                        .getUser(request.getFirebaseUidToken())
+                        .updateRequest()
+                        .setEmail(email);
+                final UserRecord userRecord = firebaseAuth.updateUser(updateRequest);
+                //Mando l'email di verifica email
+                sendEmailVerificationLink(userRecord.getEmail());
                 return userRepository.save(userDocument);
             }).get();
 
@@ -213,7 +212,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         //Se l'utente loggato non ha partecipato a nessun evento
         //ed ha degli amici
         //Suggerisco gli amici degli amici
-        if (byParticipant.size() == 0 || userDocument.getFirendList().size() > 0) {
+        if (byParticipant.size() == 0 && userDocument.getFirendList().size() > 0) {
             return userDocument
                     .getFirendList()
                     .stream()

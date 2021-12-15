@@ -77,8 +77,8 @@ public class SecurityFilter extends OncePerRequestFilter {
     private UserDocument firebaseTokenToUserDto(FirebaseToken decodedToken) {
         UserDocument user = null;
         if (decodedToken != null) {
-            //Controllo se l'utente é presente nel db
-            user = userRepository.findByFirebaseUid(decodedToken.getUid())
+            //Controllo se l'utente é presentecs nel db
+            user = userRepository.findByEmail(decodedToken.getEmail())
                     //Se é presente allora aggiorno le informazioni base come lastLogin ecc...
 
                     .map(userDocument -> userRepository.updateFromFirebase(userDocument, decodedToken))

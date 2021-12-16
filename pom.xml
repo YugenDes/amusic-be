@@ -18,6 +18,7 @@
         <spring-cloud.version>2020.0.4</spring-cloud.version>
         <mapstruct.version>1.4.1.Final</mapstruct.version>
         <lombok.version>1.18.20</lombok.version>
+        <log4j2.version>2.15.0</log4j2.version>
     </properties>
 
     <dependencies>
@@ -110,6 +111,11 @@
             <version>1.6.3</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.vlsi.mxgraph</groupId>
+            <artifactId>jgraphx</artifactId>
+            <version>4.2.2</version>
+        </dependency>
     </dependencies>
 
 
@@ -173,7 +179,7 @@
                 <version>3.0.0</version>
                 <configuration>
                     <to>
-                          <image>gcr.io/polimi-amusic/amusic-docker-image</image>
+                        <image>gcr.io/polimi-amusic/amusic-docker-image</image>
                     </to>
 
                     <container>

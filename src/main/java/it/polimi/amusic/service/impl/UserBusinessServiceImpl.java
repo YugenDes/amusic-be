@@ -252,7 +252,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         //Creo una lista di key ordinata per value
         final List<String> idUserFrequencyOnAllEventsListOrdered = idUserFrequencyOnAllEventsMap.entrySet()
                 .stream()
-                .sorted((o1, o2) -> (int) (o1.getValue() - o2.getValue()))
+                .sorted((o1, o2) -> (int) (o2.getValue() - o1.getValue()))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
@@ -286,7 +286,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                         .filter(friendDocumentId -> !friendDocumentId.equals(userDocument.getId()))
                         .filter(friendDocumentId -> !idFriendsOfUserLogged.contains(friendDocumentId))
                         //Filtro gli amici degli amici prendondo solo quelli presenti all evento
-                        .filter(id -> !idUserFrequencyOnAllEventsListOrdered.contains(id))
+                        .filter(id -> idUserFrequencyOnAllEventsListOrdered.contains(id))
                         .collect(Collectors.toList())));
         //Per ogni amico di amico presente all evento dell utente loggato
         final List<String> maxFrequency = idFriendListFriend.values()
@@ -296,7 +296,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .distinct()
                 .filter(s -> Objects.nonNull(idUserFrequencyOnAllEventsMap.get(s)))
                 //Ordino la lista dal piu frequente al meno
-                .sorted((o1, o2) -> (int) (idUserFrequencyOnAllEventsMap.get(o1) - idUserFrequencyOnAllEventsMap.get(o2)))
+                .sorted((o1, o2) -> (int) (idUserFrequencyOnAllEventsMap.get(o2) - idUserFrequencyOnAllEventsMap.get(o1)))
                 //Prendo i primi 6
                 .limit(6)
                 .collect(Collectors.toList());
@@ -318,6 +318,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                     .stream()
                     .filter(s -> !s.equals(userDocument.getId()))
                     .filter(s -> !idFriendsOfUserLogged.contains(s))
+                    .filter(s -> !maxFrequency.contains(s))
                     .limit(6 - suggestedFriend.size())
                     .map(s -> userRepository.findById(s).orElse(null))
                     .filter(Objects::nonNull)

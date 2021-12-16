@@ -4,17 +4,22 @@ import com.firebase.geofire.core.GeoHash;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.GeoPoint;
+import com.google.common.collect.Sets;
 import it.polimi.amusic.external.gcs.FileService;
 import it.polimi.amusic.model.document.EventDocument;
 import it.polimi.amusic.model.document.RoleDocument;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.dto.Friend;
+import it.polimi.amusic.model.dto.Payment;
+import it.polimi.amusic.model.dto.User;
+import it.polimi.amusic.model.request.UpdateUserRequest;
 import it.polimi.amusic.repository.EventRepository;
 import it.polimi.amusic.repository.RoleRepository;
 import it.polimi.amusic.repository.UserRepository;
 import it.polimi.amusic.security.model.AuthProvider;
 import it.polimi.amusic.service.EventBusinessService;
+import it.polimi.amusic.service.PaymentBusinessService;
 import it.polimi.amusic.service.UserBusinessService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +32,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 @SpringBootTest
@@ -54,6 +61,9 @@ class FirestoreServiceTest {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    PaymentBusinessService paymentBusinessService;
 
 
     void contextLoads() {
@@ -273,4 +283,61 @@ class FirestoreServiceTest {
         Assertions.assertTrue(byGeoPointNearMe.size() != 0);
     }
 
+    @Test
+    void testEventDate() {
+        final boolean b = eventBusinessService.findByEventDate(LocalDate.of(2021, 11, 1))
+                .stream()
+                .allMatch(event -> event.getEventDate().isAfter(LocalDate.of(2021, 11, 1).atStartOfDay()));
+        Assertions.assertTrue(b);
+    }
+
+    @Test
+    void testEventDateBetween() {
+        final boolean b = eventBusinessService.findByEventDateBetween(LocalDate.of(2021, 11, 1), YearMonth.of(2022, 1).atEndOfMonth())
+                .stream()
+                .allMatch(event ->
+                        event.getEventDate().isAfter(LocalDate.of(2021, 11, 1).atStartOfDay()) &&
+                                event.getEventDate().isBefore(YearMonth.of(2022, 1).atEndOfMonth().atStartOfDay())
+                );
+        Assertions.assertTrue(b);
+    }
+
+    @Test
+    void testInfoPayment() {
+        final Payment infoPaymentFromEvent = paymentBusinessService.getInfoPaymentFromEvent("Eli7vxAdptth9oqpjzzG", "HDKi2d2egIr2OGixdqNl");
+        Assertions.assertEquals("succeeded", infoPaymentFromEvent.getStatus());
+    }
+
+    @Test
+    void changePassword() {
+        contextLoads();
+        userBusinessService.changePassword();
+    }
+
+    @Test
+    void intersatcionFirendsAndSuggested() {
+        contextLoads();
+        final List<Friend> friends = userBusinessService.getFriends();
+        final List<Friend> suggested = userBusinessService.suggestedFriends();
+        final Sets.SetView<Friend> intersection = Sets.intersection(new HashSet<>(friends), new HashSet<>(suggested));
+        Assertions.assertEquals(0, intersection.size());
+    }
+
+    @Test
+    void updateUser() {
+        contextLoads();
+        String roma = "ROMA";
+        final User userUpdated = userBusinessService.updateUser(new UpdateUserRequest().setCity(roma));
+        final UserDocument userDocument = userRepository.findById(userUpdated.getId()).orElseThrow();
+        Assertions.assertEquals(roma, userDocument.getCity());
+    }
+
+    @Test
+    void searchUser() {
+        contextLoads();
+        String email = "andrea.messina220399@gmail.com";
+        final List<User> andrea = userBusinessService.searchUser(email);
+        final boolean b = andrea.stream().allMatch(user -> user.getEmail().equals(email));
+        Assertions.assertTrue(b);
+    }
 }

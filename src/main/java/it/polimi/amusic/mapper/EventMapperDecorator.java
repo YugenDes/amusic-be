@@ -10,13 +10,17 @@ import it.polimi.amusic.model.dto.Partecipant;
 import it.polimi.amusic.model.request.NewEventRequest;
 import it.polimi.amusic.model.request.UpdateEventRequest;
 import it.polimi.amusic.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 public abstract class EventMapperDecorator implements EventMapper {
 
 
@@ -45,6 +49,10 @@ public abstract class EventMapperDecorator implements EventMapper {
     @Override
     public Event getDtoFromDocument(EventDocument document) {
         final Event dtoFromDocument = eventMapper.getDtoFromDocument(document);
+        Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .filter(o -> o instanceof UserDocument)
+                .map(o -> (UserDocument) o)
+                .ifPresent(userDocument -> dtoFromDocument.setBought(userDocument.getEventList().contains(document.getId())));
         final List<Partecipant> visibleUsers = document.getPartecipants()
                 .stream()
                 //Filtro per quegli utenti che hanno il visible a true
@@ -77,7 +85,8 @@ public abstract class EventMapperDecorator implements EventMapper {
     @Override
     public Partecipant getPartecipantDtoFromDocument(PartecipantDocument partecipantDocument) {
         final Partecipant partecipantDtoFromDocument = eventMapper.getPartecipantDtoFromDocument(partecipantDocument);
-        final UserDocument userDocument = userRepository.findById(partecipantDocument.getId()).orElseThrow();
-        return partecipantDtoFromDocument.setPhotoUrl(userDocument.getPhotoUrl());
+        userRepository.findById(partecipantDocument.getId())
+                .ifPresent(userDocument1 -> partecipantDtoFromDocument.setPhotoUrl(userDocument1.getPhotoUrl()));
+        return partecipantDtoFromDocument;
     }
 }

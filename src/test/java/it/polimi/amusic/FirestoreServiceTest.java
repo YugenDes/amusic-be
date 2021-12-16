@@ -4,17 +4,22 @@ import com.firebase.geofire.core.GeoHash;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.GeoPoint;
+import com.google.common.collect.Sets;
 import it.polimi.amusic.external.gcs.FileService;
 import it.polimi.amusic.model.document.EventDocument;
 import it.polimi.amusic.model.document.RoleDocument;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.model.dto.Event;
 import it.polimi.amusic.model.dto.Friend;
+import it.polimi.amusic.model.dto.Payment;
+import it.polimi.amusic.model.dto.User;
+import it.polimi.amusic.model.request.UpdateUserRequest;
 import it.polimi.amusic.repository.EventRepository;
 import it.polimi.amusic.repository.RoleRepository;
 import it.polimi.amusic.repository.UserRepository;
 import it.polimi.amusic.security.model.AuthProvider;
 import it.polimi.amusic.service.EventBusinessService;
+import it.polimi.amusic.service.PaymentBusinessService;
 import it.polimi.amusic.service.UserBusinessService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +32,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 @SpringBootTest
@@ -55,9 +62,12 @@ class FirestoreServiceTest {
     @Autowired
     RoleRepository roleRepository;
 
+    @Autowired
+    PaymentBusinessService paymentBusinessService;
+
 
     void contextLoads() {
-        final UserDocument userDocument = userRepository.findById("puLxmw6ozrb7X7IuVWkr").orElseThrow();
+        final UserDocument userDocument = userRepository.findById("riesgZgx9d4CpW8yTose").orElseThrow();
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDocument, null);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
@@ -132,20 +142,22 @@ class FirestoreServiceTest {
 
     @Test
     void findEvent() {
+        contextLoads();
         final List<Event> byEventDate = eventBusinessService.findByEventDate(LocalDate.of(2021, 12, 15));
         Assertions.assertFalse(byEventDate.isEmpty(), "Deve esserci un evento");
     }
 
     @Test
     void findEventByPartecipantsEmail() {
-        String eventDocumentId = "icuXDgj7mPkhY9Rln5cf";
-        userRepository.findById("puLxmw6ozrb7X7IuVWkr")
+        contextLoads();
+        String eventDocumentId = "DlDXMobm0uoGrsV4uqXg";
+        userRepository.findById("2BMY2q1MKsOP54r5KV2N")
                 .map(userDocument -> userBusinessService.attendAnEvent(userDocument.getId(), eventDocumentId, true))
                 .map(Event::getPartecipants)
                 .orElseThrow();
 
         final EventDocument eventDocument1 = eventRepository
-                .findByParticipant("puLxmw6ozrb7X7IuVWkr")
+                .findByParticipant("2BMY2q1MKsOP54r5KV2N")
                 .stream()
                 .filter(eventDocument -> eventDocument.getId().equals(eventDocumentId))
                 .findFirst()
@@ -157,6 +169,7 @@ class FirestoreServiceTest {
     @SneakyThrows
     @Test
     void findGeoPoint() {
+        contextLoads();
         //final GeoPoint casa = new GeoPoint(41.908761427826434, 12.545459410032102);
         String eventDocumentId = "icuXDgj7mPkhY9Rln5cf";
         final EventDocument eventDocument = eventRepository.findById(eventDocumentId).orElseThrow();
@@ -237,6 +250,7 @@ class FirestoreServiceTest {
 
     @Test
     void attendEvent() {
+        contextLoads();
         final Event event = userBusinessService.attendAnEvent("puLxmw6ozrb7X7IuVWkr", "DlDXMobm0uoGrsV4uqXg", true);
         final boolean isPresent = event.getPartecipants().stream().anyMatch(partecipant -> partecipant.getId().equals("puLxmw6ozrb7X7IuVWkr"));
         Assertions.assertTrue(isPresent, "Non é possibile non trovare un partecipante appena aggiunto");
@@ -261,4 +275,69 @@ class FirestoreServiceTest {
         Assertions.assertTrue(friends.size() <= 6, "La funzione deve tornare almeno 5 amici");
     }
 
+    @Test
+    void eventNearMe() {
+        contextLoads();
+        final List<Event> byGeoPointNearMe = eventBusinessService.findByGeoPointNearMe(new GeoPoint(41.90182786258616, 12.4942199057119), 15);
+        byGeoPointNearMe.forEach(System.out::println);
+        Assertions.assertTrue(byGeoPointNearMe.size() != 0);
+    }
+
+    @Test
+    void testEventDate() {
+        final boolean b = eventBusinessService.findByEventDate(LocalDate.of(2021, 11, 1))
+                .stream()
+                .allMatch(event -> event.getEventDate().isAfter(LocalDate.of(2021, 11, 1).atStartOfDay()));
+        Assertions.assertTrue(b);
+    }
+
+    @Test
+    void testEventDateBetween() {
+        final boolean b = eventBusinessService.findByEventDateBetween(LocalDate.of(2021, 11, 1), YearMonth.of(2022, 1).atEndOfMonth())
+                .stream()
+                .allMatch(event ->
+                        event.getEventDate().isAfter(LocalDate.of(2021, 11, 1).atStartOfDay()) &&
+                                event.getEventDate().isBefore(YearMonth.of(2022, 1).atEndOfMonth().atStartOfDay())
+                );
+        Assertions.assertTrue(b);
+    }
+
+    @Test
+    void testInfoPayment() {
+        final Payment infoPaymentFromEvent = paymentBusinessService.getInfoPaymentFromEvent("Eli7vxAdptth9oqpjzzG", "HDKi2d2egIr2OGixdqNl");
+        Assertions.assertEquals("succeeded", infoPaymentFromEvent.getStatus());
+    }
+
+    @Test
+    void changePassword() {
+        contextLoads();
+        userBusinessService.changePassword();
+    }
+
+    @Test
+    void intersatcionFirendsAndSuggested() {
+        contextLoads();
+        final List<Friend> friends = userBusinessService.getFriends();
+        final List<Friend> suggested = userBusinessService.suggestedFriends();
+        final Sets.SetView<Friend> intersection = Sets.intersection(new HashSet<>(friends), new HashSet<>(suggested));
+        Assertions.assertEquals(0, intersection.size());
+    }
+
+    @Test
+    void updateUser() {
+        contextLoads();
+        String roma = "ROMA";
+        final User userUpdated = userBusinessService.updateUser(new UpdateUserRequest().setCity(roma));
+        final UserDocument userDocument = userRepository.findById(userUpdated.getId()).orElseThrow();
+        Assertions.assertEquals(roma, userDocument.getCity());
+    }
+
+    @Test
+    void searchUser() {
+        contextLoads();
+        String email = "andrea.messina220399@gmail.com";
+        final List<User> andrea = userBusinessService.searchUser(email);
+        final boolean b = andrea.stream().allMatch(user -> user.getEmail().equals(email));
+        Assertions.assertTrue(b);
+    }
 }

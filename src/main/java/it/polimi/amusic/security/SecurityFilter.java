@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import it.polimi.amusic.exception.FirebaseException;
+import it.polimi.amusic.exception.UserAlreadyRegisteredException;
 import it.polimi.amusic.model.document.UserDocument;
 import it.polimi.amusic.repository.UserRepository;
 import it.polimi.amusic.security.model.Credentials;
@@ -38,6 +39,12 @@ public class SecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * Estrae dall header Authorization il token JWT
+     * E verifica tramite firebase se è un token proveniente da firebase
+     *
+     * @param request
+     */
     private void verifyToken(HttpServletRequest request) {
         FirebaseToken decodedToken = null;
         Credentials.CredentialType type = null;
@@ -76,20 +83,24 @@ public class SecurityFilter extends OncePerRequestFilter {
     private UserDocument firebaseTokenToUserDto(FirebaseToken decodedToken) {
         UserDocument user = null;
         if (decodedToken != null) {
-            //Controllo se l'utente é presente nel db
-            user = userRepository.findByEmail(decodedToken.getEmail()).
+            //Controllo se l'utente é presentecs nel db
+            user = userRepository.findByEmail(decodedToken.getEmail())
                     //Se é presente allora aggiorno le informazioni base come lastLogin ecc...
-                            map(userDocument -> userRepository.updateFromFirebase(userDocument, decodedToken))
+
+                    .map(userDocument -> userRepository.updateFromFirebase(userDocument, decodedToken))
                     .orElseGet(() -> {
                         //Se non é presente allora registro l'utente nel db
                         try {
+                            log.info("Nuovo utente {}", decodedToken.getUid());
                             return userBusinessService.registerUser(decodedToken);
+                        } catch (UserAlreadyRegisteredException e) {
+                            throw e;
                         } catch (Exception e) {
                             try {
                                 //Nel caso in cui andasse in errore la registrazione
                                 //Dobbiamo eliminare l' utente anche da firebase auth per evitare
                                 //Incoerenze tra le due piattaforme
-                                log.error(e.getLocalizedMessage());
+                                log.error("Error on filter {}", e.getLocalizedMessage());
                                 FirebaseAuth.getInstance().deleteUser(decodedToken.getUid());
                                 log.warn("FirebaseUser {} deleted", decodedToken.getUid());
                             } catch (FirebaseAuthException ex) {

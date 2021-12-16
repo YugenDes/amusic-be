@@ -12,6 +12,8 @@ public interface UserRepository extends UserDetailsService {
 
     Optional<UserDocument> findByEmail(String email) throws FirestoreException;
 
+    Optional<UserDocument> findByFirebaseUid(String firebaseUid) throws FirestoreException;
+
     Optional<UserDocument> findById(String id) throws FirestoreException;
 
     List<UserDocument> findByDisplayNameStartWith(String param) throws FirestoreException;

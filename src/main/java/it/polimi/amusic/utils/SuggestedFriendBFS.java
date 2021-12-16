@@ -61,7 +61,7 @@ public class SuggestedFriendBFS {
                     //Cosi facendo poto l'albero di ricerca
                     if (cost * weightedEdge.weight > maxCost)
                         //Il costo viene aggiornato tramite la moltiplicazione
-                        //Perche si riferisce alla probabilitá dipendente dei pesi
+                        //Perche si riferisce alla probabilitá dipendente delle partecipazione congiunte di piu amici
                         queue.add(new Vertex(weightedEdge.dest, cost * weightedEdge.weight, s));
                 }
             }

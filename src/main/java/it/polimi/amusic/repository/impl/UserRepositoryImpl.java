@@ -64,6 +64,17 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Optional<UserDocument> findByFirebaseUid(String firebaseUid) throws com.google.cloud.firestore.FirestoreException {
+        try {
+            return Optional.ofNullable(firestore.collection(COLLECTION_NAME).whereEqualTo("firebaseUID", firebaseUid).get().get())
+                    .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(UserDocument.class))
+                    .map(userDocuments -> !userDocuments.isEmpty() ? userDocuments.get(0) : null);
+        } catch (ExecutionException | InterruptedException e) {
+            throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
+        }
+    }
+
+    @Override
     public Optional<UserDocument> findById(String id) throws FirestoreException {
         try {
             return Optional.ofNullable(firestore.collection(COLLECTION_NAME)

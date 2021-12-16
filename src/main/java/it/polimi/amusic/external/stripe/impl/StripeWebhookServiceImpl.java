@@ -50,26 +50,33 @@ public class StripeWebhookServiceImpl implements StripeWebhookService {
                 final Boolean visible = Boolean.valueOf(charge.getMetadata().get("visible"));
                 final UserDocument userDocument = userRepository.findById(userDocumentId).orElseThrow();
                 final EventDocument eventDocument = eventRepository.findById(eventDocumentId).orElseThrow();
+                log.info("Charge {}", charge.getMetadata());
+                log.info("Attend event {} , {}", userDocumentId, eventDocumentId);
+                try {
+                    userBusinessService.attendAnEvent(userDocumentId, eventDocumentId, visible);
 
-                userBusinessService.attendAnEvent(userDocumentId, eventDocumentId, visible);
+                    paymentRepository.savePayment(new PaymentDocument()
+                            .setIdEventDocument(eventDocument.getId())
+                            .setIdUserDocument(userDocument.getId())
+                            .setAmount(Double.valueOf(charge.getAmount()))
+                            .setIdPayment(charge.getId())
+                            .setDatePayment(TimestampUtils.convertLocalDateTimeToTimestamp(LocalDateTime.now()))
+                            .setStatus(charge.getStatus())
+                            .setVendor(PaymentProvider.STRIPE.name()));
 
-                paymentRepository.savePayment(new PaymentDocument()
-                        .setIdEventDocument(eventDocument.getId())
-                        .setIdUserDocument(userDocument.getId())
-                        .setAmount(Double.valueOf(charge.getAmount()))
-                        .setIdPayment(charge.getId())
-                        .setDatePayment(TimestampUtils.convertLocalDateTimeToTimestamp(LocalDateTime.now()))
-                        .setStatus(charge.getStatus())
-                        .setVendor(PaymentProvider.STRIPE.name()));
-
-                emailService.sendEmail(new EmailService.EmailRequest()
-                        .setEmailTo(userDocument.getEmail())
-                        .setSubject("Pagamento avvenuto con successo")
-                        .setText(MessageBuilder.buildMessage("L acquisto per il ticket {} é avvenuto con successo per una somma di {}€", eventDocument.getEventName(), charge.getAmount() / 100D))
-                        .setHtmlText(false)
-                        .setAttachment(QRCodeGenerator.generateQRCodeImage(charge.getId())));
-
-                log.info("User {} attend event {}", userDocumentId, eventDocumentId);
+                    emailService.sendEmail(new EmailService.EmailRequest()
+                            .setEmailTo(userDocument.getEmail())
+                            .setSubject("Pagamento avvenuto con successo")
+                            .setText(MessageBuilder.buildMessage("L acquisto per il ticket {} é avvenuto con successo per una somma di {}€", eventDocument.getEventName(), charge.getAmount() / 100D))
+                            .setHtmlText(false)
+                            .setAttachment(QRCodeGenerator.generateQRCodeImage(charge.getId())));
+                } catch (Exception e) {
+                    emailService.sendEmail(new EmailService.EmailRequest()
+                            .setEmailTo(userDocument.getEmail())
+                            .setSubject(MessageBuilder.buildMessage("Errore durante la prenotazione dell'evento {}", eventDocument.getEventName()))
+                            .setText(MessageBuilder.buildMessage("L acquisto per il ticket {} NON é avvenuto con successo , presto riceverà un rimborso per una somma di {}€", eventDocument.getEventName(), charge.getAmount() / 100D))
+                            .setHtmlText(false));
+                }
                 break;
             default:
                 log.warn("Evento non gestito {}", event.getType());

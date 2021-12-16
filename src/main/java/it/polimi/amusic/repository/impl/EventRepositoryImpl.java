@@ -1,6 +1,7 @@
 package it.polimi.amusic.repository.impl;
 
 import com.firebase.geofire.core.GeoHash;
+import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.*;
 import it.polimi.amusic.exception.FirestoreException;
 import it.polimi.amusic.mapper.EventMapperDecorator;
@@ -114,12 +115,15 @@ public class EventRepositoryImpl implements EventRepository {
         //Hasho i geoPoint
         String minGeoHashString = new GeoHash(min.getLatitude(), min.getLongitude()).getGeoHashString();
         String maxGeoHashString = new GeoHash(max.getLatitude(), max.getLongitude()).getGeoHashString();
-
+        final Timestamp timestampStart = TimestampUtils.convertLocalDateToTimestamp(LocalDate.now());
+        final Timestamp timestampEnd = TimestampUtils.convertLocalDateToTimestamp(LocalDate.now().plusDays(7));
         try {
             return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
-                            .orderBy("geoHash")
-                            .startAt(minGeoHashString)
-                            .endAt(maxGeoHashString)
+                            .whereGreaterThanOrEqualTo(EVENT_DATE, timestampStart)
+                            .orderBy(EVENT_DATE, Query.Direction.ASCENDING)
+                            .orderBy("geoHash", Query.Direction.ASCENDING)
+                            .startAt(timestampStart, minGeoHashString)
+                            .endAt(timestampEnd, maxGeoHashString)
                             .get()
                             .get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))
@@ -156,7 +160,6 @@ public class EventRepositoryImpl implements EventRepository {
         try {
             return Optional.ofNullable(firestore.collection(COLLECTION_NAME)
                             .whereGreaterThanOrEqualTo(EVENT_DATE, Objects.requireNonNull(TimestampUtils.convertLocalDateToTimestamp(localDate)))
-                            .whereLessThanOrEqualTo(EVENT_DATE, Objects.requireNonNull(TimestampUtils.convertLocalDateToTimestamp(localDate.plusDays(1))))
                             .get()
                             .get())
                     .map(queryDocumentSnapshots -> queryDocumentSnapshots.toObjects(EventDocument.class))

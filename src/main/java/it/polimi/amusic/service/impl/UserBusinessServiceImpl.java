@@ -4,10 +4,7 @@ import com.google.api.client.util.ArrayMap;
 import com.google.cloud.Timestamp;
 import com.google.cloud.firestore.Firestore;
 import com.google.common.collect.Sets;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
-import com.google.firebase.auth.UserRecord;
+import com.google.firebase.auth.*;
 import it.polimi.amusic.exception.*;
 import it.polimi.amusic.external.email.EmailService;
 import it.polimi.amusic.external.gcs.FileService;
@@ -71,10 +68,10 @@ public class UserBusinessServiceImpl implements UserBusinessService {
     public UserDocument registerUser(@NonNull RegistrationRequest request) throws FirebaseException {
 
         //Cerco se é gia presente nel db
-        final Optional<UserDocument> byEmail = userRepository.findByEmail(request.getEmail());
+        final Optional<UserDocument> byUid = userRepository.findByEmail(request.getFirebaseUidToken());
 
-        if (byEmail.isPresent()) {
-            throw new UserAlreadyRegisteredException("Utente giá registrato {}", request.getEmail());
+        if (byUid.isPresent()) {
+            throw new UserAlreadyRegisteredException("Utente giá registrato {}", request.getFirebaseUidToken());
         }
 
         //Assegno il ruolo da USER
@@ -90,33 +87,44 @@ public class UserBusinessServiceImpl implements UserBusinessService {
             throw new FirebaseException("Errore durante il recupero dell userFireBase  {}", e.getLocalizedMessage());
         }
 
-        //Converto dispalyName in name e surname
-        String name;
-        String surname;
-        if (Objects.nonNull(userFireBase.getDisplayName())) {
-            name = userFireBase.getDisplayName().split(" ")[0];
-            surname = userFireBase.getDisplayName().split(" ")[1];
+        final UserInfo userInfo = userFireBase.getProviderData()[0];
+
+        String name = "   ";
+        String surname = "   ";
+        String photoUrl;
+
+        String email;
+        if (Objects.nonNull(userInfo)) {
+            //Se non é presente assegno l'immagine del profilo default
+            if (StringUtils.isNotBlank(userInfo.getPhotoUrl())) {
+                //Nel caso di login da socil media prendo la foto
+                photoUrl = userInfo.getPhotoUrl();
+            } else {
+                //Nel caso di login da Amusic setto l immagine base
+                photoUrl = FileService.BASE_USER_PHOTO_URL;
+            }
+            if (!userInfo.getProviderId().equals("github.com")) {
+                name = userInfo.getDisplayName().substring(0, userFireBase.getDisplayName().indexOf(" ")).toUpperCase();
+                surname = userInfo.getDisplayName().substring(userFireBase.getDisplayName().indexOf(" ") + 1).toUpperCase();
+            }
+            if (StringUtils.isBlank(userInfo.getEmail())) {
+                log.warn("Nessuna email trovata");
+                throw new RegistrationException("Non è stata trovata nessuna email valida");
+            } else {
+                email = userInfo.getEmail().toLowerCase();
+            }
         } else {
-            //Nel caso di GITHUB non prevede un displayName
-            //Sara compito dell user aggiungere un nome e un cognome
-            name = "   ";
-            surname = "   ";
+            throw new FirebaseException("Informazioni utente non trovate all interno del token di registrazione");
         }
 
-        //Nel caso di login da socil media prendo la foto
-        String photoUrl = userFireBase.getPhotoUrl();
-
-        //Se non é presente assegno l'immagine del profilo default
-        if (StringUtils.isBlank(photoUrl)) {
-            photoUrl = FileService.BASE_USER_PHOTO_URL;
-        }
+        log.info("User registered email:{} , name '{}' , surname '{}' , uid {}", email, name, surname, userFireBase.getUid());
 
         //Creo l'utente
         UserDocument userDocument = new UserDocument()
-                .setName(name.toUpperCase())
-                .setSurname(surname.toUpperCase())
-                .setDisplayName(userFireBase.getDisplayName())
-                .setEmail(request.getEmail().toLowerCase())
+                .setName(name)
+                .setSurname(surname)
+                .setDisplayName(userInfo.getDisplayName())
+                .setEmail(email)
                 .setFirebaseUID(userFireBase.getUid())
                 .setProvider(request.getProvider())
                 .setAuthorities(Collections.singletonList(userRole))
@@ -128,16 +136,28 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .setEnabled(!userFireBase.isDisabled())
                 .setAccountNonLocked(!userFireBase.isDisabled());
 
+
         try {
             return firestore.runTransaction(transaction -> {
+                //Aggiorno l utente di firebase con l' email arrivata dal token
+                final UserRecord.UpdateRequest updateRequest = firebaseAuth
+                        .getUser(request.getFirebaseUidToken())
+                        .updateRequest()
+                        .setEmail(email);
+                final UserRecord userRecord = firebaseAuth.updateUser(updateRequest);
                 //Mando l'email di verifica email
-                sendEmailVerificationLink(request.getEmail());
+                sendEmailVerificationLink(userRecord.getEmail());
                 return userRepository.save(userDocument);
             }).get();
 
         } catch (AmusicEmailException | ExecutionException | InterruptedException e) {
-            throw new RegistrationException("Errore durante la registrazione {}", e.getLocalizedMessage());
+            if (e.getLocalizedMessage().contains("(EMAIL_EXISTS)")) {
+                throw new UserAlreadyRegisteredException("Utente giá registrato {}", email);
+            } else {
+                throw new RegistrationException("Errore durante la registrazione {}", e.getLocalizedMessage());
+            }
         }
+
     }
 
     @Override
@@ -162,29 +182,23 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         final UserDocument userDocument = userRepository.findById(userIdDocument)
                 .orElseThrow(() -> new UserNotFoundException("L'utente {} non é stato trovato", userIdDocument));
 
-        try {
-            return firestore.runTransaction(transaction ->
-                    //Trovo l' evento
-                    eventRepository.findById(eventIdDocument)
-                            .map(eventDocument -> {
-                                //Aggiungo l' user ai parcetipanti
-                                eventDocument.addPartecipantIfAbsent(new PartecipantDocument()
-                                        .setId(userDocument.getId())
-                                        .setName(userDocument.getName())
-                                        .setSurname(userDocument.getSurname())
-                                        .setVisible(visible)
-                                        .setPhotoUrl(userDocument.getPhotoUrl()));
-                                //Aggiungo l evento alla lista degli eventi dell utente
-                                userDocument.addEventIfAbsent(eventDocument.getId());
-                                //Persisto
-                                userRepository.save(userDocument);
-                                return eventRepository.save(eventDocument);
-                            })
-                            .map(eventMapper::getDtoFromDocument)
-                            .orElseThrow(() -> new EventNotFoundException("Evento {} non trovato", eventIdDocument))).get();
-        } catch (ExecutionException | InterruptedException e) {
-            throw new FirestoreException("Impossibile effettuare la query {}", e.getLocalizedMessage());
-        }
+        return eventRepository.findById(eventIdDocument)
+                .map(eventDocument -> {
+                    //Aggiungo l' user ai parcetipanti
+                    eventDocument.addPartecipantIfAbsent(new PartecipantDocument()
+                            .setId(userDocument.getId())
+                            .setName(userDocument.getName())
+                            .setSurname(userDocument.getSurname())
+                            .setVisible(visible)
+                            .setPhotoUrl(userDocument.getPhotoUrl()));
+                    //Aggiungo l evento alla lista degli eventi dell utente
+                    userDocument.addEventIfAbsent(eventDocument.getId());
+                    //Persisto
+                    userRepository.save(userDocument);
+                    return eventRepository.save(eventDocument);
+                })
+                .map(eventMapper::getDtoFromDocument)
+                .orElseThrow(() -> new EventNotFoundException("Evento {} non trovato", eventIdDocument));
     }
 
     @Override
@@ -196,9 +210,30 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         final List<EventDocument> byParticipant = eventRepository.findByParticipant(userDocument.getId());
 
         //Se l'utente loggato non ha partecipato a nessun evento
-        //Non suggerisco nessun amico
-        if (byParticipant.size() == 0) {
-            return new ArrayList<>();
+        //ed ha degli amici
+        //Suggerisco gli amici degli amici
+        if (byParticipant.size() == 0 && userDocument.getFirendList().size() > 0) {
+            return userDocument
+                    .getFirendList()
+                    .stream()
+                    //Limito a 6 entrate
+                    .limit(6)
+                    //Per ogni amico lo cerco sul db
+                    .map(friendDocument -> userRepository.findById(friendDocument.getId()).orElse(null))
+                    //Filtro i possibili oggetti null
+                    .filter(Objects::nonNull)
+                    //Per ogni amico prendo la lista dei suoi amici
+                    .map(UserDocument::getFirendList)
+                    //appiattisco lo stream
+                    .flatMap(Collection::stream)
+                    //per ogni id cerco il document (amici degli amici)
+                    .map(friendDocument -> userRepository.findById(friendDocument.getId()).orElse(null))
+                    .filter(Objects::nonNull)
+                    //limito a 6 entrate
+                    .limit(6)
+                    //Mappo il documento to dto
+                    .map(userMapper::mapUserDocumentToFriend)
+                    .collect(Collectors.toList());
         }
 
         /*
@@ -217,7 +252,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
         //Creo una lista di key ordinata per value
         final List<String> idUserFrequencyOnAllEventsListOrdered = idUserFrequencyOnAllEventsMap.entrySet()
                 .stream()
-                .sorted((o1, o2) -> (int) (o1.getValue() - o2.getValue()))
+                .sorted((o1, o2) -> (int) (o2.getValue() - o1.getValue()))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
 
@@ -251,7 +286,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                         .filter(friendDocumentId -> !friendDocumentId.equals(userDocument.getId()))
                         .filter(friendDocumentId -> !idFriendsOfUserLogged.contains(friendDocumentId))
                         //Filtro gli amici degli amici prendondo solo quelli presenti all evento
-                        .filter(id -> !idUserFrequencyOnAllEventsListOrdered.contains(id))
+                        .filter(id -> idUserFrequencyOnAllEventsListOrdered.contains(id))
                         .collect(Collectors.toList())));
         //Per ogni amico di amico presente all evento dell utente loggato
         final List<String> maxFrequency = idFriendListFriend.values()
@@ -259,8 +294,9 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                 .flatMap(Collection::stream)
                 //Rimuovo i duplicati
                 .distinct()
+                .filter(s -> Objects.nonNull(idUserFrequencyOnAllEventsMap.get(s)))
                 //Ordino la lista dal piu frequente al meno
-                .sorted((o1, o2) -> (int) (idUserFrequencyOnAllEventsMap.get(o1) - idUserFrequencyOnAllEventsMap.get(o2)))
+                .sorted((o1, o2) -> (int) (idUserFrequencyOnAllEventsMap.get(o2) - idUserFrequencyOnAllEventsMap.get(o1)))
                 //Prendo i primi 6
                 .limit(6)
                 .collect(Collectors.toList());
@@ -282,6 +318,7 @@ public class UserBusinessServiceImpl implements UserBusinessService {
                     .stream()
                     .filter(s -> !s.equals(userDocument.getId()))
                     .filter(s -> !idFriendsOfUserLogged.contains(s))
+                    .filter(s -> !maxFrequency.contains(s))
                     .limit(6 - suggestedFriend.size())
                     .map(s -> userRepository.findById(s).orElse(null))
                     .filter(Objects::nonNull)

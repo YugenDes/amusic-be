@@ -24,4 +24,5 @@ public class Event {
     private Integer maxPartecipants = 50;
     private List<Partecipant> partecipants = new ArrayList<>();
     private Double ticketPrice;
+    private Boolean bought;
 }
